@@ -45,6 +45,8 @@ import("zoo")
 import("lattice")
 import("latticeExtra")
 
+import(data.table)
+
 export(
     ##small utilities
     hour,
@@ -76,25 +78,16 @@ export(
     P2E,
     truncDay,
     ##main functions
+    declination, eccentricity, sunrise, dayLength, eot, bo0d, sunHour, 
     fBTd,
-    fSolD,
-    fSolI,
+    fSolD, fSolI,
     fTemp,
-    fCompD,
-    fCompI,
-    fTheta,
-    fInclin,
+    fCompD, fCompI,
+    fTheta, fInclin,
     fProd,
-    fSombra,
-    fSombra2X,
-    fSombra6,
-    fSombraHoriz,
-    fSombraEst,
-    fPump,
-    HQCurve,
-    NmgPVPS,
-    analyzeData,
-    TargetDiagram,
+    fSombra, fSombra2X, fSombra6, fSombraHoriz, fSombraEst,
+    fPump, HQCurve, NmgPVPS,
+    analyzeData, TargetDiagram,
     ## Correlations
     FdKtPage,
     FdKtLJ,
@@ -112,8 +105,6 @@ export(
     prodGCPV,
     prodPVPS,
     optimShd,
-    ## readSIAR,
-    ## readMAPA,
     readG0dm,
     readBD,
     readBDi,
