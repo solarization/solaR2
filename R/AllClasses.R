@@ -2,109 +2,116 @@ setOldClass("zoo")
 setOldClass("loess")
 setOldClass("difftime")
 
+#### Sol class ####
 setClass(
-    Class="Meteo", ##datos de radiación y temperatura
+         Class='Sol', ##Solar angles
+         slots = c(
+             lat='numeric',#latitud in degrees, >0 if North
+             lon='numeric',#longitude in degrees, >0 if East
+             solD='data.table',#daily angles
+             solI='data.table',#intradaily angles
+             sample='character',#sample of time
+             method='character'#method used for geometry calculations
+         ),
+    validity=function(object) {return(TRUE)}
+)
+
+#### Meteo class ####
+setClass(
+    Class = 'Meteo', ##radiation and temperature data
     slots = c(
-        latData="numeric",       #latitud, en grados, >0 si Norte
-        data="zoo",          #datos, incluyendo G (Wh/m2) y Ta (ºC)
-        type="character",    #a elegir entre "prom", "bd", "bdI"
-        source="character" #información sobre el origen de los datos
+        lat='numeric',#latitud in degrees, >0 if North
+        data='data.table',#data, incluying G (Wh/m2) and Ta(ºC)
+        type='character',#choose between 'prom', 'bd' and 'bdI'
+        source='character'#origin of the data
     ),
     validity=function(object) {return(TRUE)}
 )
 
+#### G0 class ####
 setClass(
-    Class="Sol", ##Angulos del sol
+    Class = 'G0',
     slots = c(
-        lat="numeric",             #latitud, en grados, >0 si Norte
-        solD="data.table",                #angulos diarios
-        solI="data.table",                #angulos intradiarios
-        sample="character",
-        method="character" ##method used for geometry calculations
+        G0D = 'data.table',
+        G0dm = 'data.table',
+        G0y = 'data.table',
+        G0I = 'data.table',
+        Ta = 'data.table'
     ),
-    validity=function(object) {return(TRUE)}
+    contains = c('Sol', 'Meteo'),
+    validity = function(object) {return(TRUE)}
 )
 
+#### Gef class ####
 setClass(
-    Class="G0",
-    slots = c(
-        G0D="zoo",                #resultado de fCompD
-        G0dm="zoo",               #aggregate, medias mensuales
-        G0y="zoo",                #aggregate, valores anuales
-        G0I="zoo",                #resultado de fCompI
-        Ta="zoo"),                 #Temperatura ambiente intradiaria
-    ##             sample="difftime"#según lo pasado a fSolI
-    contains=c("Meteo","Sol"),
-    validity=function(object) {
-        return(TRUE)}
-)
+         Class='Gef',
+         slots = c(
+           GefD='zoo',       #aggregate, valores diarios
+           Gefdm='zoo',      #aggregate, medias mensuales
+           Gefy='zoo',       #aggregate, valores anuales
+           GefI='zoo',       #resultado de fInclin
+           Theta='zoo',     #resultado de fTheta
+           iS='numeric',     #indice de suciedad OJO ¿pasar a INTEGER?
+           alb='numeric',    #albedo
+           modeTrk='character',         #modo de seguimiento
+           modeShd='character',         #modo de sombra
+           angGen='list',               # incluye alfa, beta y betaLim
+           struct='list',               #dimensiones de la estructura
+           distances='data.frame'       #distancias entre estructuras
+           ),
+         contains='G0',
+         validity=function(object) {return(TRUE)}
+         )
 
+#### ProdGCPV class ####
 setClass(
-    Class="Gef",
-    slots = c(
-        GefD="zoo",       #aggregate, valores diarios
-        Gefdm="zoo",      #aggregate, medias mensuales
-        Gefy="zoo",       #aggregate, valores anuales
-        GefI="zoo",       #resultado de fInclin
-        Theta="zoo",     #resultado de fTheta
-        iS="numeric",     #indice de suciedad OJO ¿pasar a INTEGER?
-        alb="numeric",    #albedo
-        modeTrk="character",         #modo de seguimiento
-        modeShd="character",         #modo de sombra
-        angGen="list",               # incluye alfa, beta y betaLim
-        struct="list",               #dimensiones de la estructura
-        distances="data.frame"       #distancias entre estructuras
-    ),
-    contains="G0",
-    validity=function(object) {return(TRUE)}
-)
+         Class='ProdGCPV',
+         slots = c(
+           prodD='zoo',                 #aggregate, valores diarios
+           prodDm='zoo',                #aggregate, medias mensuales
+           prody='zoo',                 #aggregate, valores anuales
+           prodI='zoo',                 #resultado de fProd
+           module='list',
+           generator='list',
+           inverter='list',
+           effSys='list'
+           ),
+         contains='Gef',
+         validity=function(object) {return(TRUE)}
+         )
 
+#### ProdPVPS class ####
 setClass(
-    Class="ProdGCPV",
-    slots = c(
-        prodD="zoo",                 #aggregate, valores diarios
-        prodDm="zoo",                #aggregate, medias mensuales
-        prody="zoo",                 #aggregate, valores anuales
-        prodI="zoo",                 #resultado de fProd
-        module="list",
-        generator="list",
-        inverter="list",
-        effSys="list"
-    ),
-    contains="Gef",
-    validity=function(object) {return(TRUE)}
-)
+         Class='ProdPVPS',
+         slots = c(
+           prodD='zoo',                 #aggregate, valores diarios
+           prodDm='zoo',                #aggregate, medias mensuales
+           prody='zoo',                 #aggregate, valores anuales
+           prodI='zoo',                 #resultado de fProd
+           Pg='numeric',
+           H='numeric',
+           pump='list',
+           converter='list',
+           effSys='list'
+           ),
+         contains='Gef',
+         validity=function(object) {return(TRUE)}
+         )
 
+#### Shade class ####
 setClass(
-    Class="ProdPVPS",
-    slots = c(
-        prodD="zoo",                 #aggregate, valores diarios
-        prodDm="zoo",                #aggregate, medias mensuales
-        prody="zoo",                 #aggregate, valores anuales
-        prodI="zoo",                 #resultado de fProd
-        Pg="numeric",
-        H="numeric",
-        pump="list",
-        converter="list",
-        effSys="list"
-    ),
-    contains="Gef",
-    validity=function(object) {return(TRUE)}
-)
-
-setClass(
-    Class="Shade",
-    slots = c(
-        FS="numeric",
-        GRR="numeric",
-        Yf="numeric",
-        FS.loess="loess",
-        Yf.loess="loess",
-        modeShd="character",
-        struct="list",
-        distances="data.frame",
-        res="numeric"
-    ),
-    contains="ProdGCPV",##Resultado de prodGCPV sin sombras (Prod0)
-    validity=function(object) {return(TRUE)}
-)
+         Class='Shade',
+         slots = c(
+           FS='numeric',
+           GRR='numeric',
+           Yf='numeric',
+           FS.loess='loess',
+           Yf.loess='loess',
+           modeShd='character',
+           struct='list',
+           distances='data.frame',
+           res='numeric'
+           ),
+         contains='ProdGCPV',##Resultado de prodGCPV sin sombras (Prod0)
+         validity=function(object) {return(TRUE)}
+         )
