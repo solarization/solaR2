@@ -1,26 +1,27 @@
-calcSol <- function(d, lat, sample = 'hour', BTi,
-                    EoT = TRUE, keep.night = TRUE,
-                    method = 'michalsky'){
-
-  if (missing(BTi)){
+calcSol <- function(d, lat, lon, BTi,
+                    sample = 'hour',
+                    keep.night = TRUE,
+                    method = 'michalsky',
+                    GMT = 0)
+{
     solD <- fSolD(d = d, lat = lat, method = method)
-    solI <- fSolI(solD, sample = sample, EoT = EoT,
-                  keep.night = keep.night, method = method)
-  } else { ##utilizo BTi
-    BTd <- unique(as.IDate(BTi))
-    solD <- fSolD(d = d, lat = lat, method=method)
-    solI <- fSolI(solD, BTi = BTi,
-                  EoT = EoT,
-                  keep.night = keep.night,
+    solI <- fSolI(solD = solD, lon = lon, sample = sample,
+                  BTi = BTi, GMT = GMT, keep.night = keep.night)
+    
+    if(!missing(BTi)){
+        sample <- solI$Dates[2]-solI$Dates[1]
+        sample <- format(sample)
+    }
+    
+    solD[, lat := NULL]
+    solI[, lat := NULL]
+    solI[, lon := NULL]
+    result <- new('Sol',
+                  lat = lat,
+                  lon = lon,
+                  solD = solD,
+                  solI = solI,
+                  sample = sample,
                   method = method)
-  }
-  attr(solD, 'lat') <- NULL
-  attr(solI, 'lat') <- NULL
-  result <- new('Sol',
-                lat = lat,
-                solD = solD,
-                solI = solI,
-                sample = sample,
-                method = method)
-  return(result)
+    return(result)
 }
