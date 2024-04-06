@@ -1,14 +1,14 @@
 Package: solaR2
 Type: Package
 Title: Radiation and Photovoltaic Systems
-Version: 0.46
+Version: 0.10
 Encoding: UTF-8
-Authors@R: person("Oscar", "Perpiñán Lamigueiro", email="oscar.perpinan@upm.es", role=c('cre', 'aut'), comment = c(ORCID = "0000-0002-4134-7196"))
+Authors@R: c(person("Oscar", "Perpiñán-Lamigueiro", email="oscar.perpinan@upm.es", role=c("cre", "aut"), comment = c(ORCID = "0000-0002-4134-7196")), person("Francisco", "Delgado-López", email="f.delgadol@alumnos.upm.es", role="aut"))
 Description: Calculation methods of solar radiation and performance of photovoltaic systems from daily and intradaily irradiation data sources.
 URL: https://oscarperpinan.github.io/solar/
 BugReports: https://github.com/oscarperpinan/solar/issues
 License: GPL-3
 LazyData: yes
 Depends: R (>= 4.0.0), data.table, lattice
-Imports: methods, RColorBrewer, latticeExtra, graphics, grDevices, stats, methods
+Imports: RColorBrewer, latticeExtra, zoo, graphics, grDevices, stats, methods, utils
 Suggests: sp, raster, rasterVis, tdr, meteoForecast

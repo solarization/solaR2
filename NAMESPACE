@@ -41,11 +41,12 @@ importFrom("RColorBrewer",
            "brewer.pal")
 
 import("methods")
-import("zoo")
+
 import("lattice")
 import("latticeExtra")
 
-import(data.table)
+import("zoo")
+import("data.table")
 
 export(
     ##small utilities
