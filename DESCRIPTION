@@ -11,4 +11,6 @@ License: GPL-3
 LazyData: yes
 Depends: R (>= 4.0.0), data.table, lattice
 Imports: RColorBrewer, latticeExtra, zoo, graphics, grDevices, stats, methods, utils
-Suggests: sp, raster, rasterVis, tdr, meteoForecast
+Suggests: sp, raster, rasterVis, tdr, meteoForecast, testthat (>= 3.0.0)
+Config/testthat/edition: 3
+
