@@ -1,48 +1,45 @@
-setOldClass("zoo")
-setOldClass("loess")
-setOldClass("difftime")
+setOldClass('zoo')
+setOldClass('loess')
+setOldClass('difftime')
 
-#### Sol class ####
 setClass(
-         Class='Sol', ##Solar angles
+         Class='Meteo', ##datos de radiación y temperatura
+         slots=c(
+           latData='numeric',       #latitud, en grados, >0 si Norte
+           data='zoo',          #datos, incluyendo G (Wh/m2) y Ta (ºC)
+           type='character',    #a elegir entre 'prom', 'bd', 'bdI'
+           source='character' #información sobre el origen de los datos
+           ),
+         validity=function(object) {return(TRUE)}
+         )
+
+setClass(
+         Class='Sol', ##Angulos del sol
+         slots=c(
+           lat='numeric',             #latitud, en grados, >0 si Norte
+           solD='zoo',                #angulos diarios
+           solI='zoo',                #angulos intradiarios
+           match='numeric', #indices de solD que coinciden con días de solI
+           sample='difftime',
+           method='character' ##method used for geometry calculations
+           ),
+         validity=function(object) {return(TRUE)}
+         )
+
+setClass(
+         Class='G0',
          slots = c(
-             lat='numeric',#latitud in degrees, >0 if North
-             lon='numeric',#longitude in degrees, >0 if East
-             solD='data.table',#daily angles
-             solI='data.table',#intradaily angles
-             sample='character',#sample of time
-             method='character'#method used for geometry calculations
-         ),
-    validity=function(object) {return(TRUE)}
-)
+           G0D='zoo',                #resultado de fCompD
+           G0dm='zoo',               #aggregate, medias mensuales
+           G0y='zoo',                #aggregate, valores anuales
+           G0I='zoo',                #resultado de fCompI
+           Ta='zoo'),                 #Temperatura ambiente intradiaria
+         ##             sample='difftime'#según lo pasado a fSolI
+         contains=c('Meteo','Sol'),
+         validity=function(object) {
+           return(TRUE)}
+         )
 
-#### Meteo class ####
-setClass(
-    Class = 'Meteo', ##radiation and temperature data
-    slots = c(
-        lat='numeric',#latitud in degrees, >0 if North
-        data='data.table',#data, incluying G (Wh/m2) and Ta(ºC)
-        type='character',#choose between 'prom', 'bd' and 'bdI'
-        source='character'#origin of the data
-    ),
-    validity=function(object) {return(TRUE)}
-)
-
-#### G0 class ####
-setClass(
-    Class = 'G0',
-    slots = c(
-        G0D = 'data.table',
-        G0dm = 'data.table',
-        G0y = 'data.table',
-        G0I = 'data.table',
-        Ta = 'data.table'
-    ),
-    contains = c('Sol', 'Meteo'),
-    validity = function(object) {return(TRUE)}
-)
-
-#### Gef class ####
 setClass(
          Class='Gef',
          slots = c(
@@ -63,7 +60,6 @@ setClass(
          validity=function(object) {return(TRUE)}
          )
 
-#### ProdGCPV class ####
 setClass(
          Class='ProdGCPV',
          slots = c(
@@ -80,7 +76,6 @@ setClass(
          validity=function(object) {return(TRUE)}
          )
 
-#### ProdPVPS class ####
 setClass(
          Class='ProdPVPS',
          slots = c(
@@ -98,7 +93,6 @@ setClass(
          validity=function(object) {return(TRUE)}
          )
 
-#### Shade class ####
 setClass(
          Class='Shade',
          slots = c(

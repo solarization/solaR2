@@ -1,94 +1,116 @@
-fCompI <- function(sol, G0I, compD,
-                   corr = 'EKDh', f,
-                   filterG0 = TRUE,
-                   b0.col, d0.col){
-    if(!(corr %in% c('EKDh', 'CLIMEDh', 'BRL', 'user', 'none'))){
-        warning('Wrong descriptor of correlation Fd-Ktd. Set EKDh.')
-        corr <- 'EKDh'
-    }
+fCompI <- function(sol, compD, G0I,
+                   corr = 'none', f,
+                   filterG0 = TRUE){
   
-    if(class(sol) != 'Sol'){
-        Dates <- unique(as.IDate(sol$Dates))
-        lat <- unique(sol$lat)
-        lon <- unique(sol$lon)
-        N <- length(sol$Dates)
-        BTi <- seq(sol$Dates[1], sol$Dates[N], length.out = N)
-        sample <- format(difftime(BTi[2], BTi[1]))
-        sol <- calcSol(Dates, lat, lon, BTi, sample)
+    ##Time indexes
+    if (class(sol)=='Sol') {
+        solI <- sol@solI
+        mtch <- sol@match
+        sample <- sol@sample
+    } else { ##sol is a zoo, for example, produced by fSolI
+        solI <- sol
+        mtch <- attr(sol, 'match')
+        sample <- attr(sol, 'sample')
     }
-
-    
-    sample <- sol@sample
-    night <- sol@solI$night
-    Bo0 <- sol@solI$Bo0
-    Dates <- indexI(sol)
+    indSol <- index(solI)
+    ## Retrieve some variables from solI
+    rd <- coredata(solI$rd)
+    rg <- coredata(solI$rg)
+    aman <- coredata(solI$aman)
+    Bo0 <- coredata(solI$Bo0)
 
     ## If instantaneous values are not provided, compD is used instead.
     if (missing(G0I)) { 
 
-        G0I <- collper(sol, compD)
-        G0 <- G0I$G0
-        B0 <- G0I$B0
-        D0 <- G0I$D0
-        
-    } else { ## Use instantaneous values if provided through G0I
+        comp.rep <- data.frame(compD)[mtch, c('Ktd', 'G0d', 'D0d', 'B0d')]    
 
-        if(class(G0I) != 'Meteo'){
-            Dates <- unique(as.IDate(G0I$Dates))
-            lat <- unique(G0I$lat)
-            G0 <- G0I$G0
-            Ta <- G0I$Ta
-            dt <- data.table(Dates = Dates,
-                             G0 = G0,
-                             Ta = Ta)
-            if(!(missing(b0.col))){dt[, B0 := G0I$b0.col]}
-            if(!(missing(d0.col))){dt[, D0 := G0I$d0.col]}
-            G0I <- dt2Meteod(dt, lat)
-        }
+        ## Daily irradiation components
+        D0d <- comp.rep$D0d
+        G0d <- comp.rep$G0d
+        B0d <- comp.rep$B0d
+
+        ## Daily profile using Liu and Jordan, Collares-Pereira and Rabl
+        ## proposals.
+        D0 <- D0d * rd
+        G0 <- G0d * rg
+        ## This method may produce diffuse irradiance higher than global
+        ## irradiance.
+        G0 <- pmax(G0, D0, na.rm=TRUE)
+        B0 <- G0 - D0
+
+        ## Negative values are set to NA
+        neg <- (B0 < 0)| (D0 < 0) | (G0 <0)
+        is.na(G0) <- neg
+        is.na(D0) <- neg
+        is.na(B0) <- neg
     
-        if (corr!='none'){
-            G0 <- getG0(G0I)
+        ## Daily profiles are scaled to keep daily irradiation values
+        day <- truncDay(indSol)
+
+        D0dCP <- ave(D0, day, FUN=function(x) P2E(x, sample))
+        G0dCP <- ave(G0, day, FUN=function(x) P2E(x, sample))
+        B0dCP <- ave(B0, day, FUN=function(x) P2E(x, sample))
+
+        D0 <- D0 * D0d/D0dCP
+        G0 <- G0 * G0d/G0dCP
+        B0 <- B0 * B0d/B0dCP
+
+        kt <- G0/Bo0
+        fd <- D0/G0
+  
+    } else { ## Use instantaneous values if provided through G0I
+    
+        if (corr!='none'){ 
+            if (class(G0I) == 'Meteo') {
+                G0 <- coredata(getG0(G0I))
+            } else {                       ## G0I is a zoo
+                if (NCOL(G0I)>1) {         ## multivariable
+                    G0 <- coredata(G0I$G0) # Only G0 is needed
+                } else {
+                    G0 <- coredata(G0I)
+                }
+            }                                 
             ## Filter values: surface irradiation must be lower than
             ## extraterrestial; 
-            if (filterG0) {is.na(G0) <- (G0 > Bo0)}
+            if (isTRUE(filterG0)) is.na(G0) <- (G0 > Bo0)
 
+            kt <- G0/Bo0
+    
             ## Fd-Kt correlation
-            Fd <- switch(corr,
-                         EKDh = FdKtEKDh(sol, G0I),
-                         CLIMEDh = FdKtCLIMEDh(sol, G0I),
-                         BRL = FdKtBRL(sol, G0I), 
-                         user = f(sol, G0I))
-
-            Kt <- Fd$Kt
-            Fd <- Fd$Fd
-            D0 <- Fd * G0
+            fd <- switch(corr,
+                         EKDh = FdKtEKDh(kt),
+                         CLIMEDh = FdKtCLIMEDh(kt),
+                         BRL = FdKtBRL(kt, sol), 
+                         user = f(kt, sol),      
+                         stop('Wrong descriptor of the correlation fd-kt.'))
+            D0 <- fd * G0
             B0 <- G0 - D0
 
-        }
-        else { 
+        } else { ##corr=='none': G0 is a zoo with G0, D0 and B0
 
-            if(missing(d0.col) || missing(b0.col)){
-                stop('Missing the name of the columns of D0 or B0')
+            if (class(G0I) == 'Meteo') {
+                IrrData <- getData(G0I)
+            } else {                    #G0I is a zoo
+                IrrData <- G0I
             }
-            if(!(d0.col %in% names(getData(G0d)))){
-                stop('G0 does not have the column "', d0.col, '"')}
-            if(!(b0.col %in% names(getData(G0d)))){
-                stop('G0 does not have the column "', b0.col, '"')}
-            G0 <- getG0(G0I)
-            D0 <- getData(G0I)[[d0.col]]
-            B0 <- getData(G0I)[[b0.col]]
+            D0 <- coredata(IrrData$D0)
+            B0 <- coredata(IrrData$B0)
+            G0 <- coredata(IrrData$G0)
             ## Filter values: surface irradiation must be lower than
             ## extraterrestial; 
             if (isTRUE(filterG0)) is.na(G0) <- is.na(D0) <- is.na(B0) <- (G0 > Bo0)
       
-            Fd <- D0/G0
-            Kt <- G0/Bo0
+            kt <- G0/Bo0
+            fd <- D0/G0
         }
     }
     ## Values outside sunrise-sunset are set to zero
-    G0[night] <- D0[night] <- B0[night] <- Kt[night] <- Fd[night] <- 0
+    G0[!aman] <- D0[!aman] <- B0[!aman] <- kt[!aman] <- fd[!aman] <- 0
 
-    result <- data.table(Dates, Fd, Kt, G0, D0, B0)
-    setkey(result, 'Dates')
-    result
+    result <- zoo(data.frame(kt, fd, G0, D0, B0), order.by=indSol)
+    attr(result, 'match') <- mtch
+
+    return(result)
 }
+
+
