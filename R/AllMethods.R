@@ -1,102 +1,113 @@
-##################################################################
-## GET data
-##################################################################
+#### Sol class ####
+setClass(
+         Class='Sol', ##Solar angles
+         slots = c(
+             lat='numeric',#latitud in degrees, >0 if North
+             lon='numeric',#longitude in degrees, >0 if East
+             solD='data.table',#daily angles
+             solI='data.table',#intradaily angles
+             sample='character',#sample of time
+             method='character'#method used for geometry calculations
+         ),
+    validity=function(object) {return(TRUE)}
+)
 
-setGeneric('getData', function(object){standardGeneric('getData')})
+#### Meteo class ####
+setClass(
+    Class = 'Meteo', ##radiation and temperature data
+    slots = c(
+        lat='numeric',#latitud in degrees, >0 if North
+        data='data.table',#data, incluying G (Wh/m2) and Ta(ºC)
+        type='character',#choose between 'prom', 'bd' and 'bdI'
+        source='character'#origin of the data
+    ),
+    validity=function(object) {return(TRUE)}
+)
 
-setMethod('getData',##Solo definido para Meteo, de forma que siempre devuelve valores de partida
-          signature=(object='Meteo'),
-          definition=function(object){
-            result=object@data
-            return(result)
-          }
-          )
+#### G0 class ####
+setClass(
+    Class = 'G0',
+    slots = c(
+        G0D = 'data.table',
+        G0dm = 'data.table',
+        G0y = 'data.table',
+        G0I = 'data.table',
+        Ta = 'data.table'
+    ),
+    contains = c('Sol', 'Meteo'),
+    validity = function(object) {return(TRUE)}
+)
 
-setGeneric('getG0', function(object){standardGeneric('getG0')})
+#### Gef class ####
+setClass(
+         Class='Gef',
+         slots = c(
+           GefD='zoo',       #aggregate, valores diarios
+           Gefdm='zoo',      #aggregate, medias mensuales
+           Gefy='zoo',       #aggregate, valores anuales
+           GefI='zoo',       #resultado de fInclin
+           Theta='zoo',     #resultado de fTheta
+           iS='numeric',     #indice de suciedad OJO ¿pasar a INTEGER?
+           alb='numeric',    #albedo
+           modeTrk='character',         #modo de seguimiento
+           modeShd='character',         #modo de sombra
+           angGen='list',               # incluye alfa, beta y betaLim
+           struct='list',               #dimensiones de la estructura
+           distances='data.frame'       #distancias entre estructuras
+           ),
+         contains='G0',
+         validity=function(object) {return(TRUE)}
+         )
 
-setMethod('getG0',##Solo definido para Meteo, de forma que siempre devuelve valores de partida
-          signature=(object='Meteo'),
-          definition=function(object){
-            result=getData(object)
-            return(result$G0)
-          }
-          )
+#### ProdGCPV class ####
+setClass(
+         Class='ProdGCPV',
+         slots = c(
+           prodD='zoo',                 #aggregate, valores diarios
+           prodDm='zoo',                #aggregate, medias mensuales
+           prody='zoo',                 #aggregate, valores anuales
+           prodI='zoo',                 #resultado de fProd
+           module='list',
+           generator='list',
+           inverter='list',
+           effSys='list'
+           ),
+         contains='Gef',
+         validity=function(object) {return(TRUE)}
+         )
 
-###Latitud
-setGeneric('getLat', function(object, units='rad'){standardGeneric('getLat')})
+#### ProdPVPS class ####
+setClass(
+         Class='ProdPVPS',
+         slots = c(
+           prodD='zoo',                 #aggregate, valores diarios
+           prodDm='zoo',                #aggregate, medias mensuales
+           prody='zoo',                 #aggregate, valores anuales
+           prodI='zoo',                 #resultado de fProd
+           Pg='numeric',
+           H='numeric',
+           pump='list',
+           converter='list',
+           effSys='list'
+           ),
+         contains='Gef',
+         validity=function(object) {return(TRUE)}
+         )
 
-setMethod('getLat',
-          signature=(object='Sol'),
-          definition=function(object, units='rad'){
-            stopifnot(units %in% c('deg', 'rad'))
-            res=switch(units,
-              rad=d2r(object@lat),
-              deg=object@lat)
-            return(res)
-          }
-          )
-
-setMethod('getLat',
-          signature=(object='Meteo'),
-          definition=function(object, units='rad'){
-            stopifnot(units %in% c('deg', 'rad'))
-            res=switch(units,
-              rad=d2r(object@latData),
-              deg=object@latData)
-            return(res)
-          }
-          )
-setMethod('getLat',
-          signature=(object='G0'),
-          definition=function(object, units='rad'){
-            getLat(as(object, 'Sol'), units=units)
-          }
-          )
-
-##################################################################
-## INDEX
-##################################################################
-
-
-setGeneric('indexD', function(object){standardGeneric('indexD')})
-setMethod('indexD',
-          signature=(object='Meteo'),
-          definition=function(object){
-            return(index(object@data))
-          }
-          )
-
-setMethod('indexD',
-          signature=(object='Sol'),
-          definition=function(object){
-            return(index(object@solD))
-          }
-          )
-
-setMethod('indexD',
-          signature=(object='G0'),
-          definition=function(object){
-            indexD(as(object, 'Sol'))
-          }
-          )
-
-
-setGeneric('indexI', function(object){standardGeneric('indexI')})
-setMethod('indexI',
-          signature=(object='Sol'),
-          definition=function(object){
-            return(index(object@solI))
-          }
-          )
-
-setGeneric('indexRep', function(object){standardGeneric('indexRep')})
-setMethod('indexRep',
-          signature=(object='Sol'),
-          definition=function(object){
-            return(object@match)
-          }
-          )
-
-
-
-
+#### Shade class ####
+setClass(
+         Class='Shade',
+         slots = c(
+           FS='numeric',
+           GRR='numeric',
+           Yf='numeric',
+           FS.loess='loess',
+           Yf.loess='loess',
+           modeShd='character',
+           struct='list',
+           distances='data.frame',
+           res='numeric'
+           ),
+         contains='ProdGCPV',##Resultado de prodGCPV sin sombras (Prod0)
+         validity=function(object) {return(TRUE)}
+         )
