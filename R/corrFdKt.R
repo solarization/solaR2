@@ -1,102 +1,145 @@
-### Medias mensuales
-FdKtPage <- function(Ktd){##Page para medias mensuales
-  Fd=1-1.13*Ktd
-  return(Fd)
+#### monthly Kt ####
+Ktm <- function(sol, G0d){
+    solf <- sol@solD[, .(Dates, Bo0d)]
+    solf[, c('month', 'year') := .(month(Dates), year(Dates))]
+    solf[,Bo0m := mean(Bo0d), by = .(month, year)]
+    G0df <- G0d@data[, .(Dates, G0)]
+    G0df[, c('month', 'year') := .(month(Dates), year(Dates))]
+    G0df[, G0m := mean(G0), by = .(month, year)]
+    Ktm <- solf$Bo0m/G0df$G0m
+    return(Ktm)
 }
 
-FdKtLJ <- function(Ktd){##Liu y Jordan para medias mensuales
-  Fd=(Ktd<0.3)*0.595774 +
-    (Ktd>=0.3 & Ktd<=0.7)*(1.39-4.027*Ktd+5.531*Ktd^2-3.108*Ktd^3)+
-      (Ktd>0.7)*0.215246
-  return(Fd)
-  }
-
-### Diarios
-FdKtCPR <- function(Ktd){##Collares-Pereira y Rabl para diarios
-  Fd=(0.99*(Ktd<=0.17))+
-    (Ktd>0.17 & Ktd<0.8)*(1.188-2.272*Ktd+9.473*Ktd^2-21.856*Ktd^3+14.648*Ktd^4)+
-      (Ktd>=0.8)*0.2426688      
-  return(Fd)
+#### daily Kt ####
+Ktd <- function(sol, G0d){
+    Bo0d <- sol@solD$Bo0d
+    G0d <- getG0(G0d)
+    Ktd <- G0d/Bo0d
+    return(Ktd)
 }
 
-FdKtEKDd <- function(Ktd, sol){##Erbs, Klein y Duffie para diarios
-  if (class(sol)=='Sol') {
-    ws <- as.data.frameD(sol)$ws
-    } else {ws <- coredata(sol$ws)}
-  
-  WS1=(abs(ws)<1.4208)
-  Fd=WS1*((Ktd<0.715)*(1-0.2727*Ktd+2.4495*Ktd^2-11.9514*Ktd^3+9.3879*Ktd^4)+
-    (Ktd>=0.715)*(0.143))+
-      !WS1*((Ktd<0.722)*(1+0.2832*Ktd-2.5557*Ktd^2+0.8448*Ktd^3)+
-            (Ktd>=0.722)*(0.175))
-  return(Fd)
+### intradaily
+Kti <- function(sol, G0i){
+    Bo0 <- sol@solI$Bo0
+    G0i <- getG0(G0i)
+    Kti <- G0i/Bo0
+    return(Kti)
 }
 
-FdKtCLIMEDd <- function(Ktd){##CLIMED1 para diarios
-  Fd=(Ktd<=0.13)*(0.952)+
-    (Ktd>0.13 & Ktd<=0.8)*(0.868+1.335*Ktd-5.782*Ktd^2+3.721*Ktd^3)+
-      (Ktd>0.8)*0.141
-  return(Fd)
+
+#### monthly correlations ####
+
+### Page ###
+FdKtPage <- function(sol, G0d){##Page para medias mensuales
+    Kt <- Ktm(sol, G0d)
+    Fd=1-1.13*Kt
+    return(data.table(Fd, Kt))
 }
 
-### Horarios
-
-FdKtEKDh <- function(kt){##Erbs, Klein y Duffie para horarios
-  fd=(kt<=0.22)*(1-0.09*kt)+
-    (kt>0.22 & kt<=0.8)*(0.9511-0.1604*kt+4.388*kt^2-16.638*kt^3+12.336*kt^4)+
-      (kt>0.8)*0.165
-  return(fd)
+### Liu and Jordan ###
+FdKtLJ <- function(sol, G0d){
+    Kt <- Ktm(sol, G0d)
+    Kt <- Ktd(sol, G0d)
+    Fd=(Kt<0.3)*0.595774 +
+        (Kt>=0.3 & Kt<=0.7)*(1.39-4.027*Kt+5.531*Kt^2-3.108*Kt^3)+
+        (Kt>0.7)*0.215246
+    return(data.table(Fd, Kt))
 }
 
-FdKtCLIMEDh <- function(kt){##CLIMED2 para horarios
-  fd=(kt<=0.21)*(0.995-0.081*kt)+
-    (kt>0.21 & kt<=0.76)*(0.724+2.738*kt-8.32*kt^2+4.967*kt^3)+
-      (kt>0.76)*0.180
-  return(fd)
+
+#### daily correlations ####
+
+### Collares-Pereira and Rabl
+FdKtCPR <- function(sol, G0d){
+    Kt <- Ktd(sol, G0d)
+    Fd=(0.99*(Kt<=0.17))+(Kt>0.17 & Kt<0.8)*
+        (1.188-2.272*Kt+9.473*Kt^2-21.856*Kt^3+14.648*Kt^4)+
+        (Kt>=0.8)*0.2426688      
+    return(data.table(Fd, Kt))
 }
-  
-FdKtBRL <- function(kt, sol){##Boland et al.
 
-  if (class(sol)=='Sol') {
-    sample=sol@sample
-    sol <- as.zooI(sol, day=TRUE)
-  } else {
-    sample=median(diff(index(sol)))
-  }
+### Erbs, Klein and Duffie ###
+FdKtEKDd <- function(sol, G0d){
+    ws <- sol@solD$ws
+    Kt <- Ktd(sol, G0d)
+      
+    WS1=(abs(ws)<1.4208)
+    Fd=WS1*((Kt<0.715)*(1-0.2727*Kt+2.4495*Kt^2-11.9514*Kt^3+9.3879*Kt^4)+
+            (Kt>=0.715)*(0.143))+
+        !WS1*((Kt<0.722)*(1+0.2832*Kt-2.5557*Kt^2+0.8448*Kt^3)+
+              (Kt>=0.722)*(0.175))
+  return(data.table(Fd, Kt))
+}
 
-  idx=index(sol)
-  w=coredata(sol$w)
-  aman=coredata(sol$aman)
-  AlS=coredata(sol$AlS)
+### CLIMED1 ###
+FdKtCLIMEDd <- function(sol, G0d){##CLIMED1 para diarios
+    Kt <- Ktd(sol, G0d)
+    Fd=(Kt<=0.13)*(0.952)+
+    (Kt>0.13 & Kt<=0.8)*(0.868+1.335*Kt-5.782*Kt^2+3.721*Kt^3)+
+      (Kt>0.8)*0.141
+  return(data.table(Fd, Kt))
+}
 
-  ##Calculo de Ktd
-  Bo0 <- coredata(sol$Bo0)
-  G0 <- kt*Bo0
-  day <- truncDay(idx)
-  G0d <- ave(G0, list(day), FUN=function(x) P2E(x, sample))
-  Bo0d <- ave(Bo0, list(day), FUN=function(x) P2E(x, sample))
-  Ktd <- G0d/Bo0d
-  Ktd[!aman]=0
+#### intradaily correlations ####
 
-  ##Cálculo de la persistencia
-  kt=zoo(kt, idx)
-  ktNA=na.omit(kt)  
-  iDay=truncDay(index(ktNA))
-  x=rle(as.numeric(iDay))$lengths
-  xLast=cumsum(x)
-  xFirst=xLast-x+1
+### intradaily EKD ###
+FdKtEKDh <- function(sol, G0i){##Erbs, Klein y Duffie para horarios
+    Kt <- Kti(sol, G0i)
+    Fd=(Kt<=0.22)*(1-0.09*Kt)+
+    (Kt>0.22 & Kt<=0.8)*(0.9511-0.1604*Kt+4.388*Kt^2-16.638*Kt^3+12.336*Kt^4)+
+      (Kt>0.8)*0.165
+  return(data.table(Fd, Kt))
+}
 
-  lag1=lag(ktNA, 1, na.pad=TRUE)
-  lag1[xLast] <- ktNA[xLast-1]
-  lag_1=lag(ktNA, -1, na.pad=TRUE)
-  lag_1[xFirst] <- ktNA[xFirst+1]
-  K=cbind(kt, lag1, lag_1, media=1/2*(lag1+lag_1))
-  pers=coredata(K$media)
+### intradaily CLIMED
+FdKtCLIMEDh <- function(sol, G0i){
+    Kt <- Kti(sol, G0i)
+    Fd=(Kt<=0.21)*(0.995-0.081*Kt)+
+        (Kt>0.21 & Kt<=0.76)*(0.724+2.738*Kt-8.32*Kt^2+4.967*Kt^3)+
+        (Kt>0.76)*0.180
+    return(data.table(Fd, Kt))
+}
 
-  ##Cálculo de fd
+### intradaily Boland, Ridley and Lauret ###
+FdKtBRL <- function(sol, G0i){
+    Kt <- Kti(sol, G0i)
+    sample <- sol@sample
 
-  fd=(1+exp(-5.38+6.63*kt+0.006*r2h(w)-0.007*r2d(AlS)+1.75*Ktd+1.31*pers))^(-1)
+    w <- sol@solI$w
+    night <- sol@solI$night
+    AlS <- sol@solI$AlS
 
+    G0d <- Meteoi2Meteod(G0i)
+    Ktd <- Ktd(sol, G0d)
+    
+    ##persistence    
+    pers <- persistence(sol, Ktd)
+    
+    ##Cálculo de fd
+    Fd=(1+exp(-5.38+6.63*Kt+0.006*r2h(w)-0.007*r2d(AlS)+1.75*Ktd+1.31*pers))^(-1)
+    
 
-  return(fd)
+  return(data.table(Fd, Kt))
+}
+
+persistence <- function(sol, Ktd){
+    kt <- data.table(indexD(sol), Ktd)
+    ktNA <- na.omit(kt)
+    iDay <- truncDay(ktNA)
+
+    x <- rle(as.numeric(iDay))$lengths
+    xLast <- cumsum(x)
+
+    lag1 <- shift(ktNA$Ktd, -1, fill = NA)
+    for (i in xLast){
+        if ((i-1) != 0){lag1[i] <- ktNA$Ktd[i-1]}
+    }
+
+    lag2 <- shift(ktNA$Ktd, 1, fill = NA)
+    for (i in xLast){
+        if ((i+1) <= length(ktNA$Ktd)){lag2[i] <- ktNA$Ktd[i+1]}
+    }
+    pers <- data.table(lag1, lag2)
+    pers[, mean := 1/2 * (lag1+lag2)]
+    pers[, mean]
 }
