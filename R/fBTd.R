@@ -1,5 +1,5 @@
 fBTd<-function(mode='prom',
-                   year=as.POSIXlt(Sys.Date())$year+1900,
+                   year= as.POSIXlt(Sys.Date())$year+1900,
                    start=paste('01-01-',year,sep=''),
                    end=paste('31-12-',year,sep=''), 
                    format='%d-%m-%Y'){##,
