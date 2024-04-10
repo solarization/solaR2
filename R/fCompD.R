@@ -1,67 +1,66 @@
-fCompD<-function(sol, G0d, corr='CPR',f)
+fCompD <- function(sol, G0d, corr = 'CPR', f, b0.col, d0.col)
 {
-
-    if (class(sol)=='Sol') {
-        Bo0d<-coredata(sol@solD$Bo0d)
-        indexSol <- indexD(sol)
-    } else {# sol es un zoo
-        Bo0d <- coredata(sol$Bo0d)
-        indexSol <- index(sol)
+    if(!(corr %in% c('CPR', 'Page', 'LJ', 'EKDd', 'CLIMEDd', 'user', 'none'))){
+        warning('Wrong descriptor of correlation Fd-Ktd. Set CPR.')
+        corr <- 'CPR'
     }
-    ##index de G0d
-    if (class(G0d)=='Meteo') {
-        indexG0d=indexD(G0d)
-    } else {# G0d es un zoo
-        indexG0d=index(G0d)
+    if(class(sol) != 'Sol'){
+        Dates <- unique(as.IDate(sol$Dates))
+        lat <- unique(sol$lat)
+        lon <- unique(sol$lon)
+        N <- length(sol$Dates)
+        BTi <- seq(sol$Dates[1], sol$Dates[N], length.out = N)
+        sol <- calcSol(Dates, lat, lon, BTi)
     }
-    ## Check daily indexes. Stop if FALSE.
-    checkIndexD(indexG0d, indexSol)
-    
-    if (corr!='none'){
+    if(class(G0d) != 'Meteo'){
+        Dates <- unique(as.IDate(G0d$Dates))
+        lat <- unique(G0d$lat)
+        G0 <- G0d$G0
+        Ta <- G0d$Ta
+        dt <- data.table(Dates = Dates,
+                         G0 = G0,
+                         Ta = Ta)
+        if(!(missing(b0.col))){dt[, B0 := G0d$b0.col]}
+        if(!(missing(d0.col))){dt[, D0 := G0d$d0.col]}
+        G0d <- dt2Meteod(dt, lat)
+    }  
 
-        ##Extraigo datos
-        if (class(G0d)=='Meteo') {
-            G0d=coredata(getG0(G0d))
-        } else {
-            G0d <-coredata(G0d)
+    stopifnot(indexD(sol) == indexD(G0d))
+    Bo0d <- sol@solD$Bo0d
+    G0 <- getData(G0d)$G0
+
+    is.na(G0) <- (G0>Bo0d)
+
+    ### the Direct and Difuse data is not given
+    if(corr != 'none'){
+        Fd <- switch(corr,
+                     CPR = FdKtCPR(sol, G0d),
+                     Page = FdKtPage(sol, G0d),
+                     LJ = FdKtLJ(sol, G0d),
+                     CLIMEDd = FdKtCLIMEDd(sol, G0d),
+                     user = f(sol, G0d))
+        Kt <- Fd$Kt
+        Fd <- Fd$Fd
+        D0d <- Fd * G0
+        B0d <- G0 - D0d
+    }
+    ### the Direct and Difuse data is given
+    else {
+        if(missing(d0.col) || missing(b0.col)){
+            stop('Missing the name of the columns of D0d or B0d')
         }
-
-        is.na(G0d) <- (G0d>Bo0d)
-
-        Ktd=G0d/Bo0d
-	
-        Fd=switch(corr,
-                  CPR=FdKtCPR(Ktd),     ##Correlacion global-difusa diaria de Collares Pereira y Rabl
-                  Page=FdKtPage(Ktd),     ##Correlación global difusa para medias mensuales de Page
-                  LJ=FdKtLJ(Ktd), ##Correlación global difusa para medias mensuales de Liu y Jordan
-                  EKDd=FdKtEKDd(Ktd, sol), ##Correlación global difusa diaria de Erbs et al
-                  CLIMEDd=FdKtCLIMEDd(Ktd), ##Correlación global difusa diaria de CLIMED
-                  user=f(Ktd), ##Correlación propuesta por el usuario
-                  stop('Wrong descriptor of correlation Fd-Ktd.')
-                  )
-
-        D0d=Fd*G0d
-        B0d=G0d-D0d
-
-    } else {##corr=='none', y por tanto G0d es multivariante con G0d, D0d y B0d
-
-        if (class(G0d)=='Meteo') {
-            IrrData=getData(G0d)##Ahora G0d es multivariante
-        } else {
-            IrrData <-G0d
-        }
-
-        is.na(IrrData) <- (IrrData$G0d>Bo0d)
-
-        D0d=coredata(IrrData$D0d)
-        B0d=coredata(IrrData$B0d)
-        G0d=coredata(IrrData$G0d)
-        
-        Ktd=G0d/Bo0d
-        Fd=D0d/G0d
+        if(!(d0.col %in% names(getData(G0d)))){
+            stop('G0d does not have the column "', d0.col, '"')}
+        if(!(b0.col %in% names(getData(G0d)))){
+            stop('G0d does not have the column "', b0.col, '"')}
+        G0 <- getData(G0d)$G0
+        D0d <- getData(G0d)[[d0.col]]
+        B0d <- getData(G0d)[[b0.col]]
+        Fd <- D0d/G0
+        Kt <- G0/Bo0d
     }
-    
-    result<- zoo(data.frame(Fd, Ktd, G0d, D0d, B0d), 
-                 order.by=indexSol)
+
+    result <- data.table(indexD(sol), Fd, Kt, G0d = G0, D0d, B0d)
+    setkey(result, 'Dates')
     result
 }
