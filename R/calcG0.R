@@ -107,7 +107,7 @@ calcG0 <- function(lat, lon,
         compD$Ktd <- compD$G0d/sol@solD$Bo0d
     } else { ##modeRad!='bdI'
         sol <- calcSol(d = indexD(BD), lat = lat, lon = lon, sample = sample,
-                       keep.night = keep.night = , method = sunGeometry)
+                       keep.night = keep.night, method = sunGeometry)
         compD<-fCompD(sol=sol, G0d=BD, corr=corr, f, ...)
         compI<-fCompI(sol=sol, compD=compD, ...)
     }
