@@ -1,113 +1,134 @@
-#### Sol class ####
-setClass(
-         Class='Sol', ##Solar angles
-         slots = c(
-             lat='numeric',#latitud in degrees, >0 if North
-             lon='numeric',#longitude in degrees, >0 if East
-             solD='data.table',#daily angles
-             solI='data.table',#intradaily angles
-             sample='character',#sample of time
-             method='character'#method used for geometry calculations
-         ),
-    validity=function(object) {return(TRUE)}
-)
+#### Methods ####
+### get ###
+## extracts the latitude from the objects ##
+setGeneric('getLat', function(object, units = 'rad')
+{standardGeneric('getLat')})
 
-#### Meteo class ####
-setClass(
-    Class = 'Meteo', ##radiation and temperature data
-    slots = c(
-        lat='numeric',#latitud in degrees, >0 if North
-        data='data.table',#data, incluying G (Wh/m2) and Ta(ºC)
-        type='character',#choose between 'prom', 'bd' and 'bdI'
-        source='character'#origin of the data
-    ),
-    validity=function(object) {return(TRUE)}
-)
+## extracts the data for class Meteo ##
+setGeneric('getData', function(object){standardGeneric('getData')})
 
-#### G0 class ####
-setClass(
-    Class = 'G0',
-    slots = c(
-        G0D = 'data.table',
-        G0dm = 'data.table',
-        G0y = 'data.table',
-        G0I = 'data.table',
-        Ta = 'data.table'
-    ),
-    contains = c('Sol', 'Meteo'),
-    validity = function(object) {return(TRUE)}
-)
+## extracts the global irradiance for class Meteo ##
+setGeneric('getG0', function(object){standardGeneric('getG0')})
 
-#### Gef class ####
-setClass(
-         Class='Gef',
-         slots = c(
-           GefD='zoo',       #aggregate, valores diarios
-           Gefdm='zoo',      #aggregate, medias mensuales
-           Gefy='zoo',       #aggregate, valores anuales
-           GefI='zoo',       #resultado de fInclin
-           Theta='zoo',     #resultado de fTheta
-           iS='numeric',     #indice de suciedad OJO ¿pasar a INTEGER?
-           alb='numeric',    #albedo
-           modeTrk='character',         #modo de seguimiento
-           modeShd='character',         #modo de sombra
-           angGen='list',               # incluye alfa, beta y betaLim
-           struct='list',               #dimensiones de la estructura
-           distances='data.frame'       #distancias entre estructuras
-           ),
-         contains='G0',
-         validity=function(object) {return(TRUE)}
-         )
+### index ###
+## extract the index of the daily data ##
+setGeneric('indexD', function(object){standardGeneric('indexD')})
 
-#### ProdGCPV class ####
-setClass(
-         Class='ProdGCPV',
-         slots = c(
-           prodD='zoo',                 #aggregate, valores diarios
-           prodDm='zoo',                #aggregate, medias mensuales
-           prody='zoo',                 #aggregate, valores anuales
-           prodI='zoo',                 #resultado de fProd
-           module='list',
-           generator='list',
-           inverter='list',
-           effSys='list'
-           ),
-         contains='Gef',
-         validity=function(object) {return(TRUE)}
-         )
+## extract the index of the intradaily data ##
+setGeneric('indexI', function(object){standardGeneric('indexI')})
 
-#### ProdPVPS class ####
-setClass(
-         Class='ProdPVPS',
-         slots = c(
-           prodD='zoo',                 #aggregate, valores diarios
-           prodDm='zoo',                #aggregate, medias mensuales
-           prody='zoo',                 #aggregate, valores anuales
-           prodI='zoo',                 #resultado de fProd
-           Pg='numeric',
-           H='numeric',
-           pump='list',
-           converter='list',
-           effSys='list'
-           ),
-         contains='Gef',
-         validity=function(object) {return(TRUE)}
-         )
 
-#### Shade class ####
-setClass(
-         Class='Shade',
-         slots = c(
-           FS='numeric',
-           GRR='numeric',
-           Yf='numeric',
-           FS.loess='loess',
-           Yf.loess='loess',
-           modeShd='character',
-           struct='list',
-           distances='data.frame',
-           res='numeric'
-           ),
-         contains='ProdGCPV',##Resultado de prodGCPV sin sombras (Prod0)
-         validity=function(object) {return(TRUE)}
-         )
+#### Methods for Sol ####
+### getLat ###
+setMethod('getLat',
+          signature = (object = 'Sol'),
+          definition = function(object, units = 'rad'){
+              stopifnot(units %in% c('deg', 'rad'))
+              result = switch(units,
+                           rad = d2r(object@lat),
+                           deg = object@lat)
+              return(result)
+          })
+
+### show ###
+setMethod('show',
+          signature = (object = 'Sol'),
+          definition = function(object){
+              cat('Object of class Sol \n\n')
+              cat('Latitude: ',
+                  paste(round(getLat(object, 'deg'), 1), 'degrees\n\n'))
+              cat('Daily values:\n')
+              print(summary(object@solD))
+              cat('\nIntradaily values: \n')
+              print(summary(object@solI))
+          })
+
+### indexD ###
+setMethod('indexD',
+          signature = (object = 'Sol'),
+          definition = function(object){object@solD[, .(Dates)]
+          })
+
+
+### indexI ###
+setMethod('indexI',
+          signature = (object = 'Sol'),
+          definition = function(object){
+              result <- data.table(Dates = object@solI[['Dates']])
+              return(result)
+          })
+
+
+#### Methods for Meteo ####
+### getData ####
+setMethod('getData',
+          signature = (object = 'Meteo'),
+          definition = function(object){
+              result <- object@data
+              return(result)
+          })
+
+### getLat ###
+setMethod('getLat',
+          signature = (object = 'Meteo'),
+          definition = function(object, units = 'rad'){
+              stopifnot(units %in% c('deg', 'rad'))
+              result = switch(units,
+                           rad = d2r(object@lat),
+                           deg = object@lat)
+              return(result)
+          })
+
+### show ###
+setMethod('show', 'Meteo',
+          function(object){
+            cat('Object of class ', class(object),'\n\n')
+            cat('Source of meteorological information: ')
+            cat(paste(object@type, object@source, sep='-'),'\n')
+            cat('Latitude of source: ',
+                paste(round(getLat(object,'deg'), 1), 'degrees\n\n'))
+            cat('Meteorological Data:\n')
+            print(summary(getData(object)))
+          }
+          )
+
+### indexD ###
+setMethod('indexD',
+          signature = (object = 'Meteo'),
+          definition = function(object){
+              result <- getData(object)$Dates
+              return(result)
+          })
+
+### indexI ###
+setMethod('indexI',
+          signature = (object = 'Meteo'),
+          definition = function(object){
+              result <- getData(object)$Dates
+              return(result)
+          })
+
+#### Methods for G0 ####
+
+### getG0 ###
+setMethod('getG0',
+          signature = (object = 'Meteo'),
+          definition = function(object){
+              result <- getData(object)
+              return(result$G0)
+          })
+
+### getLat ###
+setMethod('getLat',
+          signature=(object='G0'),
+          definition=function(object, units='rad'){
+            getLat(as(object, 'Sol'), units=units)
+          }
+          )
+
+setMethod('indexD',
+          signature=(object='G0'),
+          definition=function(object){
+            indexD(as(object, 'Sol'))
+          }
+          )
