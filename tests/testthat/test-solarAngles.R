@@ -16,4 +16,12 @@ test_that("equation of time in certain days",{
     promDays <- c(17, 14, 15, 15, 15, 10, 18, 18, 18, 19, 18, 13)
     days <- paste("2024", 1:12, promDays, sep = "-")
     eot_expected <- c(-10.43577, -14.09003, -8.738888, 0.1729563, 3.315239, 0.02486676, -5.993575, -2.815737, 7.484636, 15.6923, 13.45702, 4.08646)
+    expect_equal(eot(days), eot_expected)
+})
+
+test_that("sunrise angle in certain days",{
+    promDays <- c(17, 14, 15, 15, 15, 10, 18, 18, 18, 19, 18, 13)
+    days <- paste("2024", 1:12, promDays, sep = "-")
+    lat <- 40
+    sunrise_expected <- c()
 })
