@@ -11,3 +11,9 @@ test_that("eccentricity in certain days", {
     eccen_expected <- c(-20.91696257,-13.61976641,-2.818878653, 9.414893347, 18.79191752, 23.01163673, 21.00743137, 12.78588828, 1.008871364, -11.04869045, -19.82109039,-23.2416248)
     expect_equal(eccentricity(days), eccen_expected)
 })
+
+test_that("equation of time in certain days",{
+    promDays <- c(17, 14, 15, 15, 15, 10, 18, 18, 18, 19, 18, 13)
+    days <- paste("2024", 1:12, promDays, sep = "-")
+    eot_expected <- c(-10.43577, -14.09003, -8.738888, 0.1729563, 3.315239, 0.02486676, -5.993575, -2.815737, 7.484636, 15.6923, 13.45702, 4.08646)
+})
