@@ -1,12 +1,11 @@
 calcSol <- function(d, lat, BTi,
                     sample = 'hour',
                     keep.night = TRUE,
-                    method = 'michalsky',
-                    GMT = 0)
+                    method = 'michalsky')
 {
     solD <- fSolD(d = d, lat = lat, method = method)
     solI <- fSolI(solD = solD, sample = sample,
-                  BTi = BTi, GMT = GMT, keep.night = keep.night)
+                  BTi = BTi, keep.night = keep.night)
     
     if(!missing(BTi)){
         sample <- solI$Dates[2]-solI$Dates[1]
