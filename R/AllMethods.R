@@ -54,7 +54,7 @@ setMethod('indexD',
 setMethod('indexI',
           signature = (object = 'Sol'),
           definition = function(object){
-              result <- data.table(Dates = object@solI[['Dates']])
+              result <- data.table(Dates = object@solI[, .(Dates)])
               return(result)
           })
 
@@ -95,17 +95,13 @@ setMethod('show', 'Meteo',
 ### indexD ###
 setMethod('indexD',
           signature = (object = 'Meteo'),
-          definition = function(object){
-              result <- getData(object)$Dates
-              return(result)
+          definition = function(object){object@data[, .(Dates)]
           })
 
 ### indexI ###
 setMethod('indexI',
           signature = (object = 'Meteo'),
-          definition = function(object){
-              result <- getData(object)$Dates
-              return(result)
+          definition = function(object){object@data[, .(Dates)]
           })
 
 #### Methods for G0 ####
