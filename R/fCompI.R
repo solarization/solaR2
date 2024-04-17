@@ -10,11 +10,10 @@ fCompI <- function(sol, G0I, compD,
     if(class(sol) != 'Sol'){
         Dates <- unique(as.IDate(sol$Dates))
         lat <- unique(sol$lat)
-        lon <- unique(sol$lon)
         N <- length(sol$Dates)
         BTi <- seq(sol$Dates[1], sol$Dates[N], length.out = N)
         sample <- format(difftime(BTi[2], BTi[1]))
-        sol <- calcSol(Dates, lat, lon, BTi, sample)
+        sol <- calcSol(Dates, lat, BTi, sample)
     }
 
     

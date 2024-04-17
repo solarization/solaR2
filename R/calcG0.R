@@ -1,4 +1,4 @@
-calcG0 <- function(lat, lon,
+calcG0 <- function(lat,
                    modeRad='prom',
                    dataRad,
                    sample='hour',
@@ -95,7 +95,7 @@ calcG0 <- function(lat, lon,
     
 ### Angulos solares y componentes de irradiancia
     if (modeRad=='bdI') {
-        sol <- calcSol(d = indexI(BD), lat=lat, lon = lon, sample = sample,
+        sol <- calcSol(d = indexI(BD), lat=lat, sample = sample,
                        BTi = indexI(BD), keep.night=keep.night, method=sunGeometry)
         compI <- fCompI(sol=sol, G0I=BD, corr=corr, f=f, ...)
         compD <- compI[, .(G0d = P2E(G0, sol@sample),
@@ -106,7 +106,7 @@ calcG0 <- function(lat, lon,
         compD$Fd <- compD$D0d/compD$G0d
         compD$Ktd <- compD$G0d/sol@solD$Bo0d
     } else { ##modeRad!='bdI'
-        sol <- calcSol(d = indexD(BD), lat = lat, lon = lon, sample = sample,
+        sol <- calcSol(d = indexD(BD), lat = lat, sample = sample,
                        keep.night = keep.night, method = sunGeometry)
         compD<-fCompD(sol=sol, G0d=BD, corr=corr, f, ...)
         compI<-fCompI(sol=sol, compD=compD, ...)

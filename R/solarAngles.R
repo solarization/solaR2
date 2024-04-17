@@ -126,24 +126,23 @@ bo0d <- function(d, lat, ...,
 
 
 #### Sun hour angle ####
-sunHour <- function(lon = 0, BTi, GMT = 0)
+sunHour <- function(BTi)
 {
     if (inherits(BTi, 'data.table')) {
-            tt <- BTi[, as.POSIXct(Dates, Times, tz = 'CET')]
+            tt <- BTi[, as.POSIXct(Dates, Times, tz = 'UTC')]
             Times <- BTi$Times
             Dates <- BTi$Dates
         }
     else {
-        tt <- as.POSIXct(BTi, tz = 'CET')
+        tt <- as.POSIXct(BTi, tz = 'UTC')
         Times <- as.ITime(tt)
         Dates <- as.IDate(tt)
         }
         
     TO <- as.numeric(Times)/3600
     AO <- AO(tt)
-    lambda <- lon - GMT * 15
     EoT <- eot(Dates)
-    w <- 15 * (TO - AO - 12) + lambda + EoT/4
+    w <- 15 * (TO - AO - 12) + EoT/4
     d2r(w)
 }
 

@@ -7,7 +7,6 @@ fCompD <- function(sol, G0d, corr = 'CPR', f, b0.col, d0.col)
     if(class(sol) != 'Sol'){
         Dates <- unique(as.IDate(sol$Dates))
         lat <- unique(sol$lat)
-        lon <- unique(sol$lon)
         N <- length(sol$Dates)
         BTi <- seq(sol$Dates[1], sol$Dates[N], length.out = N)
         sol <- calcSol(Dates, lat, lon, BTi)

@@ -1,5 +1,5 @@
-fSolI <- function(solD, lon = 0, sample = 'hour', BTi,
-                  GMT = 0, keep.night = TRUE)
+fSolI <- function(solD, sample = 'hour', BTi,
+                  keep.night = TRUE)
 {
     #Solar constant
     Bo <- 1367
@@ -23,11 +23,8 @@ fSolI <- function(solD, lon = 0, sample = 'hour', BTi,
     sun[, Times := NULL]
     setkeyv(sun, c('Dates'))
 
-    #longitud
-    sun[, lon := lon]
-
     #solar time
-    sun[, w := sunHour(lon, BTi, GMT)]
+    sun[, w := sunHour(BTi)]
 
     #classify night elements
     sun[, night := abs(w) >= abs(ws)]
@@ -53,7 +50,7 @@ fSolI <- function(solD, lon = 0, sample = 'hour', BTi,
     }
 
     #Reorder columns so date and time are first an second ones
-    setcolorder(sun, c('Dates', 'lon', names(solD)[-1]))
+    setcolorder(sun, c('Dates', names(solD)[-1]))
     
     sun
 }

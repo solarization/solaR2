@@ -7,7 +7,6 @@ setClass(
          Class='Sol', ##Solar angles
          slots = c(
              lat='numeric',#latitud in degrees, >0 if North
-             lon='numeric',#longitude in degrees, >0 if East
              solD='data.table',#daily angles
              solI='data.table',#intradaily angles
              sample='character',#sample of time
