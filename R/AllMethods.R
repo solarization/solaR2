@@ -17,6 +17,8 @@ setGeneric('indexD', function(object){standardGeneric('indexD')})
 ## extract the index of the intradaily data ##
 setGeneric('indexI', function(object){standardGeneric('indexI')})
 
+## convert daily values ​​to the same length as intradaily values ##
+setGeneric('indexRep', function(object){standardGeneric('indexRep')})
 
 #### Methods for Sol ####
 ### getLat ###
@@ -46,16 +48,25 @@ setMethod('show',
 ### indexD ###
 setMethod('indexD',
           signature = (object = 'Sol'),
-          definition = function(object){object@solD[, .(Dates)]
+          definition = function(object){object@solD$Dates
           })
 
 
 ### indexI ###
 setMethod('indexI',
           signature = (object = 'Sol'),
-          definition = function(object){object@solI[, .(Dates)]
+          definition = function(object){object@solI$Dates
           })
 
+### indexRep###
+setMethod('indexRep',
+          signature=(object='Sol'),
+          definition=function(object){
+              #########
+              x <- as.Date(indexI(object))
+              cumsum(c(1, diff(x) != 0))
+          }
+          )
 
 #### Methods for Meteo ####
 ### getData ####
@@ -93,13 +104,13 @@ setMethod('show', 'Meteo',
 ### indexD ###
 setMethod('indexD',
           signature = (object = 'Meteo'),
-          definition = function(object){object@data[, .(Dates)]
+          definition = function(object){object@data$Dates
           })
 
 ### indexI ###
 setMethod('indexI',
           signature = (object = 'Meteo'),
-          definition = function(object){object@data[, .(Dates)]
+          definition = function(object){object@data$Dates
           })
 
 #### Methods for G0 ####
