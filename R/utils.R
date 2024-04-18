@@ -71,6 +71,16 @@ year <- function(x){
 #trunc days
 truncDay <- function(x){as.POSIXct(trunc(x, units='days'))}
 
+## Check if daily indexes are equal (used in fCompD and fTemp)
+checkIndexD <- function(ix, iy)
+{
+    dx <- truncDay(ix)
+    dy <- truncDay(iy)
+    test <- all.equal(dx, dy,  check.attributes = FALSE)
+    if (!isTRUE(test))
+        stop('daily indexes do not match.')
+}
+
 ##difftime to hours
 diff2Hours  <- function(by){
   if (!inherits(by, 'difftime')) {
