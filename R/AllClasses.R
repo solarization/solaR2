@@ -1,6 +1,7 @@
 setOldClass('zoo')
 setOldClass('loess')
 setOldClass('difftime')
+setOldClass('data.table')
 
 #### Sol class ####
 setClass(

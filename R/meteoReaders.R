@@ -94,13 +94,13 @@ readBDi <- function(file, lat,
         tt <- as.ITime(bd[[times.col]], format = format[[1]][2])
         bd[,(dates.col) := NULL]
         bd[,(times.col) := NULL]
-        bd[, Dates := as.POSIXct(dd, tt, tz = 'CET')]
+        bd[, Dates := as.POSIXct(dd, tt, tz = 'UTC')]
 
     }
 
     else
     {
-        dd <- as.POSIXct(bd[[dates.col]], format = format, tz = 'CET')
+        dd <- as.POSIXct(bd[[dates.col]], format = format, tz = 'UTC')
         bd[, (dates.col) := NULL]
         bd[, Dates := dd]
     }
@@ -206,7 +206,7 @@ dt2Meteoi <- function(file, lat, source = '',
     #name the dates column by Dates
     Dates <- bd[[dates.col]]
     bd[,(dates.col) := NULL]
-    bd[, Dates := as.POSIXct(Dates, format = format, tz = 'CET')]
+    bd[, Dates := as.POSIXct(Dates, format = format, tz = 'UTC')]
 
     #name the g0 column by G0
     G0 <- bd[[g0.col]]

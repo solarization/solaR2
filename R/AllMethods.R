@@ -53,9 +53,7 @@ setMethod('indexD',
 ### indexI ###
 setMethod('indexI',
           signature = (object = 'Sol'),
-          definition = function(object){
-              result <- data.table(Dates = object@solI[, .(Dates)])
-              return(result)
+          definition = function(object){object@solI[, .(Dates)]
           })
 
 
