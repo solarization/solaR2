@@ -119,12 +119,13 @@ calcG0 <- function(lat,
     ##o de una base de datos que contenga dos variables con información sobre
     ##valores diarios máximos y mínimos de temperatura.
 
-    ind.rep <- indexRep(sol) ##para repetir valores diarios de Ta, si es necesario
+    #ind.rep <- indexRep(sol) ##para repetir valores diarios de Ta, si es necesario
     indSol <- indexI(sol)
 
     Ta=switch(modeRad,
               bd={
                   if (all(c("TempMax","TempMin") %in% names(BD@data))) {
+                      #########
                       fTemp(sol, BD)
                   } else {
                       if ("Ta" %in% names(BD@data)) {
