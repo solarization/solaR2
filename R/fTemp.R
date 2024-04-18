@@ -8,14 +8,14 @@ fTemp<-function(sol, BD)
 
     checkIndexD(indexD(sol), indexD(BD))
 
-    indSol<-indexI(sol)	
+    Dates<-indexI(sol)	
     ind.rep<-indexRep(sol)
     
-    TempMax=coredata(BD@data$TempMax)[ind.rep]
-    TempMin=coredata(BD@data$TempMin)[ind.rep]
-    ws=coredata(sol@solD$ws)[ind.rep]
-    w=coredata(sol@solI$w)
-
+    TempMax <-  BD@data$TempMax[ind.rep]
+    TempMin <-  BD@data$TempMin[ind.rep]
+    ws <- sol@solD$ws[ind.rep]
+    w <- sol@solI$w
+    
     ## Genera secuencia de temperatura a partir de Maxima y Minima de base de datos
 
     Tm=(TempMin+TempMax)/2
@@ -34,6 +34,6 @@ fTemp<-function(sol, BD)
     Ta=T1*(w<=ws)+T2*(w>ws&w<=wp)+T3*(w>wp)
 
     ## Resultado
-    result<-zoo(Ta, indSol)
+    result<-data.table(Dates, Ta)
 }
 			
