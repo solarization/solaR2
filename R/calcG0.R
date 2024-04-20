@@ -119,17 +119,16 @@ calcG0 <- function(lat,
     ##o de una base de datos que contenga dos variables con información sobre
     ##valores diarios máximos y mínimos de temperatura.
 
-    #ind.rep <- indexRep(sol) ##para repetir valores diarios de Ta, si es necesario
+    ind.rep <- indexRep(sol) ##para repetir valores diarios de Ta, si es necesario
     indSol <- indexI(sol)
 
     Ta=switch(modeRad,
               bd={
                   if (all(c("TempMax","TempMin") %in% names(BD@data))) {
-                      #########
                       fTemp(sol, BD)
                   } else {
                       if ("Ta" %in% names(BD@data)) {
-                          zoo(coredata(BD@data$Ta)[ind.rep], indSol)
+                          data.table(indSol, BD@data$Ta[ind.rep])
                       } else {
                           warning('No temperature information available!')
                       }
@@ -142,31 +141,42 @@ calcG0 <- function(lat,
                       warning('No temperature information available!')
                   }
               },
-              prom <- zoo(coredata(BD@data$Ta)[ind.rep], indSol) ##zoo(rep(Ta, length(indSol)), indSol) ##idem
+              prom={
+                  if ("Ta" %in% names(BD@data)) {
+                      Ta = BD@data$Ta
+                  } else {
+                      warning('No temperature information available!')
+                  }
+              }
               )
     
 ###Medias mensuales y anuales
     DayOfMonth=c(31,28,31,30,31,30,31,31,30,31,30,31) ###OJO
+    Dates <- indexD(sol)
+
+    G0dm <- compD[, c('Dates', 'G0d')]
+    G0dm
+    #G0dm <- aggregate(compD[,c('G0d', 'D0d', 'B0d')], by=as.yearmon,
+    #                  FUN=function(x, ...)mean(x, na.rm=1)/1000) ##kWh
     
-    G0dm <- aggregate(compD[,c('G0d', 'D0d', 'B0d')], by=as.yearmon,
-                      FUN=function(x, ...)mean(x, na.rm=1)/1000) ##kWh
-    if (modeRad=='prom'){
-        G0y <- zoo(t(colSums(G0dm*DayOfMonth)),
-                   unique(year(index(G0dm))))
-    } else {
-        G0y <- aggregate(compD[,c('G0d', 'D0d', 'B0d')], by=year,
-                         FUN=function(x, ...)sum(x, na.rm=1)/1000) ##kWh
-    }
+    
+    #if (modeRad=='prom'){
+    #    G0y <- zoo(t(colSums(G0dm*DayOfMonth)),
+    #               unique(year(index(G0dm))))
+    #} else {
+    #    G0y <- aggregate(compD[,c('G0d', 'D0d', 'B0d')], by=year,
+    #                     FUN=function(x, ...)sum(x, na.rm=1)/1000) ##kWh
+    #}
 
 ###Resultado
-    result <- new(Class='G0',
-                  BD,                     #G0 contains "Meteo"
-                  sol,                    #G0 contains 'Sol'
-                  G0D=compD,              #resultado de fCompD
-                  G0dm=G0dm,          #aggregate, medias mensuales
-                  G0y=G0y,            #aggregate, valores anuales
-                  G0I=compI,          #resultado de fCompI
-                  Ta=Ta               #temperatura ambiente
-                  )
-    return(result)
+    #result <- new(Class='G0',
+    #              BD,                     #G0 contains "Meteo"
+    #              sol,                    #G0 contains 'Sol'
+    #              G0D=compD,              #resultado de fCompD
+    #              G0dm=G0dm,          #aggregate, medias mensuales
+    #              G0y=G0y,            #aggregate, valores anuales
+    #              G0I=compI,          #resultado de fCompI
+    #              Ta=Ta               #temperatura ambiente
+    #              )
+    #return(result)
 }
