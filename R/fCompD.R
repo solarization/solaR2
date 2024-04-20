@@ -59,7 +59,7 @@ fCompD <- function(sol, G0d, corr = 'CPR', f, b0.col, d0.col)
         Kt <- G0/Bo0d
     }
 
-    result <- data.table(indexD(sol), Fd, Kt, G0d = G0, D0d, B0d)
+    result <- data.table(Dates = indexD(sol), Fd, Kt, G0d = G0, D0d, B0d)
     setkey(result, 'Dates')
     result
 }

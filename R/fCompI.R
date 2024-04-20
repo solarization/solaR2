@@ -63,8 +63,7 @@ fCompI <- function(sol, G0I, compD,
             D0 <- Fd * G0
             B0 <- G0 - D0
 
-        }
-        else { 
+        } else { 
 
             if(missing(d0.col) || missing(b0.col)){
                 stop('Missing the name of the columns of D0 or B0')

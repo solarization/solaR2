@@ -4,10 +4,10 @@ readG0dm <- function(G0dm, lat, Ta = 25,
                      promDays = c(17, 14, 15, 15, 15, 10, 18, 18, 18, 19, 18, 13),
                      source = '')
 {
-    Date <- as.IDate(paste(year, 1:12, promDays, sep = '-'), tz = 'UTC')
+    Dates <- as.IDate(paste(year, 1:12, promDays, sep = '-'), tz = 'UTC')
     G0dm <- as.numeric(G0dm)
     Ta <- as.numeric(Ta)
-    G0dm.dt <- data.table(Date = Date,
+    G0dm.dt <- data.table(Dates = Dates,
                           G0 = G0dm,
                           Ta = Ta)
     setkey(G0dm.dt, 'Dates')
