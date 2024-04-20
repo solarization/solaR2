@@ -29,6 +29,9 @@ fCompI <- function(sol, G0I, compD,
         G0 <- G0I$G0
         B0 <- G0I$B0
         D0 <- G0I$D0
+
+        Fd <- D0/G0
+        Kt <- G0/Bo0
         
     } else { ## Use instantaneous values if provided through G0I
 
