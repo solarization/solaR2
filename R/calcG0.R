@@ -152,10 +152,15 @@ calcG0 <- function(lat,
     
 ###Medias mensuales y anuales
     DayOfMonth=c(31,28,31,30,31,30,31,31,30,31,30,31) ###OJO
-    Dates <- indexD(sol)
+    
 
-    G0dm <- compD[, c('Dates', 'G0d')]
+    G0dm <- compD[, lapply(c('G0d', 'D0d', 'G0d'), mean, na.rm = TRUE),
+                  by = .(month(Dates), year(Dates))]
+    G0dm[, month := month.abb[month]]
+    G0dm[, Dates := paste(month, 'de', year)]
+    G0dm[, c('month', 'year') := NULL]
     G0dm
+    
     #G0dm <- aggregate(compD[,c('G0d', 'D0d', 'B0d')], by=as.yearmon,
     #                  FUN=function(x, ...)mean(x, na.rm=1)/1000) ##kWh
     
