@@ -5,13 +5,8 @@ fSolI <- function(solD, sample = 'hour', BTi,
     Bo <- 1367
 
     if(missing(BTi)){
-        dd <- solD$Dates
-        Ndays <- length(dd)
-        t1 <- as.ITime('00:00:00')
-        tN <- as.ITime('23:59:59')
-        d1 <- as.POSIXct(dd[1], t1)
-        dN <- as.POSIXct(dd[Ndays], tN)
-        BTi <- seq(d1, dN, by = sample)
+        d <- solD$Dates
+        BTi <- fBTi(d, sample)
     }
 
     BTi <- data.table(Dates = as.IDate(BTi),
