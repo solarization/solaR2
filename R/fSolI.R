@@ -1,5 +1,5 @@
 fSolI <- function(solD, sample = 'hour', BTi,
-                  keep.night = TRUE)
+                  keep.night = TRUE, EoT = TRUE)
 {
     #Solar constant
     Bo <- 1367
@@ -19,7 +19,7 @@ fSolI <- function(solD, sample = 'hour', BTi,
     setkeyv(sun, c('Dates'))
 
     #solar time
-    sun[, w := sunHour(BTi)]
+    sun[, w := sunHour(BTi, EoT = EoT)]
 
     #classify night elements
     sun[, night := abs(w) >= abs(ws)]
