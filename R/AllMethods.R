@@ -131,9 +131,28 @@ setMethod('getLat',
           }
           )
 
+### indexD ###
 setMethod('indexD',
           signature=(object='G0'),
           definition=function(object){
             indexD(as(object, 'Sol'))
           }
           )
+
+### show ###
+setMethod('show',
+          signature = (object = 'G0'),
+          definition = function(object){
+              cat('Object of class ', class(object),'\n\n')
+              cat('Source of meteorological information: ')
+              cat(paste(object@type, object@source, sep='-'),'\n\n')
+              cat('Latitude of source: ',
+                  paste(round(getLat(as(object, 'Meteo'),'deg'), 1),
+                        'degrees\n'))
+              cat('Latitude for calculations: ',
+                  paste(round(getLat(object, 'deg'),1), 'degrees\n\n'))
+              cat('Monthly avarages:\n')
+              print(object@G0dm)
+              cat('\nYearly values:\n')
+              print(object@G0y)
+          })
