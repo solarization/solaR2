@@ -162,13 +162,12 @@ calcG0 <- function(lat,
     G0dm[, c('month', 'year') := NULL]
     setcolorder(G0dm, c('Dates', names(G0dm)[-4]))
 
-    #if (modeRad=='prom'){
-    #    G0y <- zoo(t(colSums(G0dm*DayOfMonth)),
-    #               unique(year(index(G0dm))))
-    #} else {
-    #    G0y <- aggregate(compD[,c('G0d', 'D0d', 'B0d')], by=year,
-    #                     FUN=function(x, ...)sum(x, na.rm=1)/1000) ##kWh
-    #}
+    G0y <- compD[, .(G0d = sum(G0d, na.rm = TRUE)/1000,
+                     D0d = sum(D0d, na.rm = TRUE)/1000,
+                     B0d = sum(D0d, na.rm = TRUE)/1000),
+                 by = year(Dates)]
+    names(G0y)[1] <- 'Dates'
+    
 
 ###Resultado
     #result <- new(Class='G0',
