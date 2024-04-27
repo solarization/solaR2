@@ -154,17 +154,14 @@ calcG0 <- function(lat,
     DayOfMonth=c(31,28,31,30,31,30,31,31,30,31,30,31) ###OJO
     
 
-    G0dm <- compD[, lapply(c('G0d', 'D0d', 'G0d'), mean, na.rm = TRUE),
+    G0dm <- compD[, .(G0d = mean(G0d, na.rm = 1)/1000,
+                      D0d = mean(D0d, na.rm = 1)/1000,
+                      B0d = mean(B0d, na.rm = 1)/1000),
                   by = .(month(Dates), year(Dates))]
-    G0dm[, month := month.abb[month]]
-    G0dm[, Dates := paste(month, 'de', year)]
+    G0dm[, Dates := paste(month.abb[month], 'of', year)]
     G0dm[, c('month', 'year') := NULL]
-    G0dm
-    
-    #G0dm <- aggregate(compD[,c('G0d', 'D0d', 'B0d')], by=as.yearmon,
-    #                  FUN=function(x, ...)mean(x, na.rm=1)/1000) ##kWh
-    
-    
+    setcolorder(G0dm, c('Dates', names(G0dm)[-4]))
+
     #if (modeRad=='prom'){
     #    G0y <- zoo(t(colSums(G0dm*DayOfMonth)),
     #               unique(year(index(G0dm))))
