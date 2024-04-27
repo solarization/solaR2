@@ -136,14 +136,14 @@ calcG0 <- function(lat,
               },
               bdI={
                   if ("Ta" %in% names(BD@data)) {
-                      Ta=BD@data$Ta
+                      data.table(indSol, BD@data$Ta)
                   } else {
                       warning('No temperature information available!')
                   }
               },
               prom={
                   if ("Ta" %in% names(BD@data)) {
-                      Ta = BD@data$Ta
+                      data.table(indSol, BD@data$Ta)
                   } else {
                       warning('No temperature information available!')
                   }
@@ -170,14 +170,14 @@ calcG0 <- function(lat,
     
 
 ###Resultado
-    #result <- new(Class='G0',
-    #              BD,                     #G0 contains "Meteo"
-    #              sol,                    #G0 contains 'Sol'
-    #              G0D=compD,              #resultado de fCompD
-    #              G0dm=G0dm,          #aggregate, medias mensuales
-    #              G0y=G0y,            #aggregate, valores anuales
-    #              G0I=compI,          #resultado de fCompI
-    #              Ta=Ta               #temperatura ambiente
-    #              )
-    #return(result)
+    result <- new(Class='G0',
+                  BD,                     #G0 contains "Meteo"
+                  sol,                    #G0 contains 'Sol'
+                  G0D=compD,              #resultado de fCompD
+                  G0dm=G0dm,          #medias mensuales
+                  G0y=G0y,            #valores anuales
+                  G0I=compI,          #resultado de fCompI
+                  Ta=Ta               #temperatura ambiente
+                  )
+    return(result)
 }
