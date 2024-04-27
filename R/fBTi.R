@@ -8,7 +8,7 @@ intervalo <- function(day, sample){
 fBTi <- function(d, sample){
     BTi <- lapply(d, intervalo, sample)
     BTi <- unlist(BTi)
-    BTi <- as.POSIXct(BTi)
+    BTi <- as.POSIXct(BTi, tz = 'UTC')
     return(BTi)
 }
 
