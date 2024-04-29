@@ -92,8 +92,9 @@ eot <- function(d)
     ## Day of year
     dn <- yday(d)
     M <- 2 * pi/365.24 * dn
-    EoT.min <- 229.18 * (-0.0334 * sin(M) +
+    EoT <- 229.18 * (-0.0334 * sin(M) +
                          0.04184 * sin(2 * M + 3.5884))
+    return(EoT)
 }
 
 
@@ -120,8 +121,9 @@ bo0d <- function(d, lat, ...,
     Bo <- 1367
     lat <- d2r(lat)
     #The negative sign due to the definition of ws
-    -24/pi * Bo * eo * (ws * sin(lat) * sin(decl) +
-                        cos(lat) * cos(decl) * sin(ws))
+    Bo0d <- -24/pi * Bo * eo * (ws * sin(lat) * sin(decl) +
+                                cos(lat) * cos(decl) * sin(ws))
+    Bo0d
 }
 
 
@@ -145,7 +147,7 @@ sunHour <- function(BTi, EoT = TRUE)
     } else {EoT <- 0}
     
     w <- 15 * (TO - AO - 12) + EoT/4
-    d2r(w)
+    return(d2r(w))
 }
 
 #### Daylight saving time ####
@@ -160,7 +162,7 @@ zenith <- function(decl, lat, w)
     zenith <- sin(decl) * sin(lat) +
         cos(decl) * cos(w) * cos(lat)
     zenith <- ifelse(zenith > 1, 1, zenith)
-    zenith
+    return(zenith)
 }
 
 #### azimuth ####
@@ -171,5 +173,5 @@ azimuth <- function(solD,decl, w, lat, AlS)
     azimuth <- signLat * (cos(decl) * cos(w) * sin(lat) -
                           cos(lat) * sin(decl)) / cos(AlS)
     azimuth <- ifelse(abs(azimuth) > 1, 1 * sign(azimuth), azimuth)
-    azimuth
+    return(azimuth)
 }
