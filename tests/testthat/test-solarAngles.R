@@ -8,20 +8,20 @@ test_that("declination in certain days", {
 test_that("eccentricity in certain days", {
     promDays <- c(17, 14, 15, 15, 15, 10, 18, 18, 18, 19, 18, 13)
     days <- paste("2024", 1:12, promDays, sep = "-")
-    eccen_expected <- c(-20.91696257,-13.61976641,-2.818878653, 9.414893347, 18.79191752, 23.01163673, 21.00743137, 12.78588828, 1.008871364, -11.04869045, -19.82109039,-23.2416248)
+    eccen_expected <- c(1.031597011, 1.023584222, 1.009655811, 0.9922617841, 0.9774306591, 0.969234456, 0.9683222212, 0.9774306591, 0.9928151334, 1.010197561, 1.0243677, 1.03142846)
     expect_equal(eccentricity(days), eccen_expected)
 })
 
 test_that("equation of time in certain days",{
     promDays <- c(17, 14, 15, 15, 15, 10, 18, 18, 18, 19, 18, 13)
     days <- paste("2024", 1:12, promDays, sep = "-")
-    eot_expected <- c(-10.43577, -14.09003, -8.738888, 0.1729563, 3.315239, 0.02486676, -5.993575, -2.815737, 7.484636, 15.6923, 13.45702, 4.08646)
+    eot_expected <- c(-10.43576706, -14.09002583, -8.738887764, 0.1729562815, 3.315238963, 0.02486676242, -5.993574547, -2.815736959, 7.484636357, 15.69229884, 13.45701554, 4.08646007)
     expect_equal(eot(days), eot_expected)
 })
 
-test_that("sunrise angle in certain days",{
-    promDays <- c(17, 14, 15, 15, 15, 10, 18, 18, 18, 19, 18, 13)
-    days <- paste("2024", 1:12, promDays, sep = "-")
-    lat <- 40
-    sunrise_expected <- c()
-})
+#test_that("sunrise angle in certain days",{
+#    promDays <- c(17, 14, 15, 15, 15, 10, 18, 18, 18, 19, 18, 13)
+#    days <- paste("2024", 1:12, promDays, sep = "-")
+#    lat <- 40
+#    sunrise_expected <- c()
+#})
