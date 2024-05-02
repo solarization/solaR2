@@ -143,17 +143,11 @@ sunHour <- function(BTi, EoT = TRUE)
         
     TO <- as.numeric(Times)/3600
     AO <- AO(tt)
-    if(EoT){EoT <- eot(Dates)
-    } else {EoT <- 0}
-    
-    w <- 15 * (TO - AO - 12) + EoT/4
+    #if(EoT){eot <- eot(Dates)
+    #} else {eot <- 0}
+    eot <- eot(Dates)
+    w <- 15 * (TO - 12) + eot/4
     return(d2r(w))
-}
-
-#### Daylight saving time ####
-AO <- function(tt)
-{
-    as.POSIXlt(tt)$isdst
 }
 
 #### zenith angle ####
