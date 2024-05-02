@@ -164,7 +164,7 @@ calcG0 <- function(lat,
 
     G0y <- compD[, .(G0d = sum(G0d, na.rm = TRUE)/1000,
                      D0d = sum(D0d, na.rm = TRUE)/1000,
-                     B0d = sum(D0d, na.rm = TRUE)/1000),
+                     B0d = sum(B0d, na.rm = TRUE)/1000),
                  by = year(Dates)]
     names(G0y)[1] <- 'Dates'
     
