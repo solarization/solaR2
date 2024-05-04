@@ -38,14 +38,18 @@ fSolI <- function(solD, sample = 'hour', BTi,
     
     #When it is night there is no irradiance
     sun[night == TRUE, Bo0 := 0]
+
+    #Erase columns that are in solD
+    sun[, decl := NULL]
+    sun[, eo := NULL]
+    sun[, EoT := NULL]
+    sun[, ws := NULL]
+    sun[, Bo0d := NULL]
     
     #keep night
     if(!keep.night){
         sun <- sun[night == FALSE]
     }
 
-    #Reorder columns so date and time are first an second ones
-    setcolorder(sun, c('Dates', names(solD)[-1]))
-    
-    sun
+    return(sun)
 }
