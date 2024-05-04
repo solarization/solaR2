@@ -300,7 +300,7 @@ collper <- function(sol, compD)
     a <- 0.409-0.5016*sin(ws+pi/3)
     b <- 0.6609+0.4767*sin(ws+pi/3)
 
-    rd <- sol@solI[, Bo0/Bo0d]
+    rd <- sol@solI$Bo0/sol@solD$Bo0d
     rg <- rd * (a + b * cos(w))
 
     # Daily irradiation components
