@@ -34,3 +34,17 @@ test_that("extraterrestrial irradiation in certain days",{
     bo0d_expected <- c(4747.900, 6152.753, 8037.885, 9884.093, 11095.193, 11569.031, 11274.255, 10216.467,  8553.634, 6600.204, 4982.855, 4292.563)
     expect_equal(bo0d(days, lat), bo0d_expected, tolerance = 5e-2)
 })
+
+test_that("sun hour angle throughout the day",{
+    d <- '2024-05-04'
+    BTi <- fBTi(d, '1 hour')
+    w_expected <- c(-3.12772448, -2.86592509, -2.60412570, -2.34232631, -2.08052693, -1.81872754, -1.55692815, -1.29512876, -1.03332938, -0.77152999, -0.50973060, -0.24793121, 0.01386818, 0.27566756, 0.53746695, 0.79926634, 1.06106573, 1.32286512, 1.58466450, 1.84646389, 2.10826328, 2.37006267, 2.63186205, 2.89366144)
+    expect_equal(sunHour(BTi), w_expected, tolerance = 5e-2)
+})
+
+#test_that("zenith angle",{
+    #d <- '2024-05-04'
+    #decl <- declination(d)
+    #lat <- 37.2
+    
+#})
