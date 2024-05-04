@@ -6,7 +6,7 @@ Ktm <- function(sol, G0d){
     G0df <- G0d@data[, .(Dates, G0)]
     G0df[, c('month', 'year') := .(month(Dates), year(Dates))]
     G0df[, G0m := mean(G0), by = .(month, year)]
-    Ktm <- solf$Bo0m/G0df$G0m
+    Ktm <- G0df$G0m/solf$Bo0m
     return(Ktm)
 }
 
