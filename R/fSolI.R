@@ -1,5 +1,5 @@
 fSolI <- function(solD, sample = 'hour', BTi,
-                  keep.night = TRUE, EoT = TRUE)
+                  keep.night = TRUE, eot = TRUE)
 {
     #Solar constant
     Bo <- 1367
@@ -19,7 +19,7 @@ fSolI <- function(solD, sample = 'hour', BTi,
     setkeyv(sun, c('Dates'))
 
     #solar time
-    sun[, w := sunHour(BTi = BTi, EoT = EoT)]
+    sun[, w := sunHour(BTi = BTi, EoT = eot)]
 
     #classify night elements
     sun[, night := abs(w) >= abs(ws)]
@@ -31,7 +31,7 @@ fSolI <- function(solD, sample = 'hour', BTi,
     sun[, AlS := asin(cosThzS)]
     
     #azimuth
-    sun[, cosAzS := azimuth(solD, decl, w, lat, AlS)]
+    sun[, cosAzS := azimuth(decl, w, lat, AlS)]
 
     #Extraterrestrial irradiance
     sun[, Bo0 := Bo * eo * cosThzS]

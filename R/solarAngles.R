@@ -142,10 +142,8 @@ sunHour <- function(BTi, EoT = TRUE)
         }
         
     TO <- as.numeric(Times)/3600
-    AO <- AO(tt)
-    #if(EoT){eot <- eot(Dates)
-    #} else {eot <- 0}
-    eot <- eot(Dates)
+    if(EoT){eot <- eot(Dates)
+    } else {eot <- 0}
     w <- 15 * (TO - 12) + eot/4
     return(d2r(w))
 }
@@ -160,9 +158,8 @@ zenith <- function(decl, lat, w)
 }
 
 #### azimuth ####
-azimuth <- function(solD,decl, w, lat, AlS)
+azimuth <- function(decl, w, lat, AlS)
 {
-    lat <- d2r(attr(solD, 'lat'))
     signLat <- ifelse(sign(lat) == 0, 1, sign(lat)) #if the sign of lat is 0, it changes it to 1
     azimuth <- signLat * (cos(decl) * cos(w) * sin(lat) -
                           cos(lat) * sin(decl)) / cos(AlS)
