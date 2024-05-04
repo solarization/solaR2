@@ -162,10 +162,17 @@ calcG0 <- function(lat,
     G0dm[, c('month', 'year') := NULL]
     setcolorder(G0dm, c('Dates', names(G0dm)[-4]))
 
-    G0y <- compD[, .(G0d = sum(G0d, na.rm = TRUE)/1000,
-                     D0d = sum(D0d, na.rm = TRUE)/1000,
-                     B0d = sum(B0d, na.rm = TRUE)/1000),
-                 by = year(Dates)]
+    if(modeRad == 'prom'){
+        G0y <- G0dm[, .(G0d = sum(G0d*DayOfMonth, na.rm = TRUE),
+                        D0d = sum(D0d*DayOfMonth, na.rm = TRUE),
+                        B0d = sum(B0d*DayOfMonth, na.rm = TRUE)),
+                    by = year(compD$Dates)]
+    } else{
+        G0y <- compD[, .(G0d = sum(G0d, na.rm = TRUE)/1000,
+                         D0d = sum(D0d, na.rm = TRUE)/1000,
+                         B0d = sum(B0d, na.rm = TRUE)/1000),
+                     by = year(Dates)]
+    }
     names(G0y)[1] <- 'Dates'
     
 
