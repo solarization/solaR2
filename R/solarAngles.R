@@ -151,6 +151,7 @@ sunHour <- function(BTi, EoT = TRUE)
 #### zenith angle ####
 zenith <- function(decl, lat, w)
 {
+    lat <- d2r(lat)
     zenith <- sin(decl) * sin(lat) +
         cos(decl) * cos(w) * cos(lat)
     zenith <- ifelse(zenith > 1, 1, zenith)
@@ -161,6 +162,7 @@ zenith <- function(decl, lat, w)
 azimuth <- function(decl, w, lat, AlS)
 {
     signLat <- ifelse(sign(lat) == 0, 1, sign(lat)) #if the sign of lat is 0, it changes it to 1
+    lat <- d2r(lat)
     azimuth <- signLat * (cos(decl) * cos(w) * sin(lat) -
                           cos(lat) * sin(decl)) / cos(AlS)
     azimuth <- ifelse(abs(azimuth) > 1, 1 * sign(azimuth), azimuth)
