@@ -150,7 +150,7 @@ sunHour <- function(d, sample = '1 hour', EoT = TRUE)
 }
 
 #### zenith angle ####
-zenith <- function(d, lat, sample,  ...,
+zenith <- function(d, lat, sample = '1 hour',  ...,
                    decl = declination(d, ...),
                    w = sunHour(d, sample, ...))
 {
@@ -162,7 +162,7 @@ zenith <- function(d, lat, sample,  ...,
 }
 
 #### azimuth ####
-azimuth <- function(d, lat, sample, ...,
+azimuth <- function(d, lat, sample = '1 hour', ...,
                     decl = declination(d, ...),
                     w = sunHour(d, sample, ...),
                     AlS = asin(zenith(d, lat, sample, ...)))
