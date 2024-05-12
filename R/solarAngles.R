@@ -128,8 +128,9 @@ bo0d <- function(d, lat, ...,
 
 
 #### Sun hour angle ####
-sunHour <- function(BTi, EoT = TRUE)
+sunHour <- function(d, sample = '1 hour', EoT = TRUE)
 {
+    BTi <- fBTi(d = d, sample = sample)
     if (inherits(BTi, 'data.table')) {
             tt <- BTi[, as.POSIXct(Dates, Times, tz = 'UTC')]
             Times <- BTi$Times
@@ -149,7 +150,9 @@ sunHour <- function(BTi, EoT = TRUE)
 }
 
 #### zenith angle ####
-zenith <- function(decl, lat, w)
+zenith <- function(d, lat, sample,  ...,
+                   decl = declination(d, ...),
+                   w = sunHour(d, sample, ...))
 {
     lat <- d2r(lat)
     zenith <- sin(decl) * sin(lat) +
@@ -159,7 +162,10 @@ zenith <- function(decl, lat, w)
 }
 
 #### azimuth ####
-azimuth <- function(decl, w, lat, AlS)
+azimuth <- function(d, lat, sample, ...,
+                    decl = declination(d, ...),
+                    w = sunHour(d, sample, ...),
+                    AlS = asin(zenith(d, lat, sample, ...)))
 {
     signLat <- ifelse(sign(lat) == 0, 1, sign(lat)) #if the sign of lat is 0, it changes it to 1
     lat <- d2r(lat)

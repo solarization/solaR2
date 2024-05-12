@@ -18,20 +18,22 @@ fSolI <- function(solD, sample = 'hour', BTi,
     sun[, Times := NULL]
     setkeyv(sun, c('Dates'))
 
+    d <- unique(BTi$Dates)
+
     #solar time
-    sun[, w := sunHour(BTi = BTi, EoT = eot)]
+    sun[, w := sunHour(d = d, sample = sample, EoT = eot)]
 
     #classify night elements
     sun[, night := abs(w) >= abs(ws)]
     
     #zenith angle
-    sun[, cosThzS := zenith(decl, lat, w)]
+    sun[, cosThzS := zenith(d = d, lat = lat, sample = sample, w = w)]
 
     #solar altitude angle
     sun[, AlS := asin(cosThzS)]
     
     #azimuth
-    sun[, cosAzS := azimuth(decl, w, lat, AlS)]
+    sun[, cosAzS := azimuth(d = d, lat = lat, w = w, AlS = AlS)]
 
     #Extraterrestrial irradiance
     sun[, Bo0 := Bo * eo * cosThzS]
