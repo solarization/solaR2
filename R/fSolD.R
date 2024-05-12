@@ -18,7 +18,9 @@ fSolD <- function(d, lat, method = 'michalsky'){
                   decl = decl)
     ##Extraterrestrial irradiance
     Bo0d <- bo0d(Dates, lat, method = method,
-                 decl = decl, eo = eo, ws = ws)
+                 decl = decl, eo = eo
+                 #, ws = ws #NO FUNCIONA
+                 )
 
     result <- data.table(Dates = Dates,
                          lat = lat,
