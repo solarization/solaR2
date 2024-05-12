@@ -108,7 +108,7 @@ sunrise <- function(d, lat, ...,
     #Polar day/night
     polar <- which(is.nan(ws))
     ws[polar] <- -pi * (cosWs[polar] < -1) + 0 * (cosWs[polar] > 1)
-    ws
+    return(ws)
 }
 
 #### Extraterrestrial irradition ####
@@ -123,7 +123,7 @@ bo0d <- function(d, lat, ...,
     #The negative sign due to the definition of ws
     Bo0d <- -24/pi * Bo * eo * (ws * sin(lat) * sin(decl) +
                                 cos(lat) * cos(decl) * sin(ws))
-    Bo0d
+    return(Bo0d)
 }
 
 
