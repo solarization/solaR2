@@ -128,19 +128,24 @@ bo0d <- function(d, lat, ...,
 
 
 #### Sun hour angle ####
-sunHour <- function(d, sample = '1 hour', EoT = TRUE)
+sunHour <- function(d, BTi, sample = '1 hour', EoT = TRUE)
 {
-    BTi <- fBTi(d = d, sample = sample)
-    if (inherits(BTi, 'data.table')) {
+    if(missing(BTi)){
+        BTi <- fBTi(d = d, sample = sample)
+        Times <- as.ITime(BTi)
+        Dates <- as.IDate(BTi)
+    }else {
+        if (inherits(BTi, 'data.table')) {
             tt <- BTi[, as.POSIXct(Dates, Times, tz = 'UTC')]
-            Times <- BTi$Times
-            Dates <- BTi$Dates
+            Times <- as.ITime(BTi$Times)
+            Dates <- as.IDate(BTi$Dates)
         }
-    else {
-        tt <- as.POSIXct(BTi, tz = 'UTC')
-        Times <- as.ITime(tt)
-        Dates <- as.IDate(tt)
-        }
+        else {
+            tt <- as.POSIXct(BTi, tz = 'UTC')
+            Times <- as.ITime(tt)
+            Dates <- as.IDate(tt)
+        }   
+    }
         
     TO <- as.numeric(Times)/3600
     if(EoT){eot <- eot(Dates)
@@ -150,9 +155,9 @@ sunHour <- function(d, sample = '1 hour', EoT = TRUE)
 }
 
 #### zenith angle ####
-zenith <- function(d, lat, sample = '1 hour',  ...,
+zenith <- function(d, lat, BTi, sample = '1 hour',  ...,
                    decl = declination(d, ...),
-                   w = sunHour(d, sample, ...))
+                   w = sunHour(d, BTi, sample, ...))
 {
     lat <- d2r(lat)
     zenith <- sin(decl) * sin(lat) +
@@ -162,10 +167,10 @@ zenith <- function(d, lat, sample = '1 hour',  ...,
 }
 
 #### azimuth ####
-azimuth <- function(d, lat, sample = '1 hour', ...,
+azimuth <- function(d, lat, BTi, sample = '1 hour', ...,
                     decl = declination(d, ...),
-                    w = sunHour(d, sample, ...),
-                    AlS = asin(zenith(d, lat, sample, ...)))
+                    w = sunHour(d, BTi, sample, ...),
+                    AlS = asin(zenith(d, lat, BTi, sample, ...)))
 {
     signLat <- ifelse(sign(lat) == 0, 1, sign(lat)) #if the sign of lat is 0, it changes it to 1
     lat <- d2r(lat)
