@@ -119,10 +119,10 @@ bo0d <- function(d, lat, ...,
 {
     #solar constant
     Bo <- 1367
-    lat <- d2r(lat)
+    latr <- d2r(lat)
     #The negative sign due to the definition of ws
-    Bo0d <- -24/pi * Bo * eo * (ws * sin(lat) * sin(decl) +
-                                cos(lat) * cos(decl) * sin(ws))
+    Bo0d <- -24/pi * Bo * eo * (ws * sin(latr) * sin(decl) +
+                                cos(latr) * cos(decl) * sin(ws))
     return(Bo0d)
 }
 
@@ -136,7 +136,6 @@ sunHour <- function(d, BTi, sample = '1 hour', EoT = TRUE)
         Dates <- as.IDate(BTi)
     }else {
         if (inherits(BTi, 'data.table')) {
-            tt <- BTi[, as.POSIXct(Dates, Times, tz = 'UTC')]
             Times <- as.ITime(BTi$Times)
             Dates <- as.IDate(BTi$Dates)
         }
@@ -146,7 +145,7 @@ sunHour <- function(d, BTi, sample = '1 hour', EoT = TRUE)
             Dates <- as.IDate(tt)
         }   
     }
-        
+    
     TO <- as.numeric(Times)/3600
     if(EoT){eot <- eot(Dates)
     } else {eot <- 0}
@@ -159,9 +158,9 @@ zenith <- function(d, lat, BTi, sample = '1 hour',  ...,
                    decl = declination(d, ...),
                    w = sunHour(d, BTi, sample, ...))
 {
-    lat <- d2r(lat)
-    zenith <- sin(decl) * sin(lat) +
-        cos(decl) * cos(w) * cos(lat)
+    latr <- d2r(lat)
+    zenith <- sin(decl) * sin(latr) +
+        cos(decl) * cos(w) * cos(latr)
     zenith <- ifelse(zenith > 1, 1, zenith)
     return(zenith)
 }
@@ -173,9 +172,9 @@ azimuth <- function(d, lat, BTi, sample = '1 hour', ...,
                     AlS = asin(zenith(d, lat, BTi, sample, ...)))
 {
     signLat <- ifelse(sign(lat) == 0, 1, sign(lat)) #if the sign of lat is 0, it changes it to 1
-    lat <- d2r(lat)
-    azimuth <- signLat * (cos(decl) * cos(w) * sin(lat) -
-                          cos(lat) * sin(decl)) / cos(AlS)
+    latr <- d2r(lat)
+    azimuth <- signLat * (cos(decl) * cos(w) * sin(latr) -
+                          cos(latr) * sin(decl)) / cos(AlS)
     azimuth <- ifelse(abs(azimuth) > 1, 1 * sign(azimuth), azimuth)
     return(azimuth)
 }
