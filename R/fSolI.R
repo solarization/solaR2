@@ -1,5 +1,5 @@
 fSolI <- function(solD, sample = 'hour', BTi,
-                  keep.night = TRUE, eot = TRUE)
+                  keep.night = TRUE, et = TRUE)
 {
     #Solar constant
     Bo <- 1367
@@ -21,15 +21,16 @@ fSolI <- function(solD, sample = 'hour', BTi,
     d <- unique(BTi$Dates)
 
     #solar time
-    sun[, w := sunHour(d, BTi, EoT = eot)]
+    sun[, w := sunHour(d, BTi, EoT = et)]
 
     #classify night elements
     sun[, night := abs(w) >= abs(ws)]
     
     #zenith angle
-    sun[, cosThzS := zenith(d, lat,
+    sun[, cosThzS := zenith(d, lat, BTi,
                             decl = decl,
-                            w = w)]
+                            w = w
+                            )]
 
     #solar altitude angle
     sun[, AlS := asin(cosThzS)]
