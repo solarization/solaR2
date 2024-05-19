@@ -12,7 +12,7 @@ setMethod('as.data.tableI',
                   sun[, day := doy(Dates)]
               }
               if(complete){
-                  sun2 <- object@solD
+                  sun2 <- as.data.tableD(object)
                   sun <- data.table(sun, sun2[, -'Dates'])
               }
               return(sun)
@@ -20,33 +20,33 @@ setMethod('as.data.tableI',
           )
 
 ###as.data.frameD
-setGeneric('as.data.tableD', function(object){standardGeneric('as.data.tableD')})
+setGeneric('as.data.tableD', function(object, day = FALSE){standardGeneric('as.data.tableD')})
 
 setMethod('as.data.tableD',
           signature=(object='Sol'),
-          definition=function(object){
-            zoo0=as.zooD(object, complete=complete)
-            data0=as.data.frame(zoo0)
-            ind=index(zoo0)
-            data0$day=doy(ind)##Incorporo dia, mes y año como columnas del data.frame
-            data0$month=month(ind)
-            data0$year=year(ind)
-            return(data0)
+          definition=function(object, day = FALSE){
+              sun <- object@solD
+              if(day){
+                  d <- indexD(object)
+                  sun[, day := doy(d)]
+                  sun[, month :=  month(d)]
+                  sun[, year := year(d)]
+              }
+              return(sun)
           }
           )
 
 ###as.data.frameM
-setGeneric('as.data.frameM', function(object, complete=FALSE){standardGeneric('as.data.frameM')})
+setGeneric('as.data.frameM', function(object){standardGeneric('as.data.frameM')})
 
 setMethod('as.data.frameM',
           signature=(object='G0'),
-          definition=function(object, complete=FALSE){
-            zoo0=as.zooM(object, complete=complete)
-            data0=as.data.frame(zoo0)
-            ind=index(zoo0)
-            data0$month=month(ind)
-            data0$year=year(ind)
-            return(data0)
+          definition=function(object, day = FALSE){
+              g0 <- object@G0dm
+              if(day){
+                  
+              }
+              return(g0)
           }
           )
 
