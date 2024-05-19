@@ -1,28 +1,30 @@
-setGeneric('as.data.frame')
+setGeneric('as.data.table')
 
 ###as.data.frameI
-setGeneric('as.data.frameI',
-           function(object, complete=FALSE, day=FALSE){standardGeneric('as.data.frameI')})
+setGeneric('as.data.tableI',
+           function(object, complete=FALSE, day=FALSE){standardGeneric('as.data.tableI')})
 
-setMethod('as.data.frameI',
+setMethod('as.data.tableI',
           signature=(object='Sol'),
           definition=function(object, complete=FALSE, day=FALSE){
-            zoo0=as.zooI(object, complete=complete, day=day)
-            data0=as.data.frame(zoo0)
-            ind=index(zoo0)
-            data0$day=doy(ind)##Incorporo dia, mes y año como columnas del data.frame
-            data0$month=month(ind)
-            data0$year=year(ind)
-            return(data0)
+              sun <- object@solI
+              if(day){
+                  sun[, day := doy(Dates)]
+              }
+              if(complete){
+                  sun2 <- object@solD
+                  sun <- data.table(sun, sun2[, -'Dates'])
+              }
+              return(sun)
           }
           )
 
 ###as.data.frameD
-setGeneric('as.data.frameD', function(object, complete=FALSE){standardGeneric('as.data.frameD')})
+setGeneric('as.data.tableD', function(object){standardGeneric('as.data.tableD')})
 
-setMethod('as.data.frameD',
+setMethod('as.data.tableD',
           signature=(object='Sol'),
-          definition=function(object, complete=FALSE){
+          definition=function(object){
             zoo0=as.zooD(object, complete=complete)
             data0=as.data.frame(zoo0)
             ind=index(zoo0)
