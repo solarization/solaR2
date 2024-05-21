@@ -10,13 +10,13 @@ fTheta<-function(sol, beta, alfa=0, modeTrk='fixed', betaLim=90,
     lat=getLat(sol, 'rad')
     signLat=ifelse(sign(lat)==0, 1, sign(lat)) ##Cuando lat=0, sign(lat)=0. Lo cambio a sign(lat)=1
 
-    solI<-as.data.frameI(sol, complete=TRUE, day=TRUE)
+    solI<-as.data.tableI(sol, complete=TRUE)
     AlS=solI$AlS
     AzS=solI$AzS
     decl=solI$decl
     w<-solI$w
 
-    aman<-solI$aman
+    night<-solI$night
 
     Beta<-switch(modeTrk,
                  two = {Beta2x=pi/2-AlS
@@ -40,13 +40,13 @@ fTheta<-function(sol, beta, alfa=0, modeTrk='fixed', betaLim=90,
                          rm(BetaHoriz0)}
                      Beta=ifelse(BetaHoriz>betaLim,betaLim,BetaHoriz)}
                  )
-    is.na(Beta) <- (!aman)
+    is.na(Beta) <- night
 
     Alfa<-switch(modeTrk,
                  two = AzS,
                  fixed = rep(d2r(alfa), length(w)),
                  horiz=pi/2*sign(AzS))
-    is.na(Alfa) <- (!aman)
+    is.na(Alfa) <- night
 
     cosTheta<-switch(modeTrk,
                      two=cos(Beta-(pi/2-AlS)),
@@ -69,8 +69,9 @@ fTheta<-function(sol, beta, alfa=0, modeTrk='fixed', betaLim=90,
                          cosTheta
                      }
                      )
-    is.na(cosTheta) <- (!aman)
+    is.na(cosTheta) <- night
     cosTheta=cosTheta*(cosTheta>0) #cuando cosTheta<0, Theta es mayor de 90º, y por tanto el Sol está detras del panel.
     
-    result<-zoo(data.frame(Beta, Alfa, cosTheta), order.by=indexI(sol))   
+    result <- data.table(Dates = indexI(sol),
+                         Beta, Alfa, cosTheta)
 }
