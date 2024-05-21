@@ -1,15 +1,13 @@
 fInclin <- function(compI, angGen, iS = 2, alb = 0.2, horizBright = TRUE, HCPV = FALSE){
     ##compI es class='G0'
-    ##angGen es 'zoo', resultado de fTheta
-
+    
     ##Preparo argumentos
     stopifnot(iS %in% 1:4)
-    ang <- as.data.frame(coredata(angGen))
-    Beta <- ang$Beta
-    Alfa <- ang$Alfa
-    cosTheta <- ang$cosTheta
+    Beta <- angGen$Beta
+    Alfa <- angGen$Alfa
+    cosTheta <- angGen$cosTheta
   
-    comp <- as.data.frameI(compI, complete=TRUE)
+    comp <- as.data.tableI(compI, complete=TRUE)
     aman <- comp$aman
     B0 <- comp$B0
     Bo0 <- comp$Bo0
