@@ -28,38 +28,30 @@ setMethod('as.data.tableD',
               sun <- object@solD
               if(day){
                   d <- indexD(object)
-                  sun[, day := doy(d)]
-                  sun[, month :=  month(d)]
-                  sun[, year := year(d)]
+                  sun$day <- doy(d)
+                  sun$month <- month(d)
+                  sun$year <- year(d)
               }
               return(sun)
           }
           )
 
 ###as.data.frameM
-setGeneric('as.data.frameM', function(object){standardGeneric('as.data.frameM')})
+setGeneric('as.data.tableM', function(object){standardGeneric('as.data.tableM')})
 
-setMethod('as.data.frameM',
+setMethod('as.data.tableM',
           signature=(object='G0'),
-          definition=function(object, day = FALSE){
-              g0 <- object@G0dm
-              if(day){
-                  
-              }
-              return(g0)
+          definition=function(object){
+              return(object@G0dm)
           }
           )
 
 ###as.data.frameY
-setGeneric('as.data.frameY', function(object, complete=FALSE){standardGeneric('as.data.frameY')})
+setGeneric('as.data.tableY', function(object){standardGeneric('as.data.tableY')})
 
-setMethod('as.data.frameY',
+setMethod('as.data.tableY',
           signature=(object='G0'),
-          definition=function(object, complete=FALSE){
-            zoo0=as.zooY(object, complete=complete)
-            data0=as.data.frame(zoo0)
-            ind=index(zoo0)
-            data0$year=ind
-            return(data0)
+          definition=function(object){
+              return(object@G0y)
           }
           )
