@@ -8,13 +8,13 @@ fInclin <- function(compI, angGen, iS = 2, alb = 0.2, horizBright = TRUE, HCPV =
     cosTheta <- angGen$cosTheta
   
     comp <- as.data.tableI(compI, complete=TRUE)
-    aman <- comp$aman
+    night <- comp$night
     B0 <- comp$B0
     Bo0 <- comp$Bo0
     D0 <- comp$D0
     G0 <- comp$G0
     cosThzS <- comp$cosThzS
-    is.na(cosThzS) <- !aman
+    is.na(cosThzS) <- night
     
     ##Método N.Martin para suciedad e incidencia no perpendicular
     Suc <- rbind(c(1, 0.17, -0.069),
@@ -50,12 +50,12 @@ fInclin <- function(compI, angGen, iS = 2, alb = 0.2, horizBright = TRUE, HCPV =
     Gef <- Bef + Def + Ref
 
     ##Resultado
-    result <- zoo(data.frame(Bo, Bn,
-                             G, D, Di, Dc, B, R,
-                             FTb, FTd, FTr,
-                             Dief, Dcef, Gef, Def, Bef, Ref), 
-                  order.by = indexI(compI))
+    result <- data.table(Dates = indexI(compI), Bo, Bn,
+                         G, D, Di, Dc, B, R,
+                         FTb, FTd, FTr,
+                         Dief, Dcef, Gef, Def, Bef, Ref) 
+
     ## Use 0 instead of NA for irradiance values
-    result[!aman,] <- 0
+    #result[night,] <- 0
     result
 }

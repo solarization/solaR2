@@ -25,7 +25,7 @@ calcGef<-function(lat,
                      sample=sample, keep.night=keep.night,
                      sunGeometry=sunGeometry,
                      corr=corr, f=f, ...)
-  } else {                     #Utilizamos un cálculo prev de calcG0
+  } else {#Utilizamos un cálculo prev de calcG0
     radHoriz <- as(dataRad, 'G0') ##OJO: ¿hace falta comprobar que coinciden lat y otras?
   } 
 
