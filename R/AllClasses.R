@@ -46,11 +46,11 @@ setClass(
 setClass(
          Class='Gef',
          slots = c(
-           GefD='zoo',       #aggregate, valores diarios
-           Gefdm='zoo',      #aggregate, medias mensuales
-           Gefy='zoo',       #aggregate, valores anuales
-           GefI='zoo',       #resultado de fInclin
-           Theta='zoo',     #resultado de fTheta
+           GefD='data.table',       #aggregate, valores diarios
+           Gefdm='data.table',      #aggregate, medias mensuales
+           Gefy='data.table',       #aggregate, valores anuales
+           GefI='data.table',       #resultado de fInclin
+           Theta='data.table',     #resultado de fTheta
            iS='numeric',     #indice de suciedad OJO ¿pasar a INTEGER?
            alb='numeric',    #albedo
            modeTrk='character',         #modo de seguimiento
