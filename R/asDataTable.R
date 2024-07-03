@@ -1,21 +1,30 @@
-setGeneric('as.data.table')
-
-
-###as.data.frameI
+###as.data.tableI
 setGeneric('as.data.tableI',
            function(object, complete=FALSE, day=FALSE){standardGeneric('as.data.tableI')})
 
 setMethod('as.data.tableI',
           signature=(object='Sol'),
           definition=function(object, complete=FALSE, day=FALSE){
-              zoo0=as.zooI(object, complete=complete, day=day)
-              data0=as.data.table(zoo0)
-              ind=index(zoo0)
-              ##Incorporo dia, mes y año como columnas del data.table
-              data0[, day := doy(ind)]
-              data0[, month := month(ind)]
-              data0[, year := year(ind)]
-              return(data0)
+              sol <- copy(object)
+              solI <- sol@solI
+              solD <- sol@solD
+              if(complete){
+                  data <- data.table(solI, solD[, Dates := NULL])
+              } else{data <- solI}
+              if(day){
+                  ind <- indexI(object)
+                  data[, day := doy(ind)]
+                  data[, month := month(ind)]
+                  data[, year := year(ind)]
+              }
+              return(data)
+          }
+          )
+
+setMethod('as.data.tableI',
+          signature = (object='G0'),
+          definition = function(object, complete=FALSE, day=FALSE){
+              
           }
           )
 
