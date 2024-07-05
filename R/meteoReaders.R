@@ -294,13 +294,14 @@ dt2Meteom <- function(file, lat, source = '',
 #### Liu and Jordan, Collares-Pereira and Rabl proposals ####
 collper <- function(sol, compD)
 {
-    ws <- sol@solI$ws
-    w <- sol@solI$w
+    solI <- as.data.tableI(sol, complete = T)
+    ws <- solI$ws
+    w <- solI$w
 
     a <- 0.409-0.5016*sin(ws+pi/3)
     b <- 0.6609+0.4767*sin(ws+pi/3)
 
-    rd <- sol@solI$Bo0/sol@solD$Bo0d
+    rd <- solI[, Bo0/Bo0d]
     rg <- rd * (a + b * cos(w))
 
     # Daily irradiation components
@@ -335,7 +336,8 @@ collper <- function(sol, compD)
     B0 <- B0 * B0d/B0dCP
     D0 <- D0 * D0d/D0dCP
     
-    data.table(G0, B0, D0)
+    res <- data.table(G0, B0, D0)
+    return(res)
 }
 
 
