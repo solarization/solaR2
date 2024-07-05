@@ -36,6 +36,8 @@ calcGef<-function(lat,
     
 ###Valores diarios, mensuales y anuales
     DayOfMonth=c(31,28,31,30,31,30,31,31,30,31,30,31) ###OJO
+
+    d <- truncDay(inclin$Dates)
     
     Gefdm <-  inclin[, .(Bod = mean(Bo, na.rm = TRUE)/1000,
                          Bnd = mean(Bn, na.rm = TRUE)/1000,
@@ -44,10 +46,8 @@ calcGef<-function(lat,
                          Gefd = mean(Gef, na.rm = TRUE)/1000,
                          Defd = mean(Def, na.rm = TRUE)/1000,
                          Befd = mean(Bef, na.rm = TRUE)/1000),
-                     by = .(month(Dates), year(Dates))]
-    Gefdm[, Dates := paste(month.abb[month], 'of', year)]
-    Gefdm[, c('month', 'year') := NULL]
-    setcolorder(Gefdm, c('Dates', names(Gefdm)[-length(Gefdm)]))
+                     by = .(month(d), year(d))]
+    
 
     if(radHoriz@type == 'prom'){
         GefD <- Gefdm[, .(Bod = Bod*1000,
@@ -57,7 +57,7 @@ calcGef<-function(lat,
                            Gefd = Gefd*1000,
                            Defd = Defd*1000,
                            Befd = Befd*1000),
-                       by = Dates]
+                       by = unique(d)]
 
         Gefy <- Gefdm[, .(Bod = sum(Bod*DayOfMonth, na.rm = TRUE),
                           Bnd = sum(Bnd*DayOfMonth, na.rm = TRUE),
@@ -66,7 +66,7 @@ calcGef<-function(lat,
                           Gefd = sum(Gefd*DayOfMonth, na.rm = TRUE),
                           Defd = sum(Defd*DayOfMonth, na.rm = TRUE),
                           Befd = sum(Befd*DayOfMonth, na.rm = TRUE)),
-                      by = year(Dates)]
+                      by = year(unique(d))]
     } else{
         GefD <- inclin[, .(Bod = sum(Bo, na.rm = TRUE),
                            Bnd = sum(Bn, na.rm = TRUE),
@@ -75,7 +75,7 @@ calcGef<-function(lat,
                            Gefd = sum(Gef, na.rm = TRUE),
                            Defd = sum(Def, na.rm = TRUE),
                            Befd = sum(Bef, na.rm = TRUE)),
-                       by = truncDay(Dates)]
+                       by = unique(d)]
 
         Gefy <- inclin[, .(Bod = sum(Bo, na.rm = 1)/1000,
                            Bnd = sum(Bn, na.rm = 1)/1000,
@@ -84,9 +84,14 @@ calcGef<-function(lat,
                            Gefd = sum(Gef, na.rm = 1)/1000,
                            Defd = sum(Def, na.rm = 1)/1000,
                            Befd = sum(Bef, na.rm = 1)/1000),
-                       by = year(Dates)]            
+                       by = year(unique(d))]            
     }
+
+    Gefdm[, Dates := paste(month.abb[month], 'of', year)]
+    Gefdm[, c('month', 'year') := NULL]
+    setcolorder(Gefdm, c('Dates', names(Gefdm)[-length(Gefdm)]))
     names(Gefy)[1] <- 'Dates'
+    names(GefD)[1] <- 'Dates'
     
   #if (radHoriz@type=='prom') {
     #Gefdm=aggregate(inclin[,c('Bo', 'Bn', 'G', 'D', 'B', 'Gef', 'Def', 'Bef')]/1000,
