@@ -50,12 +50,14 @@ fInclin <- function(compI, angGen, iS = 2, alb = 0.2, horizBright = TRUE, HCPV =
     Gef <- Bef + Def + Ref
 
     ##Resultado
-    result <- data.table(Dates = indexI(compI), Bo, Bn,
+    result <- data.table(Bo, Bn,
                          G, D, Di, Dc, B, R,
                          FTb, FTd, FTr,
                          Dief, Dcef, Gef, Def, Bef, Ref) 
 
     ## Use 0 instead of NA for irradiance values
-    #result[night,] <- 0
+    result[night] <- 0
+    result[, Dates := indexI(compI)]
+    setcolorder(result, c('Dates', names(result)[-length(result)]))
     result
 }

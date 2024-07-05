@@ -1,7 +1,7 @@
 fCompI <- function(sol, G0I, compD,
                    corr = 'EKDh', f,
                    filterG0 = TRUE,
-                   b0.col, d0.col){
+                   b0.col = 'B0', d0.col = 'D0'){
     if(!(corr %in% c('EKDh', 'CLIMEDh', 'BRL', 'user', 'none'))){
         warning('Wrong descriptor of correlation Fd-Ktd. Set EKDh.')
         corr <- 'EKDh'
@@ -71,9 +71,9 @@ fCompI <- function(sol, G0I, compD,
             if(missing(d0.col) || missing(b0.col)){
                 stop('Missing the name of the columns of D0 or B0')
             }
-            if(!(d0.col %in% names(getData(G0d)))){
+            if(!(d0.col %in% names(getData(G0I)))){
                 stop('G0 does not have the column "', d0.col, '"')}
-            if(!(b0.col %in% names(getData(G0d)))){
+            if(!(b0.col %in% names(getData(G0I)))){
                 stop('G0 does not have the column "', b0.col, '"')}
             G0 <- getG0(G0I)
             D0 <- getData(G0I)[[d0.col]]
