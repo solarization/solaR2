@@ -5,12 +5,12 @@ fTheta<-function(sol, beta, alfa=0, modeTrk='fixed', betaLim=90,
     stopifnot(modeTrk %in% c('two','horiz','fixed'))
     if (!missing(struct)) {stopifnot(is.list(struct))}
     if (!missing(dist)) {stopifnot(is.data.frame(dist))}
-
+    
     betaLim=d2r(betaLim)
     lat=getLat(sol, 'rad')
     signLat=ifelse(sign(lat)==0, 1, sign(lat)) ##Cuando lat=0, sign(lat)=0. Lo cambio a sign(lat)=1
 
-    solI<-as.data.tableI(sol, complete=TRUE)
+    solI<-as.data.tableI(sol, complete=TRUE, day = TRUE)
     AlS=solI$AlS
     AzS=solI$AzS
     decl=solI$decl
@@ -74,4 +74,5 @@ fTheta<-function(sol, beta, alfa=0, modeTrk='fixed', betaLim=90,
     
     result <- data.table(Dates = indexI(sol),
                          Beta, Alfa, cosTheta)
+    return(result)
 }
