@@ -107,36 +107,96 @@ setMethod('as.data.tableD',
           signature = (object='Gef'),
           definition = function(object, complete=FALSE, day=FALSE){
               
-          })
+          }
+          )
 
+setMethod('as.data.tableD',
+          signature = (object='ProdGCPV'),
+          definition = function(object, complete=FALSE, day=FALSE){
 
-###as.data.frameM
-setGeneric('as.data.tableM', function(object, complete = FALSE){standardGeneric('as.data.tableM')})
+          }
+          )
+
+setMethod('as.data.tableD',
+          signature = (object='ProdPVPS'),
+          definition = function(object, complete=FALSE, day=FALSE){
+
+          }
+          )
+
+###as.data.tableM
+setGeneric('as.data.tableM', function(object, complete = FALSE, day=FALSE){standardGeneric('as.data.tableM')})
 
 setMethod('as.data.tableM',
           signature=(object='G0'),
-          definition=function(object, complete = FALSE){
-              zoo0=as.zooM(object, complete = complete)
-              data0=as.data.table(zoo0)
-              ind=index(zoo0)
-              ##Incorporo mes y año como columnas del data.table
-              data0[, month := month(ind)]
-              data0[, year := year(ind)]
-              return(data0)
+          definition=function(object, complete=FALSE, day=FALSE){
+              g0 <- copy(object)
+              G0dm <- g0@G0dm
+              data <- G0dm
+              if(day){
+                  ind <- indexD(object)
+                  data[, month := month(ind)]
+                  data[, year := year(ind)]
+              }
+              return(data)
+          }
+          )
+
+setMethod('as.data.tableM',
+          signature=(object='Gef'),
+          definition = function(object, complete=FALSE, day=FALSE){
+
+          }
+          )
+
+setMethod('as.data.tableM',
+          signature = (object='ProdGCPV'),
+          definition = function(object, complete=FALSE, day=FALSE){
+
+          }
+          )
+
+setMethod('as.data.tableM',
+          signature = (object='ProdPVPS'),
+          definition = function(object, complete=FALSE, day=FALSE){
+
           }
           )
 
 ###as.data.frameY
-setGeneric('as.data.tableY', function(object, complete = FALSE){standardGeneric('as.data.tableY')})
+setGeneric('as.data.tableY', function(object, complete=FALSE, day=FALSE){standardGeneric('as.data.tableY')})
 
 setMethod('as.data.tableY',
           signature=(object='G0'),
-          definition=function(object, complete = FALSE){
-              zoo0=as.zooY(object, complete = complete)
-              data0=as.data.table(zoo0)
-              ind=index(zoo0)
-              ##Incorporo año como columna del data.table
-              data0[, year := ind]
-              return(data0)
+          definition=function(object, complete=FALSE, day=FALSE){
+              g0 <- copy(object)
+              G0y <- g0@G0y
+              data <- G0y
+              if(day){
+                  ind <- indexD(g0)
+                  data[, year := year(g0)]
+              }
+              return(data)
+          }
+          )
+
+setMethod('as.data.tableY',
+          signature = (object='Gef'),
+          definition = function(object, complete=FALSE, day=FALSE){
+
+          }
+          )
+
+setMethod('as.data.tableY',
+          signature = (object='ProdGCPV'),
+          definition = function(object, complete=FALSE, day=FALSE){
+
+          }
+          )
+
+setMethod('as.data.tableY',
+          signature = (object='ProdPVPS'),
+          definition = function(object, complete=FALSE, day=FALSE){
+
           }
           )
