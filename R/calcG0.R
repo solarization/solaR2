@@ -28,7 +28,7 @@ calcG0 <- function(lat,
                          dataRad
                      } else {
                          if (!is.list(dataRad)) dataRad <- list(file=dataRad)
-                         switch(class(dataRad$file[1]),
+                         switch(class(dataRad$file)[1],
                                 character={
                                     bd.default=list(file='', lat=lat)
                                     bd=modifyList(bd.default, dataRad)
@@ -68,7 +68,7 @@ calcG0 <- function(lat,
                          dataRad
                      } else {
                          if (!is.list(dataRad)) dataRad <- list(file=dataRad)
-                         switch(class(dataRad$file),
+                         switch(class(dataRad$file)[1],
                                 character = {
                                     bdI.default <- list(file='', lat=lat)
                                     bdI <- modifyList(bdI.default, dataRad)
@@ -88,7 +88,7 @@ calcG0 <- function(lat,
                                     res <- do.call('zoo2Meteo', bdI)
                                     res
                                 },
-                                stop('dataRad$file should be a character, a data.frame or a zoo.')
+                                stop('dataRad$file should be a character, a data.table, a data.frame or a zoo.')
                                 )}}     #Fin de bdI
                  )                      #Fin del switch general
     
@@ -160,7 +160,7 @@ calcG0 <- function(lat,
                   by = .(month(Dates), year(Dates))]
     G0dm[, Dates := paste(month.abb[month], 'of', year)]
     G0dm[, c('month', 'year') := NULL]
-    setcolorder(G0dm, c('Dates', names(G0dm)[-4]))
+    setcolorder(G0dm, c('Dates', names(G0dm)[-length(G0dm)]))
 
     if(modeRad == 'prom'){
         G0y <- G0dm[, .(G0d = sum(G0d*DayOfMonth, na.rm = TRUE),
@@ -188,3 +188,4 @@ calcG0 <- function(lat,
                   )
     return(result)
 }
+
