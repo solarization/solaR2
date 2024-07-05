@@ -16,7 +16,6 @@ setMethod('as.data.tableI',
                   data[, day := doy(ind)]
                   data[, month := month(ind)]
                   data[, year := year(ind)]
-                  )
               }
               return(data)
           }
@@ -28,8 +27,11 @@ setMethod('as.data.tableI',
               g0 <- copy(object)
               G0I <- g0@G0I
               solI <- g0@solI
+              solD <- g0@solD
               if(complete){
-                  data <- data.table(solI, G0I[, Dates := NULL]) 
+                  data <- data.table(solI,
+                                     G0I[, Dates := NULL],
+                                     solD[, Dates := NULL]) 
               } else{    
                   G0I[, Kt := NULL]
                   G0I[, Fd := NULL]
@@ -47,21 +49,21 @@ setMethod('as.data.tableI',
 
 setMethod('as.data.tableI',
           signature = (object='Gef'),
-          definition = function(object, complete=FALSE, Day=FALSE){
+          definition = function(object, complete=FALSE, day=FALSE){
 
           }
           )
 
 setMethod('as.data.tableI',
           signature = (object='ProdGCPV'),
-          definition = function(object, complete=FALSE, Day=FALSE){
+          definition = function(object, complete=FALSE, day=FALSE){
 
           }
           )
 
 setMethod('as.data.tableI',
           signature = (object='ProdPVPS'),
-          definition = function(object, complete=FALSE, Day=FALSE){
+          definition = function(object, complete=FALSE, day=FALSE){
 
           }
           )
