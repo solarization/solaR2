@@ -1,4 +1,4 @@
-fCompI <- function(sol, G0I, compD,
+fCompI <- function(sol, compD, G0I,
                    corr = 'EKDh', f,
                    filterG0 = TRUE,
                    b0.col = 'B0', d0.col = 'D0'){
@@ -68,13 +68,13 @@ fCompI <- function(sol, G0I, compD,
 
         } else { 
 
-            if(missing(d0.col) || missing(b0.col)){
-                stop('Missing the name of the columns of D0 or B0')
-            }
-            if(!(d0.col %in% names(getData(G0I)))){
-                stop('G0 does not have the column "', d0.col, '"')}
-            if(!(b0.col %in% names(getData(G0I)))){
-                stop('G0 does not have the column "', b0.col, '"')}
+            ##if(missing(d0.col) || missing(b0.col)){
+                ##stop('Missing the name of the columns of D0 or B0')
+            ##}
+            ##if(!(d0.col %in% names(getData(G0I)))){
+                ##stop('G0 does not have the column "', d0.col, '"')}
+            ##if(!(b0.col %in% names(getData(G0I)))){
+                ##stop('G0 does not have the column "', b0.col, '"')}
             G0 <- getG0(G0I)
             D0 <- getData(G0I)[[d0.col]]
             B0 <- getData(G0I)[[b0.col]]

@@ -6,8 +6,9 @@ setMethod('as.data.tableI',
           signature=(object='Sol'),
           definition=function(object, complete=FALSE, day=FALSE){
               sol <- copy(object)
+              ind.rep <- indexRep(sol)
               solI <- sol@solI
-              solD <- sol@solD
+              solD <- sol@solD[ind.rep]
               if(complete){
                   data <- data.table(solI, solD[, Dates := NULL])
               } else{data <- solI}
@@ -25,13 +26,16 @@ setMethod('as.data.tableI',
           signature = (object='G0'),
           definition = function(object, complete=FALSE, day=FALSE){
               g0 <- copy(object)
+              ind.rep <- indexRep(g0)
               G0I <- g0@G0I
               solI <- g0@solI
-              solD <- g0@solD
+              solD <- g0@solD[ind.rep]
+              Ta <- g0@Ta
               if(complete){
                   data <- data.table(solI,
                                      G0I[, Dates := NULL],
-                                     solD[, Dates := NULL]) 
+                                     solD[, Dates := NULL],
+                                     Ta[, Dates := NULL]) 
               } else{    
                   G0I[, Kt := NULL]
                   G0I[, Fd := NULL]
@@ -96,7 +100,7 @@ setMethod('as.data.tableD',
               if(complete){
                   data <- data.table(G0D, solD[, Dates := NULL])
               } else {data <- G0d}
-              if(days){
+              if(day){
                   ind <- indexD(object)
                   data[, day := doy(ind)]
                   data[, month := month(ind)]

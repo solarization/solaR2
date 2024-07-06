@@ -58,6 +58,7 @@ fInclin <- function(compI, angGen, iS = 2, alb = 0.2, horizBright = TRUE, HCPV =
     ## Use 0 instead of NA for irradiance values
     result[night] <- 0
     result[, Dates := indexI(compI)]
+    result[, .SD, by = Dates]
     setcolorder(result, c('Dates', names(result)[-length(result)]))
     result
 }
