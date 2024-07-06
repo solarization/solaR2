@@ -152,7 +152,23 @@ setMethod('show',
               cat('Latitude for calculations: ',
                   paste(round(getLat(object, 'deg'),1), 'degrees\n\n'))
               cat('Monthly avarages:\n')
-              print(object@G0dm)
+              print(as.data.tableM(object))
               cat('\nYearly values:\n')
-              print(object@G0y)
+              print(as.data.tableY(object))
+          })
+
+#### Methods for Gef ####
+
+### show ###
+setMethod('show',
+          signature = (object = 'Gef'),
+          definition = function(object){
+              callNextMethod()
+              cat('Mode of tracking: ', object@modeTrk,'\n')
+              if (object@modeTrk=='fixed'){
+                  cat('    Inclination: ', object@angGen$beta, '\n')
+                  cat('    Orientation: ', object@angGen$alfa, '\n')
+              } else {
+                  cat('    Inclination limit:', object@angGen$betaLim, '\n')
+              }
           })
