@@ -38,15 +38,16 @@ calcGef<-function(lat,
     DayOfMonth=c(31,28,31,30,31,30,31,31,30,31,30,31) ###OJO
 
     d <- truncDay(inclin$Dates)
+    by <- radHoriz@sample
     
-    Gefdm <-  inclin[, .(Bod = mean(Bo, na.rm = TRUE)/1000,
-                         Bnd = mean(Bn, na.rm = TRUE)/1000,
-                         Gd = mean(G, na.rm = TRUE)/1000,
-                         Dd = mean(D, na.rm = TRUE)/1000,
-                         Gefd = mean(Gef, na.rm = TRUE)/1000,
-                         Defd = mean(Def, na.rm = TRUE)/1000,
-                         Befd = mean(Bef, na.rm = TRUE)/1000),
-                     by = .(month(d), year(d))]
+    Gefdm <-  inclin[, .(Bod = P2E(Bo, by)/1000,
+                         Bnd = P2E(Bn, by)/1000,
+                         Gd = P2E(G, by)/1000,
+                         Dd = P2E(D, by)/1000,
+                         Gefd = P2E(Gef, by)/1000,
+                         Defd = P2E(Def, by)/1000,
+                         Befd = P2E(Bef, by)/1000),
+                     by = .(month(truncDay(Dates)), year(truncDay(Dates)))]
     
 
     if(radHoriz@type == 'prom'){
@@ -68,22 +69,32 @@ calcGef<-function(lat,
                           Befd = sum(Befd*DayOfMonth, na.rm = TRUE)),
                       by = year(unique(d))]
     } else{
-        GefD <- inclin[, .(Bod = sum(Bo, na.rm = TRUE),
-                           Bnd = sum(Bn, na.rm = TRUE),
-                           Gd = sum(G, na.rm = TRUE),
-                           Dd = sum(D, na.rm = TRUE),
-                           Gefd = sum(Gef, na.rm = TRUE),
-                           Defd = sum(Def, na.rm = TRUE),
-                           Befd = sum(Bef, na.rm = TRUE)),
-                       by = unique(d)]
+        ##GefD <- inclin[, .(Bod = sum(Bo, na.rm = TRUE),
+          ##                 Bnd = sum(Bn, na.rm = TRUE),
+            ##               Gd = sum(G, na.rm = TRUE),
+              ##             Dd = sum(D, na.rm = TRUE),
+                ##           Gefd = sum(Gef, na.rm = TRUE),
+                  ##         Defd = sum(Def, na.rm = TRUE),
+                    ##       Befd = sum(Bef, na.rm = TRUE)),
+                      ## by = truncDay(Dates)]
+        
+        GefD <-  inclin[, .(Bod = P2E(Bo, by)/1000,
+                             Bnd = P2E(Bn, by)/1000,
+                             Gd = P2E(G, by)/1000,
+                             Dd = P2E(D, by)/1000,
+                             Gefd = P2E(Gef, by)/1000,
+                             Defd = P2E(Def, by)/1000,
+                             Befd = P2E(Bef, by)/1000),
+                         by = truncDay(Dates)]
+        
 
-        Gefy <- inclin[, .(Bod = sum(Bo, na.rm = 1)/1000,
-                           Bnd = sum(Bn, na.rm = 1)/1000,
-                           Gd = sum(G, na.rm = 1)/1000,
-                           Dd = sum(D, na.rm = 1)/1000,
-                           Gefd = sum(Gef, na.rm = 1)/1000,
-                           Defd = sum(Def, na.rm = 1)/1000,
-                           Befd = sum(Bef, na.rm = 1)/1000),
+        Gefy <- GefD[, .(Bod = sum(Bod, na.rm = TRUE)/1000,
+                           Bnd = sum(Bnd, na.rm = TRUE)/1000,
+                           Gd = sum(Gd, na.rm = TRUE)/1000,
+                           Dd = sum(Dd, na.rm = TRUE)/1000,
+                           Gefd = sum(Gefd, na.rm = TRUE)/1000,
+                           Defd = sum(Defd, na.rm = TRUE)/1000,
+                           Befd = sum(Befd, na.rm = TRUE)/1000),
                        by = year(unique(d))]            
     }
 
