@@ -164,6 +164,7 @@ setMethod('show',
           signature = (object = 'Gef'),
           definition = function(object){
               callNextMethod()
+              cat('-----------------\n')
               cat('Mode of tracking: ', object@modeTrk,'\n')
               if (object@modeTrk=='fixed'){
                   cat('    Inclination: ', object@angGen$beta, '\n')
