@@ -54,7 +54,30 @@ setMethod('as.data.tableI',
 setMethod('as.data.tableI',
           signature = (object='Gef'),
           definition = function(object, complete=FALSE, day=FALSE){
-
+              gef <- copy(object)
+              ind.rep <- indexRep(gef)
+              GefI <- gef@GefI
+              G0I <- gef@G0I
+              solI <- gef@solI
+              solD <- gef@solD[ind.rep]
+              Ta <- gef@Ta
+              if(complete){
+                  data <- data.table(solI,
+                                     G0I[, Dates := NULL],
+                                     solD[, Dates := NULL],
+                                     Ta[, Dates := NULL],
+                                     GefI[, Dates := NULL])
+              } else {
+                  data <- GefI[, c('Dates','Gef',
+                                   'Bef', 'Def')]
+              }
+              if(day){
+                  ind <- indexI(object)
+                  data[, day := doy(ind)]
+                  data[, month := month(ind)]
+                  data[, year := year(ind)]
+              }
+              return(data)
           }
           )
 
@@ -112,7 +135,23 @@ setMethod('as.data.tableD',
 setMethod('as.data.tableD',
           signature = (object='Gef'),
           definition = function(object, complete=FALSE, day=FALSE){
-              
+              gef <- copy(object)
+              GefD <- gef@GefD
+              G0D <- gef@G0D
+              solD <- gef@solD
+              if(complete){
+                  data <- data.table(GefD,
+                                     G0D[, Dates := NULL],
+                                     solD[, Dates := NULL])
+              } else {data <- GefD[, c('Dates', 'Gefd',
+                                       'Defd', 'Befd')]}
+              if(day){
+                  ind <- indexD(object)
+                  data[, day := doy(ind)]
+                  data[, month := month(ind)]
+                  data[, year := year(ind)]     
+              }
+              return(data)
           }
           )
 
@@ -151,7 +190,18 @@ setMethod('as.data.tableM',
 setMethod('as.data.tableM',
           signature=(object='Gef'),
           definition = function(object, complete=FALSE, day=FALSE){
-
+              gef <- copy(object)
+              Gefdm <- gef@Gefdm
+              G0dm <- gef@G0dm
+              if(complete){
+                  data <- data.table(Gefdm, G0dm[, Dates := NULL])
+              } else {data <- Gefdm}
+              if(day){
+                  ind <- indexD(object)
+                  data[, month := month(ind)]
+                  data[, year := year(ind)]
+              }
+              return(data)
           }
           )
 
@@ -178,10 +228,7 @@ setMethod('as.data.tableY',
               g0 <- copy(object)
               G0y <- g0@G0y
               data <- G0y
-              if(day){
-                  ind <- indexD(g0)
-                  data[, year := year(g0)]
-              }
+              if(day){data[, year := Dates]}
               return(data)
           }
           )
@@ -189,7 +236,14 @@ setMethod('as.data.tableY',
 setMethod('as.data.tableY',
           signature = (object='Gef'),
           definition = function(object, complete=FALSE, day=FALSE){
-
+              gef <- copy(object)
+              Gefy <- gef@Gefy
+              G0y <- gef@G0y
+              if(complete){
+                  data <- data.table(Gefy, G0y[, Dates := NULL])
+              } else {data <- Gefy}
+              if(day){data[, year := Dates]}
+              return(data)
           }
           )
 
