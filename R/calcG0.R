@@ -143,12 +143,14 @@ calcG0 <- function(lat,
               },
               prom={
                   if ("Ta" %in% names(BD@data)) {
-                      data.table(indSol, BD@data$Ta)
+                      data.table(indSol, BD@data$Ta[ind.rep])
                   } else {
                       warning('No temperature information available!')
                   }
               }
               )
+    names(Ta)[1] <- 'Dates'
+    names(Ta)[2] <- 'Ta'
     
 ###Medias mensuales y anuales
     DayOfMonth=c(31,28,31,30,31,30,31,31,30,31,30,31) ###OJO
