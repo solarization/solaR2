@@ -83,8 +83,8 @@ setMethod('getLat',
           definition = function(object, units = 'rad'){
               stopifnot(units %in% c('deg', 'rad'))
               result = switch(units,
-                           rad = d2r(object@lat),
-                           deg = object@lat)
+                              rad = d2r(object@lat),
+                              deg = object@lat)
               return(result)
           })
 
@@ -123,22 +123,6 @@ setMethod('getG0',
               return(result$G0)
           })
 
-### getLat ###
-setMethod('getLat',
-          signature=(object='G0'),
-          definition=function(object, units='rad'){
-            getLat(as(object, 'Sol'), units=units)
-          }
-          )
-
-### indexD ###
-setMethod('indexD',
-          signature=(object='G0'),
-          definition=function(object){
-            indexD(as(object, 'Sol'))
-          }
-          )
-
 ### show ###
 setMethod('show',
           signature = (object = 'G0'),
@@ -173,3 +157,5 @@ setMethod('show',
                   cat('    Inclination limit:', object@angGen$betaLim, '\n')
               }
           })
+
+#### Methods for prodGCPV ####

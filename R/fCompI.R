@@ -1,7 +1,6 @@
 fCompI <- function(sol, compD, G0I,
                    corr = 'EKDh', f,
-                   filterG0 = TRUE,
-                   b0.col = 'B0', d0.col = 'D0'){
+                   filterG0 = TRUE){
     if(!(corr %in% c('EKDh', 'CLIMEDh', 'BRL', 'user', 'none'))){
         warning('Wrong descriptor of correlation Fd-Ktd. Set EKDh.')
         corr <- 'EKDh'
@@ -43,8 +42,8 @@ fCompI <- function(sol, compD, G0I,
             dt <- data.table(Dates = Dates,
                              G0 = G0,
                              Ta = Ta)
-            if(!(missing(b0.col))){dt[, B0 := G0I$b0.col]}
-            if(!(missing(d0.col))){dt[, D0 := G0I$d0.col]}
+            dt[, B0 := G0I$B0]
+            dt[, D0 := G0I$D0]
             G0I <- dt2Meteod(dt, lat)
         }
     
@@ -67,17 +66,9 @@ fCompI <- function(sol, compD, G0I,
             B0 <- G0 - D0
 
         } else { 
-
-            ##if(missing(d0.col) || missing(b0.col)){
-                ##stop('Missing the name of the columns of D0 or B0')
-            ##}
-            ##if(!(d0.col %in% names(getData(G0I)))){
-                ##stop('G0 does not have the column "', d0.col, '"')}
-            ##if(!(b0.col %in% names(getData(G0I)))){
-                ##stop('G0 does not have the column "', b0.col, '"')}
             G0 <- getG0(G0I)
-            D0 <- getData(G0I)[[d0.col]]
-            B0 <- getData(G0I)[[b0.col]]
+            D0 <- getData(G0I)[['D0']]
+            B0 <- getData(G0I)[['B0']]
             ## Filter values: surface irradiation must be lower than
             ## extraterrestial; 
             if (isTRUE(filterG0)) is.na(G0) <- is.na(D0) <- is.na(B0) <- (G0 > Bo0)

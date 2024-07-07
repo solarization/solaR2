@@ -1,4 +1,4 @@
-fCompD <- function(sol, G0d, corr = 'CPR', f, b0.col, d0.col)
+fCompD <- function(sol, G0d, corr = 'CPR', f)
 {
     if(!(corr %in% c('CPR', 'Page', 'LJ', 'EKDd', 'CLIMEDd', 'user', 'none'))){
         warning('Wrong descriptor of correlation Fd-Ktd. Set CPR.')
@@ -19,8 +19,6 @@ fCompD <- function(sol, G0d, corr = 'CPR', f, b0.col, d0.col)
         dt <- data.table(Dates = Dates,
                          G0 = G0,
                          Ta = Ta)
-        if(!(missing(b0.col))){dt[, B0 := G0d$b0.col]}
-        if(!(missing(d0.col))){dt[, D0 := G0d$d0.col]}
         G0d <- dt2Meteod(dt, lat)
     }  
 
@@ -45,16 +43,9 @@ fCompD <- function(sol, G0d, corr = 'CPR', f, b0.col, d0.col)
     }
     ### the Direct and Difuse data is given
     else {
-        if(missing(d0.col) || missing(b0.col)){
-            stop('Missing the name of the columns of D0d or B0d')
-        }
-        if(!(d0.col %in% names(getData(G0d)))){
-            stop('G0d does not have the column "', d0.col, '"')}
-        if(!(b0.col %in% names(getData(G0d)))){
-            stop('G0d does not have the column "', b0.col, '"')}
         G0 <- getData(G0d)$G0
-        D0d <- getData(G0d)[[d0.col]]
-        B0d <- getData(G0d)[[b0.col]]
+        D0d <- getData(G0d)[['D0']]
+        B0d <- getData(G0d)[['B0']]
         Fd <- D0d/G0
         Kt <- G0/Bo0d
     }

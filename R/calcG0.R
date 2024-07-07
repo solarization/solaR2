@@ -39,7 +39,7 @@ calcG0 <- function(lat,
                                 data.frame={
                                     bd.default=list(file='', lat=lat)
                                     bd=modifyList(bd.default, dataRad)
-                                    res <- do.call('dt2Meteo', bd)
+                                    res <- do.call('dt2Meteod', bd)
                                     res
                                 },
                                 zoo={
