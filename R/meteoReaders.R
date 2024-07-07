@@ -48,18 +48,22 @@ readBDd <- function(file, lat,
     bd[, (ta.col) := NULL]
     bd[, Ta := as.numeric(Ta)]
 
-    #names of the rest of the columns
-    cols <- names(bd)[!(names(bd) %in% c('Dates', 'G0', 'Ta'))]
-
+    names0 <- NULL
+    if(!('D0' %in% bd) && !('B0' %in% bd)){
+        names0 <- 'D0'
+        names0[2] <- 'B0'
+    }
+    
     if(keep.cols)
     {
         #keep the rest of the columns but reorder the columns
-        setcolorder(bd, c('Dates', 'G0', 'Ta', cols))
+        setcolorder(bd, c('Dates', 'G0', names0, 'Ta'))
     }
     else
     {
         #erase the rest of the columns
-        bd[, (cols) := NULL]
+        cols <- c('Dates', 'G0', names0, 'Ta')
+        bd <- bd[, ..cols]
     }
 
     setkey(bd, 'Dates')
@@ -115,18 +119,22 @@ readBDi <- function(file, lat,
     bd[, (ta.col) := NULL]
     bd[, Ta := as.numeric(Ta)]
 
-    #names of the rest of the columns
-    cols <- names(bd)[!(names(bd) %in% c('Dates', 'G0', 'Ta'))]
-
+    names0 <- NULL
+    if(!('D0' %in% bd) && !('B0' %in% bd)){
+        names0 <- 'D0'
+        names0[2] <- 'B0'
+    }
+    
     if(keep.cols)
     {
         #keep the rest of the columns but reorder the columns
-        setcolorder(bd, c('Dates', 'G0', 'Ta', cols))
+        setcolorder(bd, c('Dates', 'G0', names0, 'Ta'))
     }
     else
     {
         #erase the rest of the columns
-        bd[, (cols) := NULL]
+        cols <- c('Dates', 'G0', names0, 'Ta')
+        bd <- bd[, ..cols]
     }
     
     setkey(bd, 'Dates')
@@ -166,18 +174,22 @@ dt2Meteod <- function(file, lat, source = '',
     bd[, (ta.col) := NULL]
     bd[, Ta := as.numeric(Ta)]
 
-    #names of the rest of the columns
-    cols <- names(bd)[!(names(bd) %in% c('Dates', 'G0', 'Ta'))]
-
+    names0 <- NULL
+    if(!('D0' %in% bd) && !('B0' %in% bd)){
+        names0 <- 'D0'
+        names0[2] <- 'B0'
+    }
+    
     if(keep.cols)
     {
         #keep the rest of the columns but reorder the columns
-        setcolorder(bd, c('Dates', 'G0', 'Ta', cols))
+        setcolorder(bd, c('Dates', 'G0', names0, 'Ta'))
     }
     else
     {
         #erase the rest of the columns
-        bd[, (cols) := NULL]
+        cols <- c('Dates', 'G0', names0, 'Ta')
+        bd <- bd[, ..cols]
     }
 
     setkey(bd, 'Dates')
@@ -218,18 +230,22 @@ dt2Meteoi <- function(file, lat, source = '',
     bd[, (ta.col) := NULL]
     bd[, Ta := as.numeric(Ta)]
 
-    #names of the rest of the columns
-    cols <- names(bd)[!(names(bd) %in% c('Dates', 'G0', 'Ta'))]
-
+    names0 <- NULL
+    if(!('D0' %in% bd) && !('B0' %in% bd)){
+        names0 <- 'D0'
+        names0[2] <- 'B0'
+    }
+    
     if(keep.cols)
     {
         #keep the rest of the columns but reorder the columns
-        setcolorder(bd, c('Dates', 'G0', 'Ta', cols))
+        setcolorder(bd, c('Dates', 'G0', names0, 'Ta'))
     }
     else
     {
         #erase the rest of the columns
-        bd[, (cols) := NULL]
+        cols <- c('Dates', 'G0', names0, 'Ta')
+        bd <- bd[, ..cols]
     }
 
     setkey(bd, 'Dates')
@@ -268,18 +284,22 @@ dt2Meteom <- function(file, lat, source = '',
     bd[, (ta.col) := NULL]
     bd[, Ta := as.numeric(Ta)]
 
-    #names of the rest of the columns
-    cols <- names(bd)[!(names(bd) %in% c('Dates', 'G0', 'Ta'))]
-
+    names0 <- NULL
+    if(!('D0' %in% bd) && !('B0' %in% bd)){
+        names0 <- 'D0'
+        names0[2] <- 'B0'
+    }
+    
     if(keep.cols)
     {
         #keep the rest of the columns but reorder the columns
-        setcolorder(bd, c('Dates', 'G0', 'Ta', cols))
+        setcolorder(bd, c('Dates', 'G0', names0, 'Ta'))
     }
     else
     {
         #erase the rest of the columns
-        bd[, (cols) := NULL]
+        cols <- c('Dates', 'G0', names0, 'Ta')
+        bd <- bd[, ..cols]
     }
 
     setkey(bd, 'Dates')
