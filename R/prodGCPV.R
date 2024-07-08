@@ -111,7 +111,8 @@ prodGCPV<-function(lat,
         
         prody <- prodDm[, .(Eac = sum(Eac*DayOfMonth, na.rm = TRUE),
                             Edc = sum(Edc*DayOfMonth, na.rm = TRUE),
-                            Yf = sum(Yf*DayOfMonth, na.rm = TRUE))]
+                            Yf = sum(Yf*DayOfMonth, na.rm = TRUE)),
+                        by = year(d)]
     } else {
         GefD <- prodI[, .(Eac = P2E(Pac, by)/1000,
                           Edc = P2E(Pdc, by)/1000,
@@ -123,7 +124,7 @@ prodGCPV<-function(lat,
                      by = year(d)]
     }
 
-    prodDm[, Dates := paste(month.abb[month], 'of', year)]
+    prodDm[, Dates := paste(month.abb[month], year, sep = '. ')]
     prodDm[, c('month', 'year') := NULL]
     setcolorder(prodDm, c('Dates', names(prodDm)[-length(prodDm)]))
     names(prody)[1] <- 'Dates'

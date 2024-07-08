@@ -91,7 +91,7 @@ calcGef<-function(lat,
                        by = year(d)]            
     }
 
-    Gefdm[, Dates := paste(month.abb[month], 'of', year)]
+    Gefdm[, Dates := paste(month.abb[month], year, sep = '. ')]
     Gefdm[, c('month', 'year') := NULL]
     setcolorder(Gefdm, c('Dates', names(Gefdm)[-length(Gefdm)]))
     names(Gefy)[1] <- 'Dates'

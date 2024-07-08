@@ -160,7 +160,7 @@ calcG0 <- function(lat,
                       D0d = mean(D0d, na.rm = 1)/1000,
                       B0d = mean(B0d, na.rm = 1)/1000),
                   by = .(month(Dates), year(Dates))]
-    G0dm[, Dates := paste(month.abb[month], 'of', year)]
+    G0dm[, Dates := paste(month.abb[month], year, sep = '. ')]
     G0dm[, c('month', 'year') := NULL]
     setcolorder(G0dm, c('Dates', names(G0dm)[-length(G0dm)]))
 
