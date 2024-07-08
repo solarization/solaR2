@@ -84,7 +84,31 @@ setMethod('as.data.tableI',
 setMethod('as.data.tableI',
           signature = (object='ProdGCPV'),
           definition = function(object, complete=FALSE, day=FALSE){
-
+              prodgcpv <- copy(object)
+              ind.rep <- indexRep(prodgcpv)
+              prodI <- prodgcpv@prodI
+              GefI <- prodgcpv@GefI
+              G0I <- prodgcpv@G0I
+              solI <- prodgcpv@solI
+              solD <- prodgcpv@solD[ind.rep]
+              Ta <-  prodgcpv@Ta
+              if(complete){
+                  data <- data.table(solI,
+                                     G0I[, Dates := NULL],
+                                     solD[, Dates := NULL],
+                                     Ta[, Dates := NULL],
+                                     GefI[, Dates := NULL],
+                                     prodI[, Dates := NULL])
+              } else {
+                  data <- prodI[, c('Dates', 'Pac', 'Pdc')]
+              }
+              if(day){
+                  ind <- indexI(object)
+                  data[, day := doy(ind)]
+                  data[, month := month(ind)]
+                  data[, year := year(ind)]
+              }
+              return(data)
           }
           )
 
@@ -158,7 +182,26 @@ setMethod('as.data.tableD',
 setMethod('as.data.tableD',
           signature = (object='ProdGCPV'),
           definition = function(object, complete=FALSE, day=FALSE){
-
+              prodgcpv <- copy(object)
+              prodD <- prodgcpv@prodD
+              GefD <- prodgcpv@GefD
+              G0D <- prodgcpv@G0D
+              solD <- prodgcpv@solD
+              if(complete){
+                  data <- data.table(prodD,
+                                     GefD[, Dates := NULL],
+                                     G0D[, Dates := NULL],
+                                     solD[, Dates := NULL]
+                                     )
+              } else { data <- prodD[, c('Dates', 'Eac',
+                                         'Edc', 'Yf')]}
+              if(day){
+                  ind <- indexD(object)
+                  data[, day := doy(ind)]
+                  data[, month := month(ind)]
+                  data[, year := year(ind)]
+              }
+              return(data)
           }
           )
 
@@ -208,7 +251,21 @@ setMethod('as.data.tableM',
 setMethod('as.data.tableM',
           signature = (object='ProdGCPV'),
           definition = function(object, complete=FALSE, day=FALSE){
-
+              prodgcpv <- copy(object)
+              prodDm <- prodgcpv@prodDm
+              Gefdm <- prodgcpv@Gefdm
+              G0dm <- prodgcpv@G0dm
+              if(complete){
+                  data <- data.table(prodDm,
+                                     Gefdm[, Dates := NULL],
+                                     G0dm[, Dates := NULL])
+              } else {data <- prodDm}
+              if(day){
+                  ind <- indexD(object)
+                  data[, month := month(ind)]
+                  data[, year := year(ind)]
+              }
+              return(data)
           }
           )
 
@@ -250,7 +307,17 @@ setMethod('as.data.tableY',
 setMethod('as.data.tableY',
           signature = (object='ProdGCPV'),
           definition = function(object, complete=FALSE, day=FALSE){
-
+              prodgcpv <- copy(object)
+              prody <- prodgcpv@prody
+              Gefy <- prodgcpv@Gefy
+              G0y <- prodgcpv@G0y
+              if(complete){
+                  data <- data.table(prody,
+                                     Gefy[, Dates := NULL],
+                                     G0y[, Dates := NULL])       
+              } else {data <- prody}
+              if(day){data[, year := Dates]}
+              return(data)
           }
           )
 
