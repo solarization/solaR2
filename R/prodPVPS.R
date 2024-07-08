@@ -93,12 +93,50 @@ prodPVPS<-function(lat,
     })
     
     prodI[night,]<-NA
-    prodI[, .SD, by = indexI(radEf)]
+    prodI[, Dates := indexI(radEf)]
+    setcolorder(prodI, c('Dates', names(prodI)[-length(prodI)]))
+    #prodI[, names(prodI), by = indexI(radEf)]
+    #names(prodI)[1] <- 'Dates'
     
 ###Cálculo de valores diarios, mensuales y anuales
     ##Cálculo de valores diarios, mensuales y anuales
     ##=======================================
     DayOfMonth=c(31,28,31,30,31,30,31,31,30,31,30,31) ###OJO
+
+    d <- truncDay(prodI$Dates)
+    d <- unique(d)
+    by <- radEf@sample
+    
+    prodDm <- prodI[, .(Eac = P2E(Pac, by)/1000,
+                        Qd = P2E(Q, by)),
+                    by = .(month(truncDay(Dates)), year(truncDay(Dates)))]
+    prodDm[, Yf := Eac/(Pg/1000)]
+
+    if(radEf@type == 'prom'){
+        prodD <- prodDm[, .(Eac = Eac*1000,
+                            Qd,
+                            Yf),
+                        by = d]
+        prody <- prodDm[, .(Eac = sum(Eac*DayOfMonth, na.rm = TRUE),
+                            Qd = sum(Qd*DayOfMonth, na.rm = TRUE),
+                            Yf = sum(Yf*DayOfMonth, na.rm = TRUE))]
+    } else {
+        prodD <- prodI[, .(Eac = P2E(Pac, by)/1000,
+                           Qd = P2E(Q, by)),
+                       by = truncDay(Dates)]
+        prodD[, Yf := Eac/Pg]
+
+        prody <- prodD[, .(Eac = sum(Eac, na.rm = TRUE)/1000,
+                           Qd = sum(Qd, na.rm = TRUE),
+                           Yf = sum(Yf, na.rm = TRUE))]
+        
+    }
+
+    prodDm[, Dates := paste(month.abb[month], year, sep = '. ')]
+    prodDm[, c('month', 'year') := NULL]
+    setcolorder(prodDm, c('Dates', names(prodDm)[-length(prodDm)]))
+    names(prody)[1] <- 'Dates'
+    names(prodD)[1] <- 'Dates'
     
     ## if (radEf@type=='prom') {
     ##     prodDm=aggregate(prodI[,c('Pac', 'Q')],
