@@ -38,6 +38,7 @@ calcGef<-function(lat,
     DayOfMonth=c(31,28,31,30,31,30,31,31,30,31,30,31) ###OJO
 
     d <- truncDay(inclin$Dates)
+    d <- unique(d)
     by <- radHoriz@sample
     
     Gefdm <-  inclin[, .(Bod = P2E(Bo, by)/1000,
@@ -58,7 +59,7 @@ calcGef<-function(lat,
                            Gefd = Gefd*1000,
                            Defd = Defd*1000,
                            Befd = Befd*1000),
-                       by = unique(d)]
+                       by = d]
 
         Gefy <- Gefdm[, .(Bod = sum(Bod*DayOfMonth, na.rm = TRUE),
                           Bnd = sum(Bnd*DayOfMonth, na.rm = TRUE),
@@ -67,16 +68,8 @@ calcGef<-function(lat,
                           Gefd = sum(Gefd*DayOfMonth, na.rm = TRUE),
                           Defd = sum(Defd*DayOfMonth, na.rm = TRUE),
                           Befd = sum(Befd*DayOfMonth, na.rm = TRUE)),
-                      by = year(unique(d))]
+                      by = year(d)]
     } else{
-        ##GefD <- inclin[, .(Bod = sum(Bo, na.rm = TRUE),
-          ##                 Bnd = sum(Bn, na.rm = TRUE),
-            ##               Gd = sum(G, na.rm = TRUE),
-              ##             Dd = sum(D, na.rm = TRUE),
-                ##           Gefd = sum(Gef, na.rm = TRUE),
-                  ##         Defd = sum(Def, na.rm = TRUE),
-                    ##       Befd = sum(Bef, na.rm = TRUE)),
-                      ## by = truncDay(Dates)]
         
         GefD <-  inclin[, .(Bod = P2E(Bo, by)/1000,
                              Bnd = P2E(Bn, by)/1000,
@@ -95,7 +88,7 @@ calcGef<-function(lat,
                            Gefd = sum(Gefd, na.rm = TRUE)/1000,
                            Defd = sum(Defd, na.rm = TRUE)/1000,
                            Befd = sum(Befd, na.rm = TRUE)/1000),
-                       by = year(unique(d))]            
+                       by = year(d)]            
     }
 
     Gefdm[, Dates := paste(month.abb[month], 'of', year)]
@@ -104,26 +97,6 @@ calcGef<-function(lat,
     names(Gefy)[1] <- 'Dates'
     names(GefD)[1] <- 'Dates'
     
-  #if (radHoriz@type=='prom') {
-    #Gefdm=aggregate(inclin[,c('Bo', 'Bn', 'G', 'D', 'B', 'Gef', 'Def', 'Bef')]/1000,
-      #by=as.yearmon, FUN=P2E, radHoriz@sample) #kWh
-    #names(Gefdm)=paste(names(Gefdm), 'd', sep='')
-
-    #GefD=Gefdm*1000                  #Wh
-    #index(GefD) <- indexD(radHoriz)  ##para que sea compatible con G0D
-    
-    #Gefy=zoo(t(colSums(Gefdm*DayOfMonth)),
-      #unique(year(index(Gefdm))))
-  #} else {
-    #GefD=aggregate(inclin[,c('Bo','Bn', 'G', 'D', 'B', 'Gef', 'Def', 'Bef')],
-      #by=truncDay, FUN=P2E, radHoriz@sample) #Wh
-    #names(GefD)=paste(names(GefD), 'd', sep='')
-
-    #Gefdm=aggregate(GefD/1000, by=as.yearmon, mean, na.rm=1)
-    #Gefy=aggregate(GefD/1000, by=year, sum, na.rm=1)
-  #}
-
-
 ###Resultado antes de sombras
     result0=new('Gef',
                 radHoriz,                           #Gef contains 'G0'
