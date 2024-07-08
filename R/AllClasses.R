@@ -84,10 +84,10 @@ setClass(
 setClass(
          Class='ProdPVPS',
          slots = c(
-           prodD='zoo',                 #aggregate, valores diarios
-           prodDm='zoo',                #aggregate, medias mensuales
-           prody='zoo',                 #aggregate, valores anuales
-           prodI='zoo',                 #resultado de fProd
+           prodD='data.table',                 #aggregate, valores diarios
+           prodDm='data.table',                #aggregate, medias mensuales
+           prody='data.table',                 #aggregate, valores anuales
+           prodI='data.table',                 #resultado de fProd
            Pg='numeric',
            H='numeric',
            pump='list',
@@ -109,7 +109,7 @@ setClass(
            Yf.loess='loess',
            modeShd='character',
            struct='list',
-           distances='data.frame',
+           distances='data.table',
            res='numeric'
            ),
          contains='ProdGCPV',##Resultado de prodGCPV sin sombras (Prod0)
