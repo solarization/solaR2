@@ -57,7 +57,7 @@ setClass(
            modeShd='character',         #modo de sombra
            angGen='list',               # incluye alfa, beta y betaLim
            struct='list',               #dimensiones de la estructura
-           distances='data.frame'       #distancias entre estructuras
+           distances='data.table'       #distancias entre estructuras
            ),
          contains='G0',
          validity=function(object) {return(TRUE)}
@@ -67,10 +67,10 @@ setClass(
 setClass(
          Class='ProdGCPV',
          slots = c(
-           prodD='zoo',                 #aggregate, valores diarios
-           prodDm='zoo',                #aggregate, medias mensuales
-           prody='zoo',                 #aggregate, valores anuales
-           prodI='zoo',                 #resultado de fProd
+           prodD='data.table',                 #aggregate, valores diarios
+           prodDm='data.table',                #aggregate, medias mensuales
+           prody='data.table',                 #aggregate, valores anuales
+           prodI='data.table',                 #resultado de fProd
            module='list',
            generator='list',
            inverter='list',
