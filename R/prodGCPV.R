@@ -89,10 +89,11 @@ prodGCPV<-function(lat,
                             Yf = sum(Yf*DayOfMonth, na.rm = TRUE)),
                         by = year(d)]
     } else {
-        prodD <- prodI[, .(Eac = P2E(Pac, by)/1000,
-                          Edc = P2E(Pdc, by)/1000,
-                          Yf = Eac/Pg),
-                      by = truncDay(Dates)]
+        prodD <- prodI[, .(Eac = P2E(Pac, by),
+                           Edc = P2E(Pdc, by)),
+                       by = truncDay(Dates)]
+        prodD[, Yf := Eac/Pg]
+        
         prody <- prodD[, .(Eac = sum(Eac, na.rm = TRUE)/1000,
                          Edc = sum(Edc, na.rm = TRUE)/1000,
                          Yf = sum(Yf, na.rm = TRUE)),
