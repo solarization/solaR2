@@ -93,7 +93,7 @@ prodGCPV<-function(lat,
                           Edc = P2E(Pdc, by)/1000,
                           Yf = Eac/Pg),
                       by = truncDay(Dates)]
-        prody <- GefD[, .(Eac = sum(Eac, na.rm = TRUE)/1000,
+        prody <- prodD[, .(Eac = sum(Eac, na.rm = TRUE)/1000,
                          Edc = sum(Edc, na.rm = TRUE)/1000,
                          Yf = sum(Yf, na.rm = TRUE)),
                      by = year(d)]
