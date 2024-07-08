@@ -115,7 +115,7 @@ iv <- function(vocn, iscn, vmn, imn,
             warning('Maximum MPP voltage of the inverter has been reached')
         }
     }
-    data.frame(Ta, Tc, Gef, voc, isc, vmpp, impp, vdc, idc)
+    data.table(Ta, Tc, Gef, voc, isc, vmpp, impp, vdc, idc)
 }
 
 fProd <- function(inclin, 
@@ -134,8 +134,8 @@ fProd <- function(inclin,
     ## Extract data from objects
     if (class(inclin)=='Gef') {
         indInclin <- indexI(inclin)
-        Gef <- coredata(inclin@GefI$Gef)
-        Ta <- coredata(inclin@Ta)
+        Gef <- inclin@GefI$Gef
+        Ta <- inclin@Ta$Ta
     } else {
         if (class(inclin)=='zoo') {
             indInclin <- index(inclin)
@@ -219,13 +219,10 @@ fProd <- function(inclin,
 
     ##Potencia AC normalizada al inverter
     Ki <- inverter$Ki
-    if (is.matrix(Ki))
-    { #Ki es una matriz de nueve coeficientes-->dependencia con tensión
+    if (is.matrix(Ki)) { #Ki es una matriz de nueve coeficientes-->dependencia con tensión
         VP <- cbind(Vdc, PdcN)
         PacN <- apply(VP, 1, solvePac, Ki)
-    }
-    else
-    { #Ki es un vector de tres coeficientes-->sin dependencia con la tensión
+    } else { #Ki es un vector de tres coeficientes-->sin dependencia con la tensión
         A <- Ki[3]
         B <- Ki[2] + 1
         C <- Ki[1] - (PdcN)
@@ -246,14 +243,16 @@ fProd <- function(inclin,
     
     
     ## Result
-    resProd <- data.frame(Tc = cell$Tc,
+    resProd <- data.table(Tc = cell$Tc,
                          Voc, Isc,
                          Vmpp, Impp,
                          Vdc, Idc,
                          Pac, Pdc,
                          EffI)
     if (class(inclin) %in% c('Gef', 'zoo')) {
-        result<-zoo(resProd, order.by <- indInclin)
+        ##result<-zoo(resProd, order.by <- indInclin)
+        result <- resProd[, .SD, by=indInclin]
+        names(result)[1] <- 'Dates'
         attr(result, 'generator') <- generator
         attr(result, 'module') <- module
         attr(result, 'inverter') <- inverter
