@@ -118,14 +118,31 @@ char2diff <- function(by){
 
 # sample to hours
 sample2Hours <- function(by){
-  if (is.character(by)) {
-    y <- char2diff(by)
-    return(diff2Hours(y))
-  } else if (inherits(by, 'difftime')) {
-    return(diff2Hours(by))
-  } else {stop('by must be a character or difftime.')}
+    if (is.character(by)) {
+        y <- char2diff(by)
+        return(diff2Hours(y))
+    } else if (inherits(by, 'difftime')) {
+        return(diff2Hours(by))
+    } else {stop('by must be a character or difftime.')}
 }
-  
+
+# leap year
+leapyear <- function(year){
+    if((year %% 4 == 0 && year %% 100 != 0) || (year %% 400 == 0)){
+        DayOfMonth <- c(31,29,31,30,31,30,31,31,30,31,30,31)
+    } else {DayOfMonth <- c(31,28,31,30,31,30,31,31,30,31,30,31)}
+    return(DayOfMonth)
+}
+
+# Day Of Month
+DOM <- function(G0dm){
+        y <- unique(G0dm$year)
+        m <- G0dm$month
+        l <- length(m)
+        DOM <- unlist(lapply(y, leapyear))
+        DOM <- DOM[m[1]:(l+m[1]-1)]
+        return(DOM)
+}
 
 #### Energy ####
 # Power to energy
@@ -133,3 +150,5 @@ P2E <- function(x, by){
     Nm <- 1/sample2Hours(by)
     sum(x, na.rm = 1)/Nm
 }
+
+
