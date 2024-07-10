@@ -35,8 +35,6 @@ calcGef<-function(lat,
     inclin <- fInclin(radHoriz, angGen, iS, alb, horizBright, HCPV)
     
 ###Valores diarios, mensuales y anuales
-    DayOfMonth=c(31,28,31,30,31,30,31,31,30,31,30,31) ###OJO
-
     d <- truncDay(inclin$Dates)
     d <- unique(d)
     by <- radHoriz@sample
@@ -59,8 +57,10 @@ calcGef<-function(lat,
                            Gefd = Gefd*1000,
                            Defd = Defd*1000,
                            Befd = Befd*1000),
-                       by = d]
-
+                      by = d]
+        
+       
+        Gefdm[, DayOfMonth := DOM(Gefdm)]
         Gefy <- Gefdm[, .(Bod = sum(Bod*DayOfMonth, na.rm = TRUE),
                           Bnd = sum(Bnd*DayOfMonth, na.rm = TRUE),
                           Gd = sum(Gd*DayOfMonth, na.rm = TRUE),
@@ -69,6 +69,7 @@ calcGef<-function(lat,
                           Defd = sum(Defd*DayOfMonth, na.rm = TRUE),
                           Befd = sum(Befd*DayOfMonth, na.rm = TRUE)),
                       by = year(d)]
+        Gefdm[, DayOfMonth := NULL]
     } else{
         
         GefD <-  inclin[, .(Bod = P2E(Bo, by)/1000,

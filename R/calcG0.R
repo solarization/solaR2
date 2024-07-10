@@ -153,30 +153,31 @@ calcG0 <- function(lat,
     names(Ta)[2] <- 'Ta'
     
 ###Medias mensuales y anuales
-    DayOfMonth=c(31,28,31,30,31,30,31,31,30,31,30,31) ###OJO
-    
+    ##DayOfMonth=c(31,28,31,30,31,30,31,31,30,31,30,31) ###OJO
+        
 
     G0dm <- compD[, .(G0d = mean(G0d, na.rm = 1)/1000,
                       D0d = mean(D0d, na.rm = 1)/1000,
                       B0d = mean(B0d, na.rm = 1)/1000),
                   by = .(month(Dates), year(Dates))]
-    G0dm[, Dates := paste(month.abb[month], year, sep = '. ')]
-    G0dm[, c('month', 'year') := NULL]
-    setcolorder(G0dm, c('Dates', names(G0dm)[-length(G0dm)]))
 
     if(modeRad == 'prom'){
+        G0dm[, DayOfMonth := DOM(G0dm)]
         G0y <- G0dm[, .(G0d = sum(G0d*DayOfMonth, na.rm = TRUE),
                         D0d = sum(D0d*DayOfMonth, na.rm = TRUE),
                         B0d = sum(B0d*DayOfMonth, na.rm = TRUE)),
                     by = year(compD$Dates)]
+        G0dm[, DayOfMonth := NULL]        
     } else{
         G0y <- compD[, .(G0d = sum(G0d, na.rm = TRUE)/1000,
                          D0d = sum(D0d, na.rm = TRUE)/1000,
                          B0d = sum(B0d, na.rm = TRUE)/1000),
                      by = year(Dates)]
     }
+    G0dm[, Dates := paste(month.abb[month], year, sep = '. ')]
+    G0dm[, c('month', 'year') := NULL]
+    setcolorder(G0dm, c('Dates', names(G0dm)[-length(G0dm)]))
     names(G0y)[1] <- 'Dates'
-    
 
 ###Resultado
     result <- new(Class='G0',

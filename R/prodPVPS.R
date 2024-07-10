@@ -95,14 +95,11 @@ prodPVPS<-function(lat,
     prodI[night,]<-NA
     prodI[, Dates := indexI(radEf)]
     setcolorder(prodI, c('Dates', names(prodI)[-length(prodI)]))
-    #prodI[, names(prodI), by = indexI(radEf)]
-    #names(prodI)[1] <- 'Dates'
     
 ###Cálculo de valores diarios, mensuales y anuales
     ##Cálculo de valores diarios, mensuales y anuales
     ##=======================================
-    DayOfMonth=c(31,28,31,30,31,30,31,31,30,31,30,31) ###OJO
-
+    
     d <- truncDay(prodI$Dates)
     d <- unique(d)
     by <- radEf@sample
@@ -117,9 +114,11 @@ prodPVPS<-function(lat,
                             Qd,
                             Yf),
                         by = d]
+        prodDm[, DayOfMonth := DOM(prodDm)]
         prody <- prodDm[, .(Eac = sum(Eac*DayOfMonth, na.rm = TRUE),
                             Qd = sum(Qd*DayOfMonth, na.rm = TRUE),
                             Yf = sum(Yf*DayOfMonth, na.rm = TRUE))]
+        prodDm[, DayOfMonth := NULL]
     } else {
         prodD <- prodI[, .(Eac = P2E(Pac, by)/1000,
                            Qd = P2E(Q, by)),

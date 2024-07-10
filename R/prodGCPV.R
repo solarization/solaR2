@@ -66,7 +66,6 @@ prodGCPV<-function(lat,
   
     ##Cálculo de valores diarios, mensuales y anuales
   ##=======================================
-    DayOfMonth=c(31,28,31,30,31,30,31,31,30,31,30,31) ###OJO
     Pg=generator$Pg                                   #Wp
     
     d <- truncDay(prodI$Dates)
@@ -83,11 +82,13 @@ prodGCPV<-function(lat,
                             Edc = Edc*1000,
                             Yf),
                         by = d]
-        
+
+        prodDm[, DayOfMonth := DOM(prodDm)]
         prody <- prodDm[, .(Eac = sum(Eac*DayOfMonth, na.rm = TRUE),
                             Edc = sum(Edc*DayOfMonth, na.rm = TRUE),
                             Yf = sum(Yf*DayOfMonth, na.rm = TRUE)),
                         by = year(d)]
+        prodDm[, DayOfMonth := NULL]
     } else {
         prodD <- prodI[, .(Eac = P2E(Pac, by),
                            Edc = P2E(Pdc, by)),
