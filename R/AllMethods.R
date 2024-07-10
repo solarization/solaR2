@@ -162,7 +162,7 @@ setMethod('show',
 
 ### show ###
 setMethod('show',
-          signature = (object= 'ProdGCPV'),
+          signature = (object = 'ProdGCPV'),
           definition = function(object){
               callNextMethod()
               cat('-----------------\n')
@@ -171,4 +171,19 @@ setMethod('show',
               cat('    Modules in parallel: ', object@generator$Nmp, '\n')
               cat('    Nominal power (kWp): ',
                   round(object@generator$Pg/1000, 1), '\n\n')
+          })
+
+#### Methods for prodPVPS ####
+
+### show ###
+setMethod('show',
+          signature = (object = 'ProdPVPS'),
+          definition = function(object){
+              callNextMethod()
+              cat('-----------------\n')
+              cat('Pump:\n')
+              cat('    Qn: ', object@pump$Qn, '\n')
+              cat('    Stages: ', object@pump$stages, '\n')
+              cat('Height (m): ', object@H, '\n')
+              cat('Generator (Wp): ', object@Pg, '\n')
           })
