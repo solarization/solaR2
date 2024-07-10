@@ -115,7 +115,31 @@ setMethod('as.data.tableI',
 setMethod('as.data.tableI',
           signature = (object='ProdPVPS'),
           definition = function(object, complete=FALSE, day=FALSE){
-
+              prodpvps <- copy(object)
+              ind.rep <- indexRep(prodpvps)
+              prodI <- prodpvps@prodI
+              GefI <- prodpvps@GefI
+              G0I <- prodpvps@G0I
+              solI <- prodpvps@solI
+              solD <- prodpvps@solD[ind.rep]
+              Ta <-  prodpvps@Ta
+              if(complete){
+                  data <- data.table(solI,
+                                     G0I[, Dates := NULL],
+                                     solD[, Dates := NULL],
+                                     Ta[, Dates := NULL],
+                                     GefI[, Dates := NULL],
+                                     prodI[, Dates := NULL])
+              } else {
+                  data <- prodI[, c('Dates', 'Pac', 'Pdc')]
+              }
+              if(day){
+                  ind <- indexI(object)
+                  data[, day := doy(ind)]
+                  data[, month := month(ind)]
+                  data[, year := year(ind)]
+              }
+              return(data)
           }
           )
 
@@ -146,7 +170,7 @@ setMethod('as.data.tableD',
               solD <- g0@solD
               if(complete){
                   data <- data.table(G0D, solD[, Dates := NULL])
-              } else {data <- G0d}
+              } else {data <- G0D}
               if(day){
                   ind <- indexD(object)
                   data[, day := doy(ind)]
@@ -208,7 +232,26 @@ setMethod('as.data.tableD',
 setMethod('as.data.tableD',
           signature = (object='ProdPVPS'),
           definition = function(object, complete=FALSE, day=FALSE){
-
+              prodpvps <- copy(object)
+              prodD <- prodpvps@prodD
+              GefD <- prodpvps@GefD
+              G0D <- prodpvps@G0D
+              solD <- prodpvps@solD
+              if(complete){
+                  data <- data.table(prodD,
+                                     GefD[, Dates := NULL],
+                                     G0D[, Dates := NULL],
+                                     solD[, Dates := NULL]
+                                     )
+              } else { data <- prodD[, c('Dates', 'Eac',
+                                         'Qd', 'Yf')]}
+              if(day){
+                  ind <- indexD(object)
+                  data[, day := doy(ind)]
+                  data[, month := month(ind)]
+                  data[, year := year(ind)]
+              }
+              return(data)
           }
           )
 
@@ -272,7 +315,21 @@ setMethod('as.data.tableM',
 setMethod('as.data.tableM',
           signature = (object='ProdPVPS'),
           definition = function(object, complete=FALSE, day=FALSE){
-
+              prodpvps <- copy(object)
+              prodDm <- prodpvps@prodDm
+              Gefdm <- prodpvps@Gefdm
+              G0dm <- prodpvps@G0dm
+              if(complete){
+                  data <- data.table(prodDm,
+                                     Gefdm[, Dates := NULL],
+                                     G0dm[, Dates := NULL])
+              } else {data <- prodDm}
+              if(day){
+                  ind <- indexD(object)
+                  data[, month := month(ind)]
+                  data[, year := year(ind)]
+              }
+              return(data)
           }
           )
 
@@ -324,6 +381,16 @@ setMethod('as.data.tableY',
 setMethod('as.data.tableY',
           signature = (object='ProdPVPS'),
           definition = function(object, complete=FALSE, day=FALSE){
-
+              prodpvps <- copy(object)
+              prody <- prodpvps@prody
+              Gefy <- prodpvps@Gefy
+              G0y <- prodpvps@G0y
+              if(complete){
+                  data <- data.table(prody,
+                                     Gefy[, Dates := NULL],
+                                     G0y[, Dates := NULL])       
+              } else {data <- prody}
+              if(day){data[, year := Dates]}
+              return(data)
           }
           )
