@@ -2,7 +2,7 @@ calcShd<-function(radEf,##class='Gef'
                   modeTrk='fixed',     #c('two','horiz','fixed')
                   modeShd='prom',      #modeShd=c('area','bt','prom')
                   struct=list(), #list(W=23.11, L=9.8, Nrow=2, Ncol=8), 
-                  distances=data.frame() #data.frame(Lew=40, Lns=30, H=0)){
+                  distances=data.table() #data.table(Lew=40, Lns=30, H=0)){
                   )
 {
     stopifnot(is.list(struct), is.data.frame(distances))
@@ -11,11 +11,11 @@ calcShd<-function(radEf,##class='Gef'
     ##Con diferentes modeShd (por definir) podré calcular Gef de diferente forma
     ##Ver tesis de Macagnan
     prom=("prom"  %in%  modeShd)
-    prev <- as.zooI(radEf, complete=TRUE)
+    prev <- as.data.tableI(radEf, complete=TRUE)
     ## Cálculo de sombras
-    sol <- prev[,c('AzS', 'AlS')]
+    sol <- prev[,c('Dates', 'AzS', 'AlS')]
     theta <- prev[,c('Beta', 'Alfa', 'cosTheta')]
-    AngGen <- CBIND(sol, theta, index=indexI(radEf))
+    AngGen <- data.table(sol, theta)
     Shd<-fSombra(AngGen, distances, struct, modeTrk, prom)
     FS=coredata(Shd)
     ## Cálculo de irradiancia
