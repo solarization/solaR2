@@ -196,7 +196,7 @@ dt2Meteod <- function(file, lat, source = '',
     result <- new(Class = 'Meteo',
                   lat = lat,
                   data = bd,
-                  type = 'bdI',
+                  type = 'bd',
                   source = source)
 }
 
@@ -252,7 +252,7 @@ dt2Meteoi <- function(file, lat, source = '',
     result <- new(Class = 'Meteo',
                   lat = lat,
                   data = bd,
-                  type = 'bd',
+                  type = 'bdI',
                   source = source)
 }
 
@@ -306,7 +306,7 @@ dt2Meteom <- function(file, lat, source = '',
     result <- new(Class = 'Meteo',
                   lat = lat,
                   data = bd,
-                  type = 'bdM',
+                  type = 'prom',
                   source = source)
 }
 
