@@ -1,5 +1,5 @@
 fSolI <- function(solD, sample = 'hour', BTi,
-                  keep.night = TRUE, et = TRUE)
+                  keep.night = TRUE, et = TRUE, method = 'michalsky')
 {
     #Solar constant
     Bo <- 1367
@@ -8,20 +8,19 @@ fSolI <- function(solD, sample = 'hour', BTi,
         d <- solD$Dates
         BTi <- fBTi(d, sample)
     }
-
-    BTi <- data.table(Dates = as.IDate(BTi),
-                      Times = as.ITime(BTi))
+    x <- as.Date(BTi)
+    rep <- cumsum(c(1, diff(x) != 0))
 
     #Select the values of solD that are include in BTi
-    sun <- solD[BTi]
+    sun <- solD[rep]
+    Times <- as.ITime(BTi)
     sun[, Dates := as.POSIXct(Dates, Times, tz = 'UTC')]
-    sun[, Times := NULL]
     setkeyv(sun, c('Dates'))
 
-    d <- unique(BTi$Dates)
+    d <- unique(truncDay(BTi))
 
     #solar time
-    sun[, w := sunHour(d, BTi, EoT = et)]
+    sun[, w := sunHour(d, BTi, EoT = et, method = method, ET = EoT)]
 
     #classify night elements
     sun[, night := abs(w) >= abs(ws)]
@@ -36,10 +35,10 @@ fSolI <- function(solD, sample = 'hour', BTi,
     sun[, AlS := asin(cosThzS)]
     
     #azimuth
-    sun[, cosAzS := azimuth(d, lat, BTi, sample,
+    sun[, AzS := azimuth(d, lat, BTi, sample,
                             decl = decl, 
                             w = w,
-                            AlS = AlS)]
+                            cosThzS = cosThzS)]
 
     #Extraterrestrial irradiance
     sun[, Bo0 := Bo * eo * cosThzS]
