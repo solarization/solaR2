@@ -2,14 +2,14 @@ fSombraEst<-function(angGen, distances, struct)
 {
     stopifnot(is.list(struct),is.data.frame(distances))
     ## Preparo datos de partida
-    distances=distances/struct$L
-    Alfa=coredata(angGen$Alfa)
-    Beta=coredata(angGen$Beta)
-    AlS=coredata(angGen$AlS)
-    AzS=coredata(angGen$AzS)
-    cosTheta=coredata(angGen$cosTheta)
-    h=distances$H                   #Debe estar previamente normalizada
-    d=distances$D                   
+    dist <- with(struct, distances/L)
+    Alfa <- angGen$Alfa
+    Beta <- angGen$Beta
+    AlS <- angGen$AlS
+    AzS <- angGen$AzS
+    cosTheta <- angGen$cosTheta
+    h <- dist$H                   #Debe estar previamente normalizada
+    d <- dist$D                   
     ## Cálculos
     s=cos(Beta)+cos(Alfa-AzS)*(sin(Beta)+h)/tan(AlS)
     FC=sin(AlS)/sin(Beta+AlS)
@@ -18,8 +18,7 @@ fSombraEst<-function(angGen, distances, struct)
     ## Resultado
     FS=FS*(FS>0)
     FS[FS>1]<-1
-    return(zoo(FS, index(angGen)))
-
+    return(FS)
 }
 
 
