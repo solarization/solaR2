@@ -1,21 +1,22 @@
 test_that("declination in certain days", {
     promDays <- c(17, 14, 15, 15, 15, 10, 18, 18, 18, 19, 18, 13)
     days <- paste("2023", 1:12, promDays, sep = "-")
-    decl_expected <- c(-0.36271754, -0.22850166, -0.03191616, 0.17531794, 0.33246485, 0.40257826, 0.36439367, 0.22407398, 0.02730595, -0.17900474, -0.33862399, -0.40478283)
-    expect_equal(declination(days), decl_expected, tolerance = 5e-2)
+    decl_expected <- read.csv('solD.csv')$decl
+    expect_equal(declination(days), decl_expected)
 })
 
 test_that("eccentricity in certain days", {
     promDays <- c(17, 14, 15, 15, 15, 10, 18, 18, 18, 19, 18, 13)
     days <- paste("2023", 1:12, promDays, sep = "-")
-    eccen_expected <- c(1.031597011, 1.023584222, 1.009655811, 0.9922617841, 0.9774306591, 0.969234456, 0.9683222212, 0.9774306591, 0.9928151334, 1.010197561, 1.0243677, 1.03142846)
-    expect_equal(eccentricity(days), eccen_expected, tolerance = 5e-2)
+    eccen_expected <- read.csv('solD.csv')$eo
+    expect_equal(eccentricity(days), eccen_expected)
 })
 
 test_that("equation of time in certain days",{
     promDays <- c(17, 14, 15, 15, 15, 10, 18, 18, 18, 19, 18, 13)
     days <- paste("2023", 1:12, promDays, sep = "-")
-    eot_expected <- c(-10.43576706, -14.09002583, -8.738887764, 0.1729562815, 3.315238963, 0.02486676242, -5.993574547, -2.815736959, 7.484636357, 15.69229884, 13.45701554, 4.08646007)
+    eot_expected <- read.csv('solD.csv')$EoT
+    eot_expected <- r2h(eot_expected*60)
     expect_equal(eot(days), eot_expected)
 })
 
@@ -23,34 +24,37 @@ test_that("sunrise angle in certain days",{
     promDays <- c(17, 14, 15, 15, 15, 10, 18, 18, 18, 19, 18, 13)
     days <- paste("2023", 1:12, promDays, sep = "-")
     lat <- 37.2
-    sun_expected <- c(-1.279346, -1.394509, -1.542589, -1.701939, -1.833257, -1.899013, -1.866667, -1.748141, -1.595423, -1.436782, -1.302937, -1.240372)
-    expect_equal(sunrise(days, lat), sun_expected, tolerance = 5e-2)
+    sun_expected <- read.csv('solD.csv')$ws
+    expect_equal(sunrise(days, lat), sun_expected)
 })
 
 test_that("extraterrestrial irradiation in certain days",{
     promDays <- c(17, 14, 15, 15, 15, 10, 18, 18, 18, 19, 18, 13)
     days <- paste("2023", 1:12, promDays, sep = "-")
     lat <- 37.2
-    bo0d_expected <- c(4747.900, 6152.753, 8037.885, 9884.093, 11095.193, 11569.031, 11274.255, 10216.467,  8553.634, 6600.204, 4982.855, 4292.563)
-    expect_equal(bo0d(days, lat), bo0d_expected, tolerance = 5e-2)
+    bo0d_expected <- read.csv('solD.csv')$Bo0d
+    expect_equal(bo0d(days, lat), bo0d_expected)
 })
 
 test_that("sun hour angle throughout the day",{
-    d <- '2024-05-04'
-    w_expected <- c(-3.12772448, -2.86592509, -2.60412570, -2.34232631, -2.08052693, -1.81872754, -1.55692815, -1.29512876, -1.03332938, -0.77152999, -0.50973060, -0.24793121, 0.01386818, 0.27566756, 0.53746695, 0.79926634, 1.06106573, 1.32286512, 1.58466450, 1.84646389, 2.10826328, 2.37006267, 2.63186205, 2.89366144)
-    expect_equal(sunHour(d), w_expected, tolerance = 5e-2)
+    promDays <- c(17, 14, 15, 15, 15, 10, 18, 18, 18, 19, 18, 13)
+    days <- paste("2023", 1:12, promDays, sep = "-")
+    w_expected <- read.csv('solI.csv')$w
+    expect_equal(sunHour(days), w_expected, tolerance = 3e-5)
 })
 
 test_that("zenith angle throughout the day",{
-    d <- '2024-05-04'
+    promDays <- c(17, 14, 15, 15, 15, 10, 18, 18, 18, 19, 18, 13)
+    days <- paste("2023", 1:12, promDays, sep = "-")
     lat <- 37.2
-    ThzS_expected <- c(-0.59628146, -0.56747377, -0.48850499, -0.36475670, -0.20466214, -0.01913150, 0.17919161, 0.37679181, 0.56020297, 0.71692592, 0.83628025, 0.91013215, 0.93344876, 0.90464107, 0.82567228, 0.70192399, 0.54182944, 0.35629880, 0.15797568, -0.03962452, -0.22303567, -0.37975862, -0.49911295, -0.57296486)
-    expect_equal(zenith(d, lat), ThzS_expected, tolerance = 5e-2)
+    ThzS_expected <- read.csv('solI.csv')$cosThzS
+    expect_equal(zenith(days, lat), ThzS_expected, tolerance = 1e-4)
 })
 
 test_that("azimuth angle throughout the day",{
-    d <- '2024-05-04'
+    promDays <- c(17, 14, 15, 15, 15, 10, 18, 18, 18, 19, 18, 13)
+    days <- paste("2023", 1:12, promDays, sep = "-")
     lat <- 37.2
-    AzS_expected <- c(-1.00000000, -1.00000000, -1.00000000, -0.84082034, -0.57101964, -0.37485594, -0.21407793, -0.06642864, 0.08648233, 0.26872585, 0.52677849, 0.95430969, 1.00000000, 0.89851458, 0.49344768, 0.24695501, 0.06941685, -0.08198947, -0.23016451, -0.39348365, -0.59519369, -0.87639066, -1.00000000, -1.00000000)
-    expect_equal(azimuth(d, lat), AzS_expected, tolerance = 5e-2)
+    AzS_expected <- read.csv('solI.csv')$AzS
+    expect_equal(azimuth(days, lat), AzS_expected, tolerance = 1e-4)
 })
