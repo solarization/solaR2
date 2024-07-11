@@ -4,9 +4,9 @@ fSombra2X<-function(angGen,distances,struct)
     ## Preparo datos de partida	
     P=with(struct,distances/W)
     b=with(struct,L/W)
-    AzS=coredata(angGen$AzS)
-    Beta=coredata(angGen$Beta)
-    AlS=coredata(angGen$AlS)
+    AzS=angGen$AzS
+    Beta=angGen$Beta
+    AlS=angGen$AlS
     ## Cálculos
     d1=abs(P$Lew*cos(AzS)-P$Lns*sin(AzS))
     d2=abs(P$Lew*sin(AzS)+P$Lns*cos(AzS))
@@ -19,5 +19,5 @@ fSombra2X<-function(angGen,distances,struct)
     ## Resultado
     FS=SombraCond*(FS1*FS2*FC)/b
     FS[FS>1]<-1
-    return(zoo(FS, index(angGen)))
+    return(FS)
 }	
