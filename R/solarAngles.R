@@ -128,7 +128,8 @@ bo0d <- function(d, lat, ...,
 
 
 #### Sun hour angle ####
-sunHour <- function(d, BTi, sample = '1 hour', EoT = TRUE)
+sunHour <- function(d, BTi, sample = '1 hour', EoT = TRUE, method = 'michalsky',
+                    ET = eot(d))
 {
     if(missing(BTi)){
         BTi <- fBTi(d = d, sample = sample)
@@ -145,36 +146,91 @@ sunHour <- function(d, BTi, sample = '1 hour', EoT = TRUE)
             Dates <- as.IDate(tt)
         }   
     }
+    if(EoT){EoT <- ET}else{EoT <- 0}
+
+    jd <- as.numeric(julian(BTi, origin = '2000-01-01 12:00:00 UTC'))
+    TO <- hms(BTi)
     
-    TO <- as.numeric(Times)/3600
-    if(EoT){eot <- eot(Dates)
-    } else {eot <- 0}
-    w <- 15 * (TO - 12) + eot/4
-    return(d2r(w))
+    w=switch(method,
+             cooper = h2r(TO-12)+EoT,
+             spencer = h2r(TO-12)+EoT,
+             michalsky = {
+                 meanLong <- (280.460+0.9856474*jd)%%360
+                 meanAnomaly <- (357.528+0.9856003*jd)%%360
+                 eclipLong <- (meanLong +1.915*sin(d2r(meanAnomaly))+0.02*sin(d2r(2*meanAnomaly)))%%360
+                 excen <- 23.439-0.0000004*jd
+                 
+                 sinEclip <- sin(d2r(eclipLong))
+                 cosEclip <- cos(d2r(eclipLong))
+                 cosExcen <- cos(d2r(excen))
+                 
+                 ascension <- r2d(atan2(sinEclip*cosExcen, cosEclip))%%360
+
+                 ##local mean sidereal time, LMST
+                 ##TO has been previously corrected with local2Solar in order
+                 ##to include the longitude, daylight savings, etc.
+                 lmst <- (h2d(6.697375 + 0.0657098242*jd + TO))%%360
+                 w <- (lmst-ascension)
+                 w <- d2r(w + 360*(w < -180) - 360*(w > 180))
+             },
+             strous = {
+                 meanAnomaly  <-  (357.5291 + 0.98560028*jd)%%360
+                 coefC <- c(1.9148, 0.02, 0.0003)
+                 sinC <- sin(outer(1:3, d2r(meanAnomaly), '*'))
+                 C  <-  colSums(coefC*sinC)
+                 trueAnomaly <- (meanAnomaly + C)%%360
+                 eclipLong <- (trueAnomaly + 282.9372)%%360
+                 excen <- 23.435
+                 
+                 sinEclip <- sin(d2r(eclipLong))
+                 cosEclip <- cos(d2r(eclipLong))
+                 cosExcen <- cos(d2r(excen))
+                 
+                 ascension <- r2d(atan2(sinEclip*cosExcen, cosEclip))%%360
+
+                 ##local mean sidereal time, LMST
+                 ##TO has been previously corrected with local2Solar in order
+                 ##to include the longitude, daylight savings, etc.
+                 lmst <- (280.1600+360.9856235*jd)%%360
+                 w <- (lmst-ascension)
+                 w <- d2r(w + 360*(w< -180) - 360*(w>180))
+             }
+             )
+    return(w)
 }
 
 #### zenith angle ####
 zenith <- function(d, lat, BTi, sample = '1 hour',  ...,
-                   decl = declination(BTi, ...),
+                   decl = declination(d, ...),
                    w = sunHour(d, BTi, sample, ...))
 {
+    if(missing(BTi)){BTi <- fBTi(d, sample)}
+    x <- as.Date(BTi)
+    rep <- cumsum(c(1, diff(x) != 0))
     latr <- d2r(lat)
-    zenith <- sin(decl) * sin(latr) +
-        cos(decl) * cos(w) * cos(latr)
+    decl2 <- decl[rep]
+    zenith <- sin(decl2) * sin(latr) +
+        cos(decl2) * cos(w) * cos(latr)
     zenith <- ifelse(zenith > 1, 1, zenith)
     return(zenith)
 }
 
 #### azimuth ####
 azimuth <- function(d, lat, BTi, sample = '1 hour', ...,
-                    decl = declination(BTi, ...),
+                    decl = declination(d, ...),
                     w = sunHour(d, BTi, sample, ...),
-                    AlS = asin(zenith(d, lat, BTi, sample, ...)))
+                    cosThzS = zenith(d, lat, BTi, sample, ...))
 {
     signLat <- ifelse(sign(lat) == 0, 1, sign(lat)) #if the sign of lat is 0, it changes it to 1
+    if(missing(BTi)){BTi <- fBTi(d, sample)}
+    x <- as.Date(BTi)
+    rep <- cumsum(c(1, diff(x) != 0))
     latr <- d2r(lat)
-    azimuth <- signLat * (cos(decl) * cos(w) * sin(latr) -
-                          cos(latr) * sin(decl)) / cos(AlS)
-    azimuth <- ifelse(abs(azimuth) > 1, 1 * sign(azimuth), azimuth)
+    decl2 <- decl[rep]
+    AlS <- asin(cosThzS)
+    cosazimuth <- signLat * (cos(decl2) * cos(w) * sin(latr) -
+                          cos(latr) * sin(decl2)) / cos(AlS)
+    cosazimuth <- ifelse(abs(cosazimuth)>1, sign(cosazimuth), cosazimuth)
+    azimuth <- sign(w)*acos(cosazimuth)
     return(azimuth)
 }
