@@ -48,6 +48,12 @@ t2h <- function(x)
     hour(x)+minute(x)/60+second(x)/3600
 }
 
+#hours minutes and seconds to hours
+hms <- function(x)
+{
+    hour(x)+minute(x)/60+second(x)/3600
+}
+
 #day of the year
 doy <- function(x){
   as.numeric(format(x, '%j'))
