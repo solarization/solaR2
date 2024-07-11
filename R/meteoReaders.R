@@ -1,12 +1,11 @@
 #### monthly means of irradiation ####
 readG0dm <- function(G0dm, lat, Ta = 25,
-                     year = as.numeric(format(Sys.Date(), '%Y')),
+                     year = as.POSIXlt(Sys.Date())$year + 1900,
                      promDays = c(17, 14, 15, 15, 15, 10, 18, 18, 18, 19, 18, 13),
                      source = '')
 {
+    if(missing(lat)){lat <- 0}
     Dates <- as.IDate(paste(year, 1:12, promDays, sep = '-'), tz = 'UTC')
-    G0dm <- as.numeric(G0dm)
-    Ta <- as.numeric(Ta)
     G0dm.dt <- data.table(Dates = Dates,
                           G0 = G0dm,
                           Ta = Ta)
