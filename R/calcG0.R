@@ -21,12 +21,11 @@ calcG0 <- function(lat,
                       bdI = 'BRL' #Correlación entre fd y kt para valores intradiarios
                       )
     }
-
+    
+    if(is(dataRad, 'Meteo')){BD <- dataRad}
+    else{
     BD <- switch(modeRad,
                  bd = {
-                     if (is(dataRad, 'Meteo')) {
-                         dataRad
-                     } else {
                          if (!is.list(dataRad)) dataRad <- list(file=dataRad)
                          switch(class(dataRad$file)[1],
                                 character={
@@ -48,7 +47,7 @@ calcG0 <- function(lat,
                                     res <- do.call('zoo2Meteo', bd)
                                     res
                                 })
-                     }},                #Fin de bd
+                     },                #Fin de bd
                  prom = {
                      if (!is.list(dataRad)) dataRad <- list(G0dm=dataRad)
                      prom.default <- list(G0dm=numeric(), lat=lat)
@@ -92,6 +91,8 @@ calcG0 <- function(lat,
                                 )}}     #Fin de bdI
                  )                      #Fin del switch general
     
+    }
+        
     
 ### Angulos solares y componentes de irradiancia
     if (modeRad=='bdI') {
@@ -153,9 +154,6 @@ calcG0 <- function(lat,
     names(Ta)[2] <- 'Ta'
     
 ###Medias mensuales y anuales
-    ##DayOfMonth=c(31,28,31,30,31,30,31,31,30,31,30,31) ###OJO
-        
-
     G0dm <- compD[, .(G0d = mean(G0d, na.rm = 1)/1000,
                       D0d = mean(D0d, na.rm = 1)/1000,
                       B0d = mean(B0d, na.rm = 1)/1000),

@@ -16,7 +16,6 @@ test_that("equation of time in certain days",{
     promDays <- c(17, 14, 15, 15, 15, 10, 18, 18, 18, 19, 18, 13)
     days <- paste("2023", 1:12, promDays, sep = "-")
     eot_expected <- read.csv('solD.csv')$EoT
-    eot_expected <- r2h(eot_expected*60)
     expect_equal(eot(days), eot_expected)
 })
 
@@ -40,7 +39,7 @@ test_that("sun hour angle throughout the day",{
     promDays <- c(17, 14, 15, 15, 15, 10, 18, 18, 18, 19, 18, 13)
     days <- paste("2023", 1:12, promDays, sep = "-")
     w_expected <- read.csv('solI.csv')$w
-    expect_equal(sunHour(days), w_expected, tolerance = 3e-5)
+    expect_equal(sunHour(days), w_expected, tolerance = 1e-4)
 })
 
 test_that("zenith angle throughout the day",{

@@ -93,7 +93,8 @@ eot <- function(d)
     dn <- yday(d)
     M <- 2 * pi/365.24 * dn
     EoT <- 229.18 * (-0.0334 * sin(M) +
-                         0.04184 * sin(2 * M + 3.5884))
+                     0.04184 * sin(2 * M + 3.5884))
+    EoT <- h2r(EoT/60)
     return(EoT)
 }
 
@@ -104,7 +105,7 @@ sunrise <- function(d, lat, ...,
 {
     cosWs <- -tan(d2r(lat)) * tan(decl)
     #sunrise, negative since it is before noon
-    ws <- suppressWarnings(-acos(cosWs))
+    ws <- -acos(cosWs)
     #Polar day/night
     polar <- which(is.nan(ws))
     ws[polar] <- -pi * (cosWs[polar] < -1) + 0 * (cosWs[polar] > 1)
@@ -133,20 +134,22 @@ sunHour <- function(d, BTi, sample = '1 hour', EoT = TRUE, method = 'michalsky',
 {
     if(missing(BTi)){
         BTi <- fBTi(d = d, sample = sample)
-        Times <- as.ITime(BTi)
-        Dates <- as.IDate(BTi)
     }else {
         if (inherits(BTi, 'data.table')) {
             Times <- as.ITime(BTi$Times)
             Dates <- as.IDate(BTi$Dates)
+            BTi <- as.POSIXct(Dates, Times, tz = 'UTC')
         }
         else {
-            tt <- as.POSIXct(BTi, tz = 'UTC')
-            Times <- as.ITime(tt)
-            Dates <- as.IDate(tt)
+            BTi <- as.POSIXct(BTi, tz = 'UTC')
         }   
     }
-    if(EoT){EoT <- ET}else{EoT <- 0}
+    rep <- cumsum(c(1, diff(BTi) != 0))
+    if(EoT)
+    {
+        EoT <- ET
+        if(length(EoT) != length(BTi)){EoT <- EoT[rep]}
+    }else{EoT <- 0}
 
     jd <- as.numeric(julian(BTi, origin = '2000-01-01 12:00:00 UTC'))
     TO <- hms(BTi)
@@ -208,9 +211,10 @@ zenith <- function(d, lat, BTi, sample = '1 hour',  ...,
     x <- as.Date(BTi)
     rep <- cumsum(c(1, diff(x) != 0))
     latr <- d2r(lat)
-    decl2 <- decl[rep]
-    zenith <- sin(decl2) * sin(latr) +
-        cos(decl2) * cos(w) * cos(latr)
+    if(length(decl) == length(BTi)){decl <- decl}
+    else{decl <- decl[rep]}
+    zenith <- sin(decl) * sin(latr) +
+        cos(decl) * cos(w) * cos(latr)
     zenith <- ifelse(zenith > 1, 1, zenith)
     return(zenith)
 }
@@ -226,10 +230,10 @@ azimuth <- function(d, lat, BTi, sample = '1 hour', ...,
     x <- as.Date(BTi)
     rep <- cumsum(c(1, diff(x) != 0))
     latr <- d2r(lat)
-    decl2 <- decl[rep]
+    if(length(decl) != length(BTi)){decl <- decl[rep]}
     AlS <- asin(cosThzS)
-    cosazimuth <- signLat * (cos(decl2) * cos(w) * sin(latr) -
-                          cos(latr) * sin(decl2)) / cos(AlS)
+    cosazimuth <- signLat * (cos(decl) * cos(w) * sin(latr) -
+                          cos(latr) * sin(decl)) / cos(AlS)
     cosazimuth <- ifelse(abs(cosazimuth)>1, sign(cosazimuth), cosazimuth)
     azimuth <- sign(w)*acos(cosazimuth)
     return(azimuth)

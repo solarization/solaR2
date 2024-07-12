@@ -19,8 +19,8 @@ fSolI <- function(solD, sample = 'hour', BTi,
 
     d <- unique(truncDay(BTi))
 
-    #solar time
-    sun[, w := sunHour(d, BTi, EoT = et, method = method, ET = EoT)]
+    #sun hour angle
+    sun[, w := sunHour(d, BTi, EoT = et, method = method)]
 
     #classify night elements
     sun[, night := abs(w) >= abs(ws)]
