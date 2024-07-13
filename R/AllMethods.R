@@ -187,3 +187,29 @@ setMethod('show',
               cat('Height (m): ', object@H, '\n')
               cat('Generator (Wp): ', object@Pg, '\n')
           })
+
+#### Methods for Shade ####
+
+### show ###
+
+setMethod('show', 'Shade',
+          function(object){
+              cat('Object of class ', class(object),'\n\n')
+              cat('Source of meteorological information: ')
+              cat(paste(object@type, object@source, sep='-'),'\n\n')
+              cat('Latitude of source: ',
+                  paste(round(getLat(as(object, 'Meteo'),'deg'), 1),
+                        'degrees\n'))
+              cat('Latitude for calculations: ',
+                  paste(round(getLat(object, 'deg'),1), 'degrees\n\n'))
+              cat('Monthly avarages:\n')
+              cat('Dimensions of structure:\n')
+              print(object@struct)
+              cat('Shade calculation mode:\n')
+              print(object@modeShd)
+              cat('Productivity without shadows:\n')
+              print(as(object, 'ProdGCPV'))##Referencia, sin sombras
+              cat('Summary of results:\n')
+              print(summary(as.data.frame(object)))
+          }
+          )
