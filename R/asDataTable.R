@@ -170,7 +170,11 @@ setMethod('as.data.tableD',
               solD <- g0@solD
               if(complete){
                   data <- data.table(G0D, solD[, Dates := NULL])
-              } else {data <- G0D}
+              } else {
+                  G0D[, Fd := NULL]
+                  G0D[, Kt := NULL]
+                  data <- G0D
+              }
               if(day){
                   ind <- indexD(object)
                   data[, day := doy(ind)]
