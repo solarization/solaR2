@@ -399,7 +399,19 @@ zoo2Meteo <- function(file, lat, source = '')
     type <- ifelse(IsDaily, 'bd', 'bdI')
     result <- new(Class = 'Meteo',
                   lat = lat,
-                  data = bd,
+                  data = file,
+                  type = type,
+                  source = source)
+}
+
+dt2Meteo <- function(file, lat, source = '')
+{
+    sample <- median(diff(file$Dates))
+    IsDaily <- as.numeric(sample, units = 'dayes')>=1
+    type <- ifelse(IsDaily, 'bd', 'bdI')
+    result <- new(Class = 'Meteo',
+                  lat = lat,
+                  data = file,
                   type = type,
                   source = source)
 }
