@@ -58,9 +58,8 @@ calcG0 <- function(lat,
                      if (is.list(dataRad)) dataRad <- dataRad$G0dm
                      BTd=fBTd(mode='serie')
                      solD <- fSolD(BTd, lat)
-                     #############
                      G0d <- markovG0(G0dm, solD)
-                     res <- zoo2Meteo(G0d, lat=lat, source='aguiar')
+                     res <- dt2Meteo(G0d, lat=lat, source='aguiar')
                  },                     #Fin de aguiar
                  bdI = {
                      if (is(dataRad, 'Meteo')) {
