@@ -146,8 +146,9 @@ calcG0 <- function(lat,
                       data.table(indSol, BD@data$Ta[ind.rep])
                   } else {
                       warning('No temperature information available!')
-                  }
-              }
+                  }                  
+              },
+              aguiar={data.table(indSol, BD@data$Ta[ind.rep])}
               )
     names(Ta)[1] <- 'Dates'
     names(Ta)[2] <- 'Ta'
@@ -188,4 +189,3 @@ calcG0 <- function(lat,
                   )
     return(result)
 }
-
