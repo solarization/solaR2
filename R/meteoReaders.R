@@ -406,8 +406,13 @@ zoo2Meteo <- function(file, lat, source = '')
 
 dt2Meteo <- function(file, lat, source = '')
 {
+    if(!('Ta' %in% names(file))){
+        file <- data.table(Dates = file[[1]],
+                           G0 = file[[2]],
+                           Ta = 25)
+    }
     sample <- median(diff(file$Dates))
-    IsDaily <- as.numeric(sample, units = 'dayes')>=1
+    IsDaily <- as.numeric(sample, units = 'days')>=1
     type <- ifelse(IsDaily, 'bd', 'bdI')
     result <- new(Class = 'Meteo',
                   lat = lat,
