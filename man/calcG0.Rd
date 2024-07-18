@@ -155,7 +155,7 @@ xyplot(g0)
 ##the bdI argument to calcG0 in order to
 ##test the intradaily correlations of fd-kt
 
-BDi = as.zooI(g0)
+BDi = as.data.tableI(g0)
 BDi$Ta = 25 ##Information about temperature must be contained in BDi
 
 g02 <- calcG0(lat = 37.2, 
