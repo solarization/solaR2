@@ -1,22 +1,26 @@
 setGeneric('mergesolaR', signature='...', function(...){standardGeneric('mergesolaR')})
 
-fooMeteo <- function(object, var){yY <- getData(object)[,var]}
+fooMeteo <- function(object, var){yY <- getData(object)[, .SD,
+                                                        by = Dates,
+                                                        .SDcols = var]}
 
-fooG0 <- function(object, var){yY <- as.zooD(object)[,var]}
+fooG0 <- function(object, var){yY <- as.data.tableD(object)[, .SD,
+                                                            by = Dates,
+                                                            .SDcols = var]}
 
 mergeFunction <- function(..., foo, var){
-  dots <- list(...)
-  dots <- lapply(dots, as, class(dots[[1]])) ##el primer elemento es el que dicta la clase a todos
-  nms0 <- substitute(list(...))
-  if (!is.null(names(nms0))){ ##estamos dentro de do.call
-    nms <- names(nms0[-1])
-  } else { ##llamada convencional
-    nms <- as.character(nms0[-1])
-  }
-  cdata <- sapply(dots, FUN=foo, var, simplify=FALSE)
-  names(cdata) <- nms
-  z <- do.call(merge, cdata)
-  z
+    dots <- list(...)
+    dots <- lapply(dots, as, class(dots[[1]])) ##el primer elemento es el que dicta la clase a todos
+    nms0 <- substitute(list(...))
+    if (!is.null(names(nms0))){ ##estamos dentro de do.call
+        nms <- names(nms0[-1])
+    } else { ##llamada convencional
+        nms <- as.character(nms0[-1])
+    }
+    cdata <- sapply(dots, FUN=foo, var, simplify=FALSE)
+    z <- Reduce(function(x, y) merge(x, y, by =  'Dates', all = TRUE), cdata)
+    names(z)[-1] <- nms
+    z
 }
 
 setMethod('mergesolaR',
