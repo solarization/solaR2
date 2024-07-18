@@ -3,9 +3,11 @@
 ## setMethod('horizonsolaR',
 ##           signature='Meteo',
 ##           definition=function(...){
-##             z <- mergesolaR(..., var='G0')
-##             z <- z-rowMeans(z, na.rm=1)
-##             horizonplot(z, colorkey=TRUE)
+##             z <- mergesolaR(...)
+##             x <- z[, .SD-lapply(.SD, mean, na.rm = T), .SDcols = -'Dates']
+##             x[, Dates := z$Dates]
+##             x <- melt(x, id.vars = 'Dates')
+##             horizonplot(value~Dates, x, colorkey=TRUE)
 ##           }
 ##           )
 
