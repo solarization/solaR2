@@ -132,22 +132,16 @@ sample2Hours <- function(by){
     } else {stop('by must be a character or difftime.')}
 }
 
-# leap year
-leapyear <- function(year){
-    if((year %% 4 == 0 && year %% 100 != 0) || (year %% 400 == 0)){
-        DayOfMonth <- c(31,29,31,30,31,30,31,31,30,31,30,31)
-    } else {DayOfMonth <- c(31,28,31,30,31,30,31,31,30,31,30,31)}
-    return(DayOfMonth)
-}
-
 # Day Of Month
-DOM <- function(G0dm){
-        y <- unique(G0dm$year)
-        m <- G0dm$month
-        l <- length(m)
-        DOM <- unlist(lapply(y, leapyear))
-        DOM <- DOM[m[1]:(l+m[1]-1)]
-        return(DOM)
+DOM <- function(x){
+    if('Dates' %in% names(x)){
+        d1 <- as.Date(x$Dates)
+    }else{
+        d1 <- as.Date(paste(x$year, x$month, 1, sep = '-'))
+    }
+    d2 <- as.Date(sapply(d1, function(x) seq(x, by = '1 month', length = 2)[2]))
+    DOM <- as.numeric(d2-d1)
+    return(DOM)
 }
 
 #### Energy ####
