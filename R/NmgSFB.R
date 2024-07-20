@@ -20,7 +20,7 @@ NmgPVPS <- function(pump, Pg, H, Gd, Ta=30,
                      Pdc=Pnom*G/1000*(1-lambda*(Tcm-25)) #Potencia DC disponible
                      Pac=Pdc*eta})      #Rendimiento del inversor
 
-    res=cbind(Red,Q=0)
+    res=data.table(Red,Q=0)
 
     for (i in seq_along(H)){
         fun=fPump(pump, H[i])
@@ -37,11 +37,11 @@ NmgPVPS <- function(pump, Pg, H, Gd, Ta=30,
         res$Pdc[Cond]=z
     }
 
-    resumen<-aggregate(res[c("G","Pdc","Q")],res[c('Pnom','H')],
-                       FUN=function(x)sum(x,na.rm=1)/Nm)
-
+    resumen <- res[, lapply(.SD, function(x)sum(x, na.rm = 1)/Nm),
+                   by = .(Pnom, H)]
     param=list(pump=pump, Pg=Pg, H=H, Gd=Gd, Ta=Ta,
-    lambda=lambda, TONC=TONC, eta=eta, Gmax=Gmax, t0=t0, Nm=Nm)
+               lambda=lambda, TONC=TONC, eta=eta,
+               Gmax=Gmax, t0=t0, Nm=Nm)
 
 
 ###Abaco con los ejes X comunes
