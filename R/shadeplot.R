@@ -7,18 +7,18 @@ setMethod('as.data.frame', 'Shade',
           }
           )
 
-setMethod('show', 'Shade',
-          function(object){
-            header(object)
-            cat('Dimensions of structure:\n')
-            print(object@struct)
-            cat('Shade calculation mode:\n')
-            print(object@modeShd)
-            cat('Productivity without shadows:\n')
-            print(as(object, 'ProdGCPV'))##Referencia, sin sombras
-            cat('Summary of results:\n')
-            print(summary(as.data.frame(object)))
-          }
+## setMethod('show', 'Shade',
+##           function(object){
+##             header(object)
+##             cat('Dimensions of structure:\n')
+##             print(object@struct)
+##             cat('Shade calculation mode:\n')
+##             print(object@modeShd)
+##             cat('Productivity without shadows:\n')
+##             print(as(object, 'ProdGCPV'))##Referencia, sin sombras
+##             cat('Summary of results:\n')
+##             print(summary(as.data.frame(object)))
+##           }
           )
 
 
