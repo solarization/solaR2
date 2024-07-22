@@ -213,3 +213,13 @@ setMethod('show', 'Shade',
               print(summary(as.data.frame(object)))
           }
           )
+
+### as.data.table ###
+setMethod('as.data.table', 'Shade',
+          function(x, ...){
+              res <- cbind(x@distances,
+                           data.table(FS=x@FS, GRR=x@GRR, Yf=x@Yf)
+                           )
+            return(res)
+          }
+          )

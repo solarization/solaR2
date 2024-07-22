@@ -65,13 +65,29 @@ setMethod('xyplot',
                               yscale.components=yscale.solar,
                               ...){
             data0=as.data.tableI(data, complete=TRUE, day=TRUE)
-            xyplot(x, data0,par.settings = par.settings,
+            xyplot(x, data0,
+                   par.settings = par.settings,
                    xscale.components = xscale.components,
                    yscale.components = yscale.components,
                    strip = strip.custom(strip.levels=c(TRUE, TRUE)), ...)
           }
           )
 
+setMethod('xyplot',
+          signature=c(x='formula', data='Shade'),
+          definition=function(x, data,
+                              par.settings=solaR.theme,
+                              xscale.components=xscale.solar,
+                              yscale.components=yscale.solar,
+                              ...){
+            data0=as.data.table(data)
+            xyplot(x, data0,
+                   par.settings = par.settings,
+                   xscale.components = xscale.components,
+                   yscale.components = yscale.components,
+                   strip = strip.custom(strip.levels=c(TRUE, TRUE)), ...)
+          }
+          )
 
 setMethod('xyplot',
           signature=c(x='Meteo', data='missing'),
