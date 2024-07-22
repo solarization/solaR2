@@ -1,7 +1,7 @@
 fSombra6<-function(angGen, distances, struct, prom=TRUE)
 {
     stopifnot(is.list(struct),
-              is.data.frame(distances))
+              is.data.table(distances))
     ##distances sólo tiene tres distances, así que genero una cuadrícula
     if (dim(distances)[1]==1){ 
         ##Red<-with(distances,

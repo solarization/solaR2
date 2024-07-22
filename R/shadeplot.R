@@ -19,7 +19,7 @@ setMethod('as.data.frame', 'Shade',
 ##             cat('Summary of results:\n')
 ##             print(summary(as.data.frame(object)))
 ##           }
-          )
+##           )
 
 
 setMethod('xyplot',

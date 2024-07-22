@@ -13,7 +13,7 @@ calcShd<-function(radEf,##class='Gef'
     prom=("prom"  %in%  modeShd)
     prev <- as.data.tableI(radEf, complete=TRUE)
     ## Cálculo de sombras
-    sol <- data.table(AzS = acos(prev$cosThzS),
+    sol <- data.table(AzS = prev$AzS,
                       AlS = prev$AlS)
     theta <- radEf@Theta
     AngGen <- data.table(theta, sol)
