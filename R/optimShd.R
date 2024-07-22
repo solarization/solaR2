@@ -40,7 +40,7 @@ optimShd<-function(lat,
                horiz=with(distances,
                           data.table(Lew=seq(Lew[1],Lew[2],by=res),
                                      H=0)),
-               two=with(dist2x,
+               two=with(distances,
                         data.table(
                         expand.grid(Lew=seq(Lew[1],Lew[2],by=res),
                                     Lns=seq(Lns[1],Lns[2],by=res),
