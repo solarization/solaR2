@@ -15,10 +15,11 @@ setMethod('[',
               j <- indexD(x)[nDays]+86400-1
             }
             stopifnot(j>i)
-
             if (!is.null(i)) i <- truncDay(i)
             if (!is.null(j)) j <- truncDay(j)+86400-1
-            x@data <- window(x@data, start=i, end=j, ...) ##zoo method
+            ## d <- as.POSIXct(indexD(x))
+            d <- indexD(x)
+            x@data <- x@data[(d >= i & d <= j)]
             x
           }
           )
@@ -27,74 +28,71 @@ setMethod('[',
 setMethod('[',
           signature='Sol',
           definition=function(x, i, j, ...){
-            if (!missing(i)) {
-              i <- truncDay(i)
+              if (!missing(i)) {
+                  i <- truncDay(i)
               } else {
-                i <- indexD(x)[1]
-                }
-            if (!missing(j)) {
-              j <- truncDay(j)+86400-1##The end is the last second of the day
-              } else {
-                nDays <- length(indexD(x))
-                j <- indexD(x)[nDays]+86400-1
-                }
-            stopifnot(j>i)
-            solI <- x@solI
-            idxI <- index(solI)
-            match <- x@match
-            if (missing(i)){
-              if (missing(j)){
-                wIdx <- seq_along(idxI)
-              } else {
-                wIdx <- which(idxI <= j)
+                  i <- indexD(x)[1]
               }
-            } else {
-              if (missing(j)){
-                wIdx <- which(idxI >= i)
+              if (!missing(j)) {
+                  j <- truncDay(j)+86400-1##The end is the last second of the day
               } else {
-                wIdx <- which(idxI >= i & idxI <= j)
-              }}
-            x@solI <- solI[wIdx,]
-            x@match <- match[wIdx]
-            x@solD <- window(x@solD, start=i, end=j, ...)
-            x
-            }
+                  nDays <- length(indexD(x))
+                  j <- indexD(x)[nDays]+86400-1
+              }
+              stopifnot(j>i)
+              if(!is.null(i)) i <- truncDay(i)
+              if(!is.null(j)) j <- truncDay(j)
+              d1 <- indexD(x)
+              d2 <- indexI(x)
+              x@solD <- x@solD[(d1 >= i & d1 <= j)]
+              x@solI <- x@solI[(d2 >= i & d2 <= j)]
+              x
+          }
           )
 
 setMethod('[',
           signature='G0',
           definition=function(x, i, j, ...){
-            sol <- as(x, 'Sol')[i=i, j=j, ...] ##Sol method
-            meteo <- as(x, 'Meteo')[i=i, j=j, ...] ##Meteo method
-
-            ## The sol methods already includes a procedure to correct the start and end values
-            idx <- indexI(sol)
-            start <- idx[1]
-            end <- idx[length(idx)]
-
-            G0Iw <- window(x@G0I, start=start, end=end)##,...) ##zoo method
-            Taw <- window(x@Ta, start=start, end=end)##,...) ##zoo method
-            G0dw <- window(x@G0D, start=truncDay(start), end=truncDay(end))##, ...) ##zoo method
-
-            G0dmw <- aggregate(G0dw[,c('G0d', 'D0d', 'B0d')], by=as.yearmon,
-                               FUN=function(x, ...)mean(x, na.rm=1)/1000) ##kWh
-            if (x@type=='prom'){
-              G0yw=zoo(t(colSums(G0dmw*DayOfMonth)),
-                unique(year(index(G0dmw))))
-            } else {
-              G0yw=aggregate(G0dw[,c('G0d', 'D0d', 'B0d')], by=year,
-                FUN=function(x, ...)sum(x, na.rm=1)/1000) ##kWh
-            }
-
-            result <- new('G0',
-                          meteo,
-                          sol,
-                          G0D=G0dw,
-                          G0dm=G0dmw,
-                          G0y=G0yw,
-                          G0I=G0Iw,
-                          Ta=Taw)
-            result
+              sol <- as(x, 'Sol')[i=i, j=j, ...] ##Sol method
+              meteo <- as(x, 'Meteo')[i=i, j=j, ...] ##Meteo method
+              i <- indexI(sol)[1]
+              j <- indexI(sol)[length(indexI(sol))]
+              d1 <- indexD(x)
+              d2 <- indexI(x)
+              ## G0Iw <- window(x@G0I, start=start, end=end)
+              G0Iw <- x@G0I[(d2 >= i & d2 <= j)]
+              ## Taw <- window(x@Ta, start=start, end=end)
+              Taw <- x@Ta[(d2 >= i & d2 <= j)]
+              ## G0dw <- window(x@G0D, start=truncDay(start), end=truncDay(end))
+              G0dw <- x@G0D[(d1 >= truncDay(i) & d1 <= truncDay(j))]
+              ## G0dmw <- aggregate(G0dw[,c('G0d', 'D0d', 'B0d')], by=as.yearmon,
+              ##                    FUN=function(x, ...)mean(x, na.rm=1)/1000) ##kWh
+              G0dmw <- G0dw[, lapply(.SD/1000, mean, na.rm= TRUE),
+                            .SDcols = c('G0d', 'D0d', 'B0d'),
+                            by = .(month(Dates), year(Dates))]
+              if (x@type=='prom'){
+                  ## G0yw=zoo(t(colSums(G0dmw*DayOfMonth)),
+                  ##          unique(year(index(G0dmw))))
+                  G0dmw[, DayOfMonth := DOM(G0dmw)]
+                  G0yw <- G0dmw[, lapply(.SD*DayOfMonth, sum, na.rm = TRUE),
+                                .SDcols = c('G0d', 'D0d', 'B0d'),
+                                by = year]
+              } else {
+                  ## G0yw=aggregate(G0dw[,c('G0d', 'D0d', 'B0d')], by=year,
+                  ##                FUN=function(x, ...)sum(x, na.rm=1)/1000) ##kWh
+                  G0yw <- G0dw[, lapply(.SD/1000, sum, na.rm = TRUE),
+                               .SDcols = c('G0d', 'D0d', 'B0d'),
+                               by = year(unique(truncDay(Dates)))]
+              }
+              result <- new('G0',
+                            meteo,
+                            sol,
+                            G0D=G0dw,
+                            G0dm=G0dmw,
+                            G0y=G0yw,
+                            G0I=G0Iw,
+                            Ta=Taw)
+              result
           }
           )
 
