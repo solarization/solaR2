@@ -48,14 +48,14 @@ setMethod('show',
 ### indexD ###
 setMethod('indexD',
           signature = (object = 'Sol'),
-          definition = function(object){object@solD$Dates
+          definition = function(object){as.POSIXct(object@solD$Dates)
           })
 
 
 ### indexI ###
 setMethod('indexI',
           signature = (object = 'Sol'),
-          definition = function(object){object@solI$Dates
+          definition = function(object){as.POSIXct(object@solI$Dates)
           })
 
 ### indexRep###
@@ -104,13 +104,13 @@ setMethod('show', 'Meteo',
 ### indexD ###
 setMethod('indexD',
           signature = (object = 'Meteo'),
-          definition = function(object){object@data$Dates
+          definition = function(object){as.POSIXct(object@data$Dates)
           })
 
 ### indexI ###
 setMethod('indexI',
           signature = (object = 'Meteo'),
-          definition = function(object){object@data$Dates
+          definition = function(object){as.POSIXct(object@data$Dates)
           })
 
 #### Methods for G0 ####
