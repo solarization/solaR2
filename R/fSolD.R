@@ -1,9 +1,9 @@
-fSolD <- function(d, lat, method = 'michalsky'){
+fSolD <- function(lat, BTd, method = 'michalsky'){
     if (abs(lat) > 90){
         lat <- sign(lat) * 90
         warning(paste('Latitude outside acceptable values. Set to', lat))
     }
-    Dates <- unique(as.IDate(d))
+    Dates <- unique(as.IDate(BTd))
 
     #### solarAngles ####
     

@@ -43,6 +43,7 @@ calcGef<-function(lat,
                          Bnd = P2E(Bn, by)/1000,
                          Gd = P2E(G, by)/1000,
                          Dd = P2E(D, by)/1000,
+                         Bd = P2E(B, by)/1000,
                          Gefd = P2E(Gef, by)/1000,
                          Defd = P2E(Def, by)/1000,
                          Befd = P2E(Bef, by)/1000),
@@ -51,12 +52,13 @@ calcGef<-function(lat,
 
     if(radHoriz@type == 'prom'){
         GefD <- Gefdm[, .(Bod = Bod*1000,
-                           Bnd = Bnd*1000,
-                           Gd = Gd*1000,
-                           Dd = Dd*1000,
-                           Gefd = Gefd*1000,
-                           Defd = Defd*1000,
-                           Befd = Befd*1000),
+                          Bnd = Bnd*1000,
+                          Gd = Gd*1000,
+                          Dd = Dd*1000,
+                          Bd = Bd*1000,
+                          Gefd = Gefd*1000,
+                          Defd = Defd*1000,
+                          Befd = Befd*1000),
                       by = d]
         
        
@@ -65,31 +67,33 @@ calcGef<-function(lat,
                           Bnd = sum(Bnd*DayOfMonth, na.rm = TRUE),
                           Gd = sum(Gd*DayOfMonth, na.rm = TRUE),
                           Dd = sum(Dd*DayOfMonth, na.rm = TRUE),
+                          Bd = sum(Bd*DayOfMonth, na.rm = TRUE),
                           Gefd = sum(Gefd*DayOfMonth, na.rm = TRUE),
                           Defd = sum(Defd*DayOfMonth, na.rm = TRUE),
                           Befd = sum(Befd*DayOfMonth, na.rm = TRUE)),
                       by = year(d)]
         Gefdm[, DayOfMonth := NULL]
     } else{
-        
         GefD <-  inclin[, .(Bod = P2E(Bo, by)/1000,
-                             Bnd = P2E(Bn, by)/1000,
-                             Gd = P2E(G, by)/1000,
-                             Dd = P2E(D, by)/1000,
-                             Gefd = P2E(Gef, by)/1000,
-                             Defd = P2E(Def, by)/1000,
-                             Befd = P2E(Bef, by)/1000),
-                         by = truncDay(Dates)]
+                            Bnd = P2E(Bn, by)/1000,
+                            Gd = P2E(G, by)/1000,
+                            Dd = P2E(D, by)/1000,
+                            Bd = P2E(B, by)/1000,
+                            Gefd = P2E(Gef, by)/1000,
+                            Defd = P2E(Def, by)/1000,
+                            Befd = P2E(Bef, by)/1000),
+                        by = truncDay(Dates)]
         
 
         Gefy <- GefD[, .(Bod = sum(Bod, na.rm = TRUE)/1000,
-                           Bnd = sum(Bnd, na.rm = TRUE)/1000,
-                           Gd = sum(Gd, na.rm = TRUE)/1000,
-                           Dd = sum(Dd, na.rm = TRUE)/1000,
-                           Gefd = sum(Gefd, na.rm = TRUE)/1000,
-                           Defd = sum(Defd, na.rm = TRUE)/1000,
-                           Befd = sum(Befd, na.rm = TRUE)/1000),
-                       by = year(d)]            
+                         Bnd = sum(Bnd, na.rm = TRUE)/1000,
+                         Gd = sum(Gd, na.rm = TRUE)/1000,
+                         Dd = sum(Dd, na.rm = TRUE)/1000,
+                         Bd = sum(Bd, na.rm = TRUE)/1000,
+                         Gefd = sum(Gefd, na.rm = TRUE)/1000,
+                         Defd = sum(Defd, na.rm = TRUE)/1000,
+                         Befd = sum(Befd, na.rm = TRUE)/1000),
+                     by = year(d)]            
     }
 
     Gefdm[, Dates := paste(month.abb[month], year, sep = '. ')]
