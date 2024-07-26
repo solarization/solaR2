@@ -117,7 +117,8 @@ prodPVPS<-function(lat,
         prodDm[, DayOfMonth := DOM(prodDm)]
         prody <- prodDm[, .(Eac = sum(Eac*DayOfMonth, na.rm = TRUE),
                             Qd = sum(Qd*DayOfMonth, na.rm = TRUE),
-                            Yf = sum(Yf*DayOfMonth, na.rm = TRUE))]
+                            Yf = sum(Yf*DayOfMonth, na.rm = TRUE)),
+                        by = year]
         prodDm[, DayOfMonth := NULL]
     } else {
         prodD <- prodI[, .(Eac = P2E(Pac, by)/1000,
@@ -127,7 +128,8 @@ prodPVPS<-function(lat,
 
         prody <- prodD[, .(Eac = sum(Eac, na.rm = TRUE)/1000,
                            Qd = sum(Qd, na.rm = TRUE),
-                           Yf = sum(Yf, na.rm = TRUE))]
+                           Yf = sum(Yf, na.rm = TRUE)),
+                       by = year(d)]
         
     }
 
