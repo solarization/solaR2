@@ -68,37 +68,52 @@ prodGCPV<-function(lat,
   ##=======================================
     Pg=generator$Pg                                   #Wp
     
-    d <- truncDay(prodI$Dates)
-    d <- unique(d)
     by <- radEf@sample
+    nms1 <- c('Pac', 'Pdc')
+    nms2 <- c('Eac', 'Edc', 'Yf')
     
-    prodDm <- prodI[, .(Eac = P2E(Pac, by)/1000,
-                        Edc = P2E(Pdc, by)/1000),
-                    by = .(month(truncDay(Dates)), year(truncDay(Dates)))]
+    ## prodDm <- prodI[, .(Eac = P2E(Pac, by)/1000,
+    ##                     Edc = P2E(Pdc, by)/1000),
+    ##                 by = .(month(truncDay(Dates)), year(truncDay(Dates)))]
+    prodDm <- prodI[, lapply(.SD/1000, P2E, by),
+                    .SDcols = nms1,
+                    by = .(month(Dates), year(Dates))]
+    names(prodDm)[-c(1,2)] <- nms2[-3]
     prodDm[, Yf := Eac/(Pg/1000)]
     
     if(radEf@type == 'prom'){
-        prodD <- prodDm[, .(Eac = Eac*1000,
-                            Edc = Edc*1000,
-                            Yf),
-                        by = d]
-
+        prodD <- prodDm[, .SD*1000,
+                        .SDcols = nms2,
+                        by = indexD(radEf)]
+        prodD[, Yf := Yf/1000]
+        
         prodDm[, DayOfMonth := DOM(prodDm)]
-        prody <- prodDm[, .(Eac = sum(Eac*DayOfMonth, na.rm = TRUE),
-                            Edc = sum(Edc*DayOfMonth, na.rm = TRUE),
-                            Yf = sum(Yf*DayOfMonth, na.rm = TRUE)),
-                        by = year(d)]
+        ## prody <- prodDm[, .(Eac = sum(Eac*DayOfMonth, na.rm = TRUE),
+        ##                     Edc = sum(Edc*DayOfMonth, na.rm = TRUE),
+        ##                     Yf = sum(Yf*DayOfMonth, na.rm = TRUE)),
+        ##                 by = year(d)]
+        prody <- prodDm[, lapply(.SD*DayOfMonth, sum, na.rm = TRUE),
+                        .SDcols = nms2,
+                        by = year(indexD(radEf))]
         prodDm[, DayOfMonth := NULL]
     } else {
-        prodD <- prodI[, .(Eac = P2E(Pac, by),
-                           Edc = P2E(Pdc, by)),
+        ## prodD <- prodI[, .(Eac = P2E(Pac, by),
+        ##                    Edc = P2E(Pdc, by)),
+        ##                by = truncDay(Dates)]
+        prodD <- prodI[, lapply(.SD, P2E, by),
+                       .SDcols = nms1,
                        by = truncDay(Dates)]
+        names(prodD)[-1] <- nms2[-3]
         prodD[, Yf := Eac/Pg]
         
-        prody <- prodD[, .(Eac = sum(Eac, na.rm = TRUE)/1000,
-                         Edc = sum(Edc, na.rm = TRUE)/1000,
-                         Yf = sum(Yf, na.rm = TRUE)),
-                     by = year(d)]
+        ## prody <- prodD[, .(Eac = sum(Eac, na.rm = TRUE)/1000,
+        ##                  Edc = sum(Edc, na.rm = TRUE)/1000,
+        ##                  Yf = sum(Yf, na.rm = TRUE)),
+        ##              by = year(d)]
+        prody <- prodD[, lapply(.SD/1000, sum, na.rm = TRUE),
+                       .SDcols = nms2,
+                       by = year(indexD(radEf))]
+        prody[, Yf := Yf * 1000]
     }
     
     prodDm[, Dates := paste(month.abb[month], year, sep = '. ')]

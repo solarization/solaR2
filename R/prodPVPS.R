@@ -100,24 +100,22 @@ prodPVPS<-function(lat,
     ##Cálculo de valores diarios, mensuales y anuales
     ##=======================================
     
-    d <- truncDay(prodI$Dates)
-    d <- unique(d)
     by <- radEf@sample
     
     prodDm <- prodI[, .(Eac = P2E(Pac, by)/1000,
                         Qd = P2E(Q, by)),
-                    by = .(month(truncDay(Dates)), year(truncDay(Dates)))]
+                    by = .(month(Dates), year(Dates))]
     prodDm[, Yf := Eac/(Pg/1000)]
 
     if(radEf@type == 'prom'){
         prodD <- prodDm[, .(Eac = Eac*1000,
                             Qd,
                             Yf),
-                        by = d]
+                        by = indexD(radEf)]
+
         prodDm[, DayOfMonth := DOM(prodDm)]
-        prody <- prodDm[, .(Eac = sum(Eac*DayOfMonth, na.rm = TRUE),
-                            Qd = sum(Qd*DayOfMonth, na.rm = TRUE),
-                            Yf = sum(Yf*DayOfMonth, na.rm = TRUE)),
+        prody <- prodDm[, lapply(.SD*DayOfMonth, sum, na.rm = TRUE),
+                        .SDcols = c('Eac', 'Qd', 'Yf'),
                         by = year]
         prodDm[, DayOfMonth := NULL]
     } else {
@@ -126,10 +124,9 @@ prodPVPS<-function(lat,
                        by = truncDay(Dates)]
         prodD[, Yf := Eac/Pg]
 
-        prody <- prodD[, .(Eac = sum(Eac, na.rm = TRUE)/1000,
-                           Qd = sum(Qd, na.rm = TRUE),
-                           Yf = sum(Yf, na.rm = TRUE)),
-                       by = year(d)]
+        prody <- prodD[, lapply(.SD, sum, na.rm = TRUE),
+                       .SDcols = c('Eac', 'Qd', 'Yf'),
+                       by = year(indexD(radEf))]
         
     }
 
@@ -137,35 +134,7 @@ prodPVPS<-function(lat,
     prodDm[, c('month', 'year') := NULL]
     setcolorder(prodDm, c('Dates', names(prodDm)[-length(prodDm)]))
     names(prody)[1] <- 'Dates'
-    names(prodD)[1] <- 'Dates'
-    
-    ## if (radEf@type=='prom') {
-    ##     prodDm=aggregate(prodI[,c('Pac', 'Q')],
-    ##                      by=as.yearmon, FUN=P2E, radEf@sample) 
-    ##     names(prodDm)=c('Eac', 'Qd')
-    ##     prodDm$Eac=prodDm$Eac/1000          #kWh
-    ##     prodDm$Yf=prodDm$Eac/(Pg/1000)      #kWh/kWp
-        
-    ##     prodD=prodDm
-    ##     prodD$Eac=prodD$Eac*1000         #Wh
-    ##     index(prodD) <- indexD(radEf)    ##para que sea compatible con G0D
-        
-    ##     prody=zoo(t(colSums(prodDm*DayOfMonth)),
-    ##               unique(year(index(prodDm))))
-    ## } else {
-    ##     prodD=aggregate(prodI[,c('Pac', 'Q')],
-    ##                     by=truncDay, FUN=P2E, radEf@sample) #Wh
-    ##     names(prodD)=c('Eac', 'Qd')
-    ##     prodD$Yf=prodD$Eac/Pg
-        
-    ##     prodDm=aggregate(prodD, by=as.yearmon, mean, na.rm=1)
-    ##     prody=aggregate(prodD, by=year, sum, na.rm=1)
-        
-    ##     prodDm$Eac=prodDm$Eac/1000
-    ##     prody$Eac=prody$Eac/1000
-        
-    ## }
-    
+    names(prodD)[1] <- 'Dates'    
     
     result <- new('ProdPVPS',
                   radEf,                  #contains 'Gef'

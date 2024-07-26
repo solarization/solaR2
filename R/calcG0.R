@@ -56,8 +56,8 @@ calcG0 <- function(lat,
                  },                     #Fin de prom
                  aguiar = {
                      if (is.list(dataRad)) dataRad <- dataRad$G0dm
-                     BTd=fBTd(mode='serie')
-                     solD <- fSolD(BTd, lat)
+                     BTd <- fBTd(mode='serie')
+                     solD <- fSolD(lat, BTd)
                      G0d <- markovG0(G0dm, solD)
                      res <- dt2Meteo(G0d, lat=lat, source='aguiar')
                  },                     #Fin de aguiar
@@ -154,22 +154,20 @@ calcG0 <- function(lat,
     names(Ta)[2] <- 'Ta'
     
 ###Medias mensuales y anuales
-    G0dm <- compD[, .(G0d = mean(G0d, na.rm = 1)/1000,
-                      D0d = mean(D0d, na.rm = 1)/1000,
-                      B0d = mean(B0d, na.rm = 1)/1000),
+    nms <- c('G0d', 'D0d', 'B0d')
+    G0dm <- compD[, lapply(.SD/1000, mean, na.rm = TRUE),
+                  .SDcols = nms,
                   by = .(month(Dates), year(Dates))]
-
+    
     if(modeRad == 'prom'){
         G0dm[, DayOfMonth := DOM(G0dm)]
-        G0y <- G0dm[, .(G0d = sum(G0d*DayOfMonth, na.rm = TRUE),
-                        D0d = sum(D0d*DayOfMonth, na.rm = TRUE),
-                        B0d = sum(B0d*DayOfMonth, na.rm = TRUE)),
-                    by = year(compD$Dates)]
+        G0y <- G0dm[, lapply(.SD*DayOfMonth, sum, na.rm = TRUE),
+                    .SDcols = nms,
+                    by = year]
         G0dm[, DayOfMonth := NULL]        
     } else{
-        G0y <- compD[, .(G0d = sum(G0d, na.rm = TRUE)/1000,
-                         D0d = sum(D0d, na.rm = TRUE)/1000,
-                         B0d = sum(B0d, na.rm = TRUE)/1000),
+        G0y <- compD[, lapply(.SD/1000, sum, na.rm = TRUE),
+                     .SDcols = nms,
                      by = year(Dates)]
     }
     G0dm[, Dates := paste(month.abb[month], year, sep = '. ')]
