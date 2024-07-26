@@ -102,7 +102,7 @@ setMethod('[',
               d2 <- indexI(x)
               GefIw <- x@GefI[(d2 >= i & d2 <= j)]
               Thetaw <- x@Theta[(d2 >= i & d2 <= j)]
-              Gefdw <- x@GefD[(d1 >= i & d1 <= j)]
+              Gefdw <- x@GefD[(d1 >= truncDay(i) & d1 <= truncDay(j))]
               nms <- c('Bod', 'Bnd', 'Gd', 'Dd',
                        'Bd', 'Gefd', 'Defd', 'Befd')
               Gefdmw <- Gefdw[, lapply(.SD/1000, mean, na.rm = TRUE),
@@ -153,21 +153,22 @@ setMethod('[',
               d1 <- indexD(x)
               d2 <- indexI(x)
               prodIw <- x@prodI[(d2 >= i & d2 <= j)]
-              prodDw <- x@prodD[(d1 >= i & d1 <= j)]
+              prodDw <- x@prodD[(d1 >= truncDay(i) & d1 <= truncDay(j))]
               prodDmw <- prodDw[, lapply(.SD/1000, mean, na.rm = TRUE),
                                 .SDcols = c('Eac', 'Edc'),
                                 by = .(month(Dates), year(Dates))]
               prodDmw$Yf <- prodDw$Yf
               if (x@type=='prom'){
+                  prodDmw[, DayOfMonth := DOM(prodDmw)]
                   prodyw <- prodDmw[, lapply(.SD*DayOfMonth, sum, na.rm = TRUE),
                                     .SDcols = c('Eac', 'Edc', 'Yf'),
                                     by = year]
+                  prodDmw[, DayOfMonth := NULL]
               } else {
                 prodyw <- prodDw[, lapply(.SD/1000, sum, na.rm = TRUE),
                                  .SDcols = c('Eac', 'Edc', 'Yf'),
                                  by = year]
             }
-              
               prodDmw[, Dates := paste(month.abb[month], year, sep = '. ')]
               prodDmw[, c('month', 'year') := NULL]
               setcolorder(prodDmw, c('Dates', names(prodDmw)[-length(prodDmw)]))
@@ -192,41 +193,23 @@ setMethod('[',
           signature='ProdPVPS',
           definition=function(x, i, j, ...){
             gef <- as(x, 'Gef')[i=i, j=j, ...] ##Gef method
-            ## The sol methods already includes a procedure to correct the start and end values
-            ## idx <- indexI(gef)
-            ## start <- idx[1]
-            ## end <- idx[length(idx)]
             i <- indexI(gef)[1]
             j <- indexI(gef)[length(indexI(gef))]
             d1 <- indexD(x)
             d2 <- indexI(x)
-            ## prodIw <- window(x@prodI, start=start, end=end,...) ##zoo method
             prodIw <- x@prodI[(d2 >= i & d2 <= j)]
-            ## prodDw <- window(x@prodD, start=truncDay(start), end=truncDay(end),...) ##zoo method
-            prodDw <- x@prodD[(d1 >= i & d1 <= j)]
+            prodDw <- x@prodD[(d1 >= truncDay(i) & d1 <= truncDay(j))]
             prodDmw <- prodDw[, .(Eac = Eac/1000,
                                   Qd = Qd,
                                   Yf = Yf),
                               by = .(month(Dates), year(Dates))]
             if (x@type=='prom'){
-                ## prodDmw <- prodDw
-                ## prodDmw$Eac <- prodDw$Eac/1000
-                ## prodyw=zoo(t(colSums(prodDmw*DayOfMonth)),
-                ##            unique(year(index(prodDmw))))
                 prodDmw[, DayOfMonth := DOM(prodDmw)]
                 prodyw <- prodDmw[, lapply(.SD*DayOfMonth, sum, na.rm = TRUE),
                                   .SDcols = c('Eac', 'Qd', 'Yf'),
                                   by = year]
                 prodDmw[, DayOfMonth := NULL]
             } else {
-                ## prodDmw <- aggregate(prodDw,
-                ##                      by=as.yearmon,
-                ##                      mean, na.rm=1)
-                ## prodyw=aggregate(prodDw,
-                ##                  by=year,
-                ##                  sum, na.rm=1) ##kWh
-                ## prodDmw$Eac=prodDmw$Eac/1000
-                ## prodyw$Eac=prodyw$Eac/1000
                 prodyw <- prodDw[, .(Eac = sum(Eac, na.rm = TRUE)/1000,
                                      Qd = sum(Qd, na.rm = TRUE),
                                      Yf = sum(Yf, na.rm = TRUE)),
