@@ -8,25 +8,18 @@ fSolI <- function(solD, sample = 'hour', BTi,
         d <- solD$Dates
         BTi <- fBTi(d, sample)
     }
-    x <- as.Date(BTi)
-    rep <- cumsum(c(1, diff(x) != 0))
-
-    #Select the values of solD that are include in BTi
-    sun <- solD[rep]
-    Times <- as.ITime(BTi)
-    sun[, Dates := as.POSIXct(Dates, Times, tz = 'UTC')]
-    setkeyv(sun, c('Dates'))
-
-    d <- unique(truncDay(BTi))
+    sun <- data.table(Dates = as.IDate(BTi),
+                      Times = as.ITime(BTi))
+    sun <- merge(solD, sun, by = 'Dates')
 
     #sun hour angle
-    sun[, w := sunHour(d, BTi, EoT = et, method = method)]
+    sun[, w := sunHour(Dates, BTi, EoT = et, method = method, ET = EoT)]
 
     #classify night elements
     sun[, night := abs(w) >= abs(ws)]
     
     #zenith angle
-    sun[, cosThzS := zenith(d, lat, BTi,
+    sun[, cosThzS := zenith(Dates, lat, BTi,
                             decl = decl,
                             w = w
                             )]
@@ -35,7 +28,7 @@ fSolI <- function(solD, sample = 'hour', BTi,
     sun[, AlS := asin(cosThzS)]
     
     #azimuth
-    sun[, AzS := azimuth(d, lat, BTi, sample,
+    sun[, AzS := azimuth(Dates, lat, BTi, sample,
                             decl = decl, 
                             w = w,
                             cosThzS = cosThzS)]
@@ -52,6 +45,10 @@ fSolI <- function(solD, sample = 'hour', BTi,
     sun[, EoT := NULL]
     sun[, ws := NULL]
     sun[, Bo0d := NULL]
+
+    #Column Dates with Times
+    sun[, Dates := as.POSIXct(Dates, Times, tz = 'UTC')]
+    sun[, Times := NULL]
     
     #keep night
     if(!keep.night){
