@@ -6,21 +6,16 @@ fCompI <- function(sol, compD, G0I,
         corr <- 'EKDh'
     }
   
-    if(class(sol) != 'Sol'){
-        Dates <- unique(as.IDate(sol$Dates))
-        lat <- unique(sol$lat)
-        N <- length(sol$Dates)
-        BTi <- seq(sol$Dates[1], sol$Dates[N], length.out = N)
-        sample <- format(difftime(BTi[2], BTi[1]))
-        sol <- calcSol(Dates, lat, BTi, sample)
+    if(class(sol)[1] != 'Sol'){
+        sol <- sol[, calcSol(lat = unique(lat), BTi = Dates)]
     }
 
-    
+    lat <- sol@lat
     sample <- sol@sample
     night <- sol@solI$night
     Bo0 <- sol@solI$Bo0
     Dates <- indexI(sol)
-
+    
     ## If instantaneous values are not provided, compD is used instead.
     if (missing(G0I)) { 
 
@@ -34,17 +29,20 @@ fCompI <- function(sol, compD, G0I,
         
     } else { ## Use instantaneous values if provided through G0I
 
-        if(class(G0I) != 'Meteo'){
-            Dates <- unique(as.IDate(G0I$Dates))
-            lat <- unique(G0I$lat)
-            G0 <- G0I$G0
-            Ta <- G0I$Ta
-            dt <- data.table(Dates = Dates,
-                             G0 = G0,
-                             Ta = Ta)
-            dt[, B0 := G0I$B0]
-            dt[, D0 := G0I$D0]
-            G0I <- dt2Meteod(dt, lat)
+        if(class(G0I)[1] != 'Meteo'){
+            ## Dates <- unique(as.IDate(G0I$Dates))
+            ## lat <- unique(G0I$lat)
+            ## G0 <- G0I$G0
+            ## Ta <- G0I$Ta
+            ## dt <- data.table(Dates = Dates,
+            ##                  G0 = G0,
+            ##                  Ta = Ta)
+            dt <- G0I[, .(Dates, G0)]
+            if('lat' %in% names(G0I)){latg <- unique(G0I$lat)}
+            else{latg <- lat}
+            if('B0' %in% names(G0I)){dt[, B0 := G0I$B0]}
+            if('D0' %in% names(G0I)){dt[, D0 := G0I$D0]}
+            G0I <- dt2Meteod(dt, latg)
         }
     
         if (corr!='none'){
