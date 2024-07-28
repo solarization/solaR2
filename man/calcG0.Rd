@@ -171,48 +171,7 @@ g03 <- calcG0(lat = 37.2,
             corr = 'BRL')
 print(g03)
 
-xyplot(fd ~ kt, data = g03, pch = 19, alpha = 0.3)
-
-\dontrun{
-##NREL-MIDC
-##La Ola, Lanai
-##Latitude: 20.76685o North
-##Longitude: 156.92291o West
-##Elevation: 381 meters AMSL
-##Time Zone: -10.0
-
-NRELurl <- 'http://goo.gl/fFEBN'
-
-dat <- read.table(NRELurl, header = TRUE, sep = ',')
-names(dat) <- c('date', 'hour', 'G0', 'B', 'D0', 'Ta')
-
-##B is direct normal. We need direct horizontal.
-dat$B0 <- dat$G0 - dat$D0
-
-##http://www.nrel.gov/midc/la_ola_lanai/instruments.html:
-##The datalogger program runs using Greenwich Mean Time (GMT), 
-##data is converted to Hawaiin Standard Time (HST) after data collection
-idxLocal <- with(dat, as.POSIXct(paste(date, hour), format = '\%m/\%d/\%Y \%H:\%M', tz = 'HST'))
-idx <- local2Solar(idxLocal, lon = -156.9339)
-
-NRELMeteo <- zoo(dat[, c('G0', 'D0', 'B0', 'Ta')], idx)
-
-lat = 20.77
-
-g0 <- calcG0(lat = lat, modeRad = 'bdI', dataRad = NRELMeteo, corr = 'none')
-xyplot(g0)
-xyplot(as.zooI(g0), superpose = TRUE)
-
-g02 <- calcG0(lat = lat, modeRad = 'bdI', dataRad = NRELMeteo, corr = 'BRL')
-xyplot(g02)
-xyplot(as.zooI(g02), superpose = TRUE)
-xyplot(fd ~ kt, data = g02, pch = 19, cex = 0.5, alpha = 0.5)
-
-g03 <- calcG0(lat = lat, modeRad = 'bdI', dataRad = NRELMeteo, corr = 'CLIMEDh')
-xyplot(g03)
-xyplot(as.zooI(g03), superpose = TRUE)
-xyplot(fd ~ kt, data = g03, pch = 19, cex = 0.5, alpha = 0.5)
-}
+xyplot(Fd ~ Kt, data = g03, pch = 19, alpha = 0.3)
 }
 
 \keyword{utilities}
