@@ -87,6 +87,7 @@ setMethod('as.data.tableI',
               prodgcpv <- copy(object)
               ind.rep <- indexRep(prodgcpv)
               prodI <- prodgcpv@prodI
+              Theta <- prodgcpv@Theta
               GefI <- prodgcpv@GefI
               G0I <- prodgcpv@G0I
               solI <- prodgcpv@solI
@@ -98,7 +99,8 @@ setMethod('as.data.tableI',
                                      solD[, Dates := NULL],
                                      Ta[, Dates := NULL],
                                      GefI[, Dates := NULL],
-                                     prodI[, Dates := NULL])
+                                     prodI[, Dates := NULL],
+                                     Theta[, Dates := NULL])
               } else {
                   data <- prodI[, c('Dates', 'Pac', 'Pdc')]
               }
@@ -118,6 +120,7 @@ setMethod('as.data.tableI',
               prodpvps <- copy(object)
               ind.rep <- indexRep(prodpvps)
               prodI <- prodpvps@prodI
+              Theta <- prodpvps@Theta
               GefI <- prodpvps@GefI
               G0I <- prodpvps@G0I
               solI <- prodpvps@solI
@@ -129,7 +132,8 @@ setMethod('as.data.tableI',
                                      solD[, Dates := NULL],
                                      Ta[, Dates := NULL],
                                      GefI[, Dates := NULL],
-                                     prodI[, Dates := NULL])
+                                     prodI[, Dates := NULL],
+                                     Theta[, Dates := NULL])
               } else {
                   data <- prodI[, c('Dates', 'Pac', 'Pdc')]
               }
