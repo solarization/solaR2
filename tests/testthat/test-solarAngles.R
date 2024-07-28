@@ -1,59 +1,36 @@
+solD_expected <- read.csv('solD.csv')
+solI_expected <- read.csv('solI.csv')
+BTd <- fBTd(year = 2023)
+lat <- 37.2
+
 test_that("declination in certain days", {
-    promDays <- c(17, 14, 15, 15, 15, 10, 18, 18, 18, 19, 18, 13)
-    days <- paste("2023", 1:12, promDays, sep = "-")
-    decl_expected <- read.csv('solD.csv')$decl
-    expect_equal(declination(days), decl_expected)
+    expect_equal(declination(BTd), solD_expected$decl)
 })
 
 test_that("eccentricity in certain days", {
-    promDays <- c(17, 14, 15, 15, 15, 10, 18, 18, 18, 19, 18, 13)
-    days <- paste("2023", 1:12, promDays, sep = "-")
-    eccen_expected <- read.csv('solD.csv')$eo
-    expect_equal(eccentricity(days), eccen_expected)
+    expect_equal(eccentricity(BTd), solD_expected$eo)
 })
 
 test_that("equation of time in certain days",{
-    promDays <- c(17, 14, 15, 15, 15, 10, 18, 18, 18, 19, 18, 13)
-    days <- paste("2023", 1:12, promDays, sep = "-")
-    eot_expected <- read.csv('solD.csv')$EoT
-    expect_equal(eot(days), eot_expected)
+    expect_equal(eot(BTd), solD_expected$EoT)
 })
 
 test_that("sunrise angle in certain days",{
-    promDays <- c(17, 14, 15, 15, 15, 10, 18, 18, 18, 19, 18, 13)
-    days <- paste("2023", 1:12, promDays, sep = "-")
-    lat <- 37.2
-    sun_expected <- read.csv('solD.csv')$ws
-    expect_equal(sunrise(days, lat), sun_expected)
+    expect_equal(sunrise(BTd, lat), solD_expected$ws)
 })
 
 test_that("extraterrestrial irradiation in certain days",{
-    promDays <- c(17, 14, 15, 15, 15, 10, 18, 18, 18, 19, 18, 13)
-    days <- paste("2023", 1:12, promDays, sep = "-")
-    lat <- 37.2
-    bo0d_expected <- read.csv('solD.csv')$Bo0d
-    expect_equal(bo0d(days, lat), bo0d_expected)
+    expect_equal(bo0d(BTd, lat), solD_expected$Bo0d)
 })
 
 test_that("sun hour angle throughout the day",{
-    promDays <- c(17, 14, 15, 15, 15, 10, 18, 18, 18, 19, 18, 13)
-    days <- paste("2023", 1:12, promDays, sep = "-")
-    w_expected <- read.csv('solI.csv')$w
-    expect_equal(sunHour(days), w_expected, tolerance = 1e-4)
+    expect_equal(sunHour(BTd), solI_expected$w, tolerance = 1e-4)
 })
 
 test_that("zenith angle throughout the day",{
-    promDays <- c(17, 14, 15, 15, 15, 10, 18, 18, 18, 19, 18, 13)
-    days <- paste("2023", 1:12, promDays, sep = "-")
-    lat <- 37.2
-    ThzS_expected <- read.csv('solI.csv')$cosThzS
-    expect_equal(zenith(days, lat), ThzS_expected, tolerance = 1e-4)
+    expect_equal(zenith(BTd, lat), solI_expected$cosThzS, tolerance = 1e-4)
 })
 
 test_that("azimuth angle throughout the day",{
-    promDays <- c(17, 14, 15, 15, 15, 10, 18, 18, 18, 19, 18, 13)
-    days <- paste("2023", 1:12, promDays, sep = "-")
-    lat <- 37.2
-    AzS_expected <- read.csv('solI.csv')$AzS
-    expect_equal(azimuth(days, lat), AzS_expected, tolerance = 1e-4)
+    expect_equal(azimuth(BTd, lat), solI_expected$AzS, tolerance = 1e-4)
 })
