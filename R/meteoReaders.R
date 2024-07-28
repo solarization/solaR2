@@ -1,5 +1,5 @@
 #### monthly means of irradiation ####
-readG0dm <- function(G0dm, lat, Ta = 25,
+readG0dm <- function(lat, G0dm, Ta = 25,
                      year = as.POSIXlt(Sys.Date())$year + 1900,
                      promDays = c(17, 14, 15, 15, 15, 10, 18, 18, 18, 19, 18, 13),
                      source = '')
@@ -146,50 +146,26 @@ readBDi <- function(file, lat,
 
 
 #### data.frame/table to Meteo (daily)
-dt2Meteod <- function(file, lat, source = '',
-                    format = "%Y-%m-%d", dates.col = 'Dates',
-                    ta.col = 'Ta', g0.col = 'G0', keep.cols = FALSE)
+dt2Meteod <- function(file, lat, source = '')
 {
-    #stops if the arguments are not characters or numerics
-    stopifnot(is.character(dates.col) || is.numeric(dates.col))
-    stopifnot(is.character(ta.col) || is.numeric(ta.col))
-    stopifnot(is.character(g0.col) || is.numeric(g0.col))
-
     #make sure its a data.table
     bd <- data.table(file)
-    
-    #name the dates column by Dates
-    Dates <- bd[[dates.col]]
-    bd[,(dates.col) := NULL]
-    bd[, Dates := as.IDate(Dates, format = format)]
+       
+    nms0 <- NULL
+    if(('D0' %in% bd) && ('B0' %in% bd)){
+        nms0 <- 'D0'
+        nms0[2] <- 'B0'
+    }
 
-    #name the g0 column by G0
-    G0 <- bd[[g0.col]]
-    bd[, (g0.col) := NULL]
-    bd[, G0 := as.numeric(G0)]
-    
-    #name the ta column by Ta
-    Ta <- bd[[ta.col]]
-    bd[, (ta.col) := NULL]
-    bd[, Ta := as.numeric(Ta)]
+    if('Ta' %in% bd){nms0[length(nms0)+1] <- 'Ta'}
 
-    names0 <- NULL
-    if(!('D0' %in% bd) && !('B0' %in% bd)){
-        names0 <- 'D0'
-        names0[2] <- 'B0'
+    if(('TempMin' %in% bd) && ('TempMax' %in% bd)){
+        nms0[length(nms0)+1] <- 'TempMin'
+        nms0[length(nms0)+1] <- 'TempMax'
     }
     
-    if(keep.cols)
-    {
-        #keep the rest of the columns but reorder the columns
-        setcolorder(bd, c('Dates', 'G0', names0, 'Ta'))
-    }
-    else
-    {
-        #erase the rest of the columns
-        cols <- c('Dates', 'G0', names0, 'Ta')
-        bd <- bd[, ..cols]
-    }
+    ##reorder the columns
+    setcolorder(bd, c('Dates', 'G0', nms0))
 
     setkey(bd, 'Dates')
     result <- new(Class = 'Meteo',
@@ -201,52 +177,29 @@ dt2Meteod <- function(file, lat, source = '',
 
 
 #### data.frame/table to Meteo (intradaily) ####
-dt2Meteoi <- function(file, lat, source = '',
-                    format = "%d-%m-%Y %H:%M:%S",
-                    dates.col = 'Dates', ta.col = 'Ta',
-                    g0.col = 'G0', keep.cols = FALSE)
+dt2Meteoi <- function(file, lat, source = '')
 {
-        #stops if the arguments are not characters or numerics
-    stopifnot(is.character(dates.col) || is.numeric(dates.col))
-    stopifnot(is.character(ta.col) || is.numeric(ta.col))
-    stopifnot(is.character(g0.col) || is.numeric(g0.col))
-
-    #make sure its a data.table
+    ##make sure its a data.table
     bd <- data.table(file)
     
-    #name the dates column by Dates
-    Dates <- bd[[dates.col]]
-    bd[,(dates.col) := NULL]
-    bd[, Dates := as.POSIXct(Dates, format = format, tz = 'UTC')]
+    nms0 <- NULL
+    if(('D0' %in% bd) && ('B0' %in% bd)){
+        nms0 <- 'D0'
+        nms0[2] <- 'B0'
+    }
 
-    #name the g0 column by G0
-    G0 <- bd[[g0.col]]
-    bd[, (g0.col) := NULL]
-    bd[, G0 := as.numeric(G0)]
-    
-    #name the ta column by Ta
-    Ta <- bd[[ta.col]]
-    bd[, (ta.col) := NULL]
-    bd[, Ta := as.numeric(Ta)]
+    if('Ta' %in% bd){
+        nms0[length(nms0)+1] <- 'Ta'
+    }
 
-    names0 <- NULL
-    if(!('D0' %in% bd) && !('B0' %in% bd)){
-        names0 <- 'D0'
-        names0[2] <- 'B0'
+    if(('TempMin' %in% bd) && ('TempMax' %in% bd)){
+        nms0[length(nms0)+1] <- 'TempMin'
+        nms0[length(nms0)+1] <- 'TempMax'
     }
     
-    if(keep.cols)
-    {
-        #keep the rest of the columns but reorder the columns
-        setcolorder(bd, c('Dates', 'G0', names0, 'Ta'))
-    }
-    else
-    {
-        #erase the rest of the columns
-        cols <- c('Dates', 'G0', names0, 'Ta')
-        bd <- bd[, ..cols]
-    }
-
+    ##reorder the columns
+    setcolorder(bd, c('Dates', 'G0', nms0))
+   
     setkey(bd, 'Dates')
     result <- new(Class = 'Meteo',
                   lat = lat,
@@ -256,51 +209,29 @@ dt2Meteoi <- function(file, lat, source = '',
 }
 
 #### data.frame/table to Meteo (monthly) ####
-dt2Meteom <- function(file, lat, source = '',
-                      format = '%Y-%m-%d', dates.col = 'Dates',
-                      ta.col = 'Ta', g0.col = 'G0', keep.cols = FALSE)
+dt2Meteom <- function(file, lat, source = '')
 {
-    #stops if the arguments are not characters or numerics
-    stopifnot(is.character(dates.col) || is.numeric(dates.col))
-    stopifnot(is.character(ta.col) || is.numeric(ta.col))
-    stopifnot(is.character(g0.col) || is.numeric(g0.col))
-
-    #make sure its a data.table
+    ##make sure its a data.table
     bd <- data.table(file)
 
-    #name the dates column by Dates
-    Dates <- bd[[dates.col]]
-    bd[, (dates.col) := NULL]
-    bd[, Dates := as.IDate(Dates, format = format)]
+    nms0 <- NULL
+    if(('D0' %in% bd) && ('B0' %in% bd)){
+        nms0 <- 'D0'
+        nms0[2] <- 'B0'
+    }
 
-    #name the g0 column by G0
-    G0 <- bd[[g0.col]]
-    bd[, (g0.col) := NULL]
-    bd[, G0 := as.numeric(G0)]
-    
-    #name the ta column by Ta
-    Ta <- bd[[ta.col]]
-    bd[, (ta.col) := NULL]
-    bd[, Ta := as.numeric(Ta)]
+    if('Ta' %in% bd){
+        nms0[length(nms0)+1] <- 'Ta'
+    }
 
-    names0 <- NULL
-    if(!('D0' %in% bd) && !('B0' %in% bd)){
-        names0 <- 'D0'
-        names0[2] <- 'B0'
+    if(('TempMin' %in% bd) && ('TempMax' %in% bd)){
+        nms0[length(nms0)+1] <- 'TempMin'
+        nms0[length(nms0)+1] <- 'TempMax'
     }
     
-    if(keep.cols)
-    {
-        #keep the rest of the columns but reorder the columns
-        setcolorder(bd, c('Dates', 'G0', names0, 'Ta'))
-    }
-    else
-    {
-        #erase the rest of the columns
-        cols <- c('Dates', 'G0', names0, 'Ta')
-        bd <- bd[, ..cols]
-    }
-
+    ##reorder the columns
+    setcolorder(bd, c('Dates', 'G0', nms0))
+    
     setkey(bd, 'Dates')
     result <- new(Class = 'Meteo',
                   lat = lat,
@@ -369,8 +300,9 @@ Meteoi2Meteod <- function(G0i)
 
     dt <- getData(G0i)
     dt <- dt[, lapply(.SD, mean), by = as.IDate(Dates)]
+    names(dt)[1] <- 'Dates'
     
-    G0d <- dt2Meteod(dt, lat, source, dates.col = 'as.IDate', keep.cols = TRUE)
+    G0d <- dt2Meteod(dt, lat, source)
     return(G0d)
 }
 
@@ -381,14 +313,17 @@ Meteod2Meteom <- function(G0d)
     source <- G0d@source
 
     dt <- getData(G0d)
-    dt <- dt[, lapply(.SD, mean), by = .(month(Dates), year(Dates))]
+    nms <- names(dt)[-1]
+    dt <- dt[, lapply(.SD, mean),
+             .SDcols = nms,
+             by = .(month(Dates), year(Dates))]
     promDays <- c(17, 14, 15, 15, 15, 10, 18, 18, 18, 19, 18, 13)
     dt <- dt[, Dates := as.Date(paste(year, month, promDays, sep = '-'), format = '%Y-%m-%d')]
     dt <- dt[, c('month', 'year') := NULL]
     
-    setcolorder(dt, c('Dates', names(dt)[-length(dt)]))
+    setcolorder(dt, 'Dates')
 
-    G0m <- dt2Meteom(dt, lat, source, keep.cols = TRUE)
+    G0m <- dt2Meteom(dt, lat, source)
     return(G0m)
 }
 
