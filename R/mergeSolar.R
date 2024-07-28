@@ -18,7 +18,10 @@ mergeFunction <- function(..., foo, var){
         nms <- as.character(nms0[-1])
     }
     cdata <- sapply(dots, FUN=foo, var, simplify=FALSE)
-    z <- Reduce(function(x, y) merge(x, y, by =  'Dates', all = TRUE), cdata)
+    z <- cdata[[1]]
+    for (i in 2:length(cdata)){
+        z <- merge(z, cdata[[i]], by = 'Dates', suffixes = c("", paste0('.', i)))
+    }
     names(z)[-1] <- nms
     z
 }
