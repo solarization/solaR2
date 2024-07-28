@@ -26,7 +26,7 @@ calcGef(lat,
         iS = 2, alb = 0.2, horizBright = TRUE, HCPV = FALSE,
         modeShd = '',
         struct = list(),
-        distances = data.frame(),
+        distances = data.table(),
         ...)
 }
 \arguments{
@@ -128,7 +128,7 @@ print(gef2)
 xyplot(gef2)
 
 struct = list(W = 23.11, L = 9.8, Nrow = 2, Ncol = 8)
-distances = data.frame(Lew = 40, Lns = 30, H = 0)
+distances = data.table(Lew = 40, Lns = 30, H = 0)
 
 gefShd <- calcGef(lat = lat, modeRad = 'prom',
                   dataRad = list(G0dm = G0dm, Ta = Ta),
@@ -136,29 +136,6 @@ gefShd <- calcGef(lat = lat, modeRad = 'prom',
                   modeShd = c('area', 'prom'), 
                   struct = struct, distances = distances)
 print(gefShd)
-
-\dontrun{
-##Fixed surface using Aguiar method
-gefAguiar <- calcGef(lat = lat, modeRad = 'aguiar', dataRad = G0dm)
-
-##Two-axis tracker, using the previous result.
-##'gefAguiar' is internally coerced to a 'G0' object.
-
-gefAguiar2 <- calcGef(lat = lat, modeRad = 'prev', dataRad = gefAguiar, modeTrk = 'two')
-print(gefAguiar2)
-xyplot(gefAguiar2)
-
-###Shadows between two-axis trackers, again using the gefAguiar result.
-
-struct = list(W = 23.11, L = 9.8, Nrow = 2, Ncol = 8)
-distances = data.frame(Lew = 40, Lns = 30, H = 0)
-
-gefShdAguiar <- calcGef(lat = lat, modeRad = 'prev', 
-                        dataRad = gefAguiar, modeTrk = 'two', 
-                        modeShd = c('area', 'prom'), 
-                        struct = struct, distances = distances)
-print(gefShdAguiar)
-}
 }
 
 \keyword{utilities}

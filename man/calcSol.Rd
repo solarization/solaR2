@@ -70,19 +70,19 @@ BTd = fBTd(mode = 'serie')
 
 lat = 37.2
 sol = calcSol(lat, BTd[100])
-print(as.zooD(sol))
+print(as.data.tableD(sol))
 
-library(lattice)
-xyplot(as.zooI(sol))
+## library(lattice)
+## xyplot(as.zooI(sol))
 
 solStrous = calcSol(lat, BTd[100], method = 'strous')
-print(as.zooD(solStrous))
+print(as.data.tableD(solStrous))
 
 solSpencer = calcSol(lat, BTd[100], method = 'spencer')
-print(as.zooD(solSpencer))
+print(as.data.tableD(solSpencer))
 
 solCooper = calcSol(lat, BTd[100], method = 'cooper')
-print(as.zooD(solCooper))
+print(as.data.tableD(solCooper))
 }
 
 \keyword{utilities}

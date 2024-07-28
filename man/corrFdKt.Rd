@@ -64,18 +64,26 @@ FdKtBRL(kt, sol)
   \code{\link{fCompI}}
 }
 \examples{
-Ktd = seq(0, 1, .01)
-Monthly = data.frame(Ktd = Ktd)
-Monthly$Page = FdKtPage(Ktd)
-Monthly$LJ = FdKtLJ(Ktd)
+lat = 37.2
+BTd = fBTd(mode = 'prom')
+G0dm = c(2.766, 3.491, 4.494, 5.912, 6.989, 7.742, 7.919, 7.027, 5.369,
+    3.562, 2.814, 2.179)*1000;
+Ta = c(10, 14.1, 15.6, 17.2, 19.3, 21.2, 28.4, 29.9, 24.3, 18.2, 17.2,
+    15.2)
+G0d = readG0dm(lat = lat, G0dm = G0dm, Ta = Ta)
+sol = calcSol(lat = lat, BTd = BTd)
+ktm = Ktm(sol = sol, G0d = G0d)
+Monthly = data.table(Ktm = ktm)
+Monthly$Page = FdKtPage(sol = sol, G0d = G0d)$Fd
+Monthly$LJ = FdKtLJ(sol = sol, G0d = G0d)$Fd
 
-xyplot(Page+LJ~Ktd, data = Monthly,
+xyplot(Page+LJ~Ktm, data = Monthly,
        type = c('l', 'g'), auto.key = list(space = 'right'))
 
-Ktd = seq(0, 1, .01)
-Daily = data.frame(Ktd = Ktd)
-Daily$CPR = FdKtCPR(Ktd)
-Daily$CLIMEDd = FdKtCLIMEDd(Ktd)
+ktd = Ktd(sol = sol, G0d = G0d)
+Daily = data.table(Ktd = ktd)
+Daily$CPR = FdKtCPR(sol = sol, G0d = G0d)$Fd
+Daily$CLIMEDd = FdKtCLIMEDd(sol = sol, G0d = G0d)$Fd
 
 xyplot(CPR + CLIMEDd ~ Ktd, data = Daily,
        type = c('l', 'g'), auto.key = list(space = 'right'))

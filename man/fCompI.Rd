@@ -87,7 +87,7 @@ lat <- 37.2
 BTd <- fBTd(mode = 'serie')
 solD <- fSolD(lat, BTd[100])
 solI <- fSolI(solD, sample = 'hour')
-G0d <- zoo(5000, index(solD))
+G0d <- data.table(Dates = solD$Dates, G0d = 5000)
 compD <- fCompD(solD, G0d, corr = "Page")
 fCompI(solI, compD)
 
@@ -108,13 +108,13 @@ head(compI)
 ## with intradaily data xyplot(fd ~ kt, data = compI)
 
 climed <- fCompI(sol, G0I = compI, corr = 'CLIMEDh')
-xyplot(fd ~ kt, data = climed)
+xyplot(Fd ~ Kt, data = climed)
 
 ekdh <- fCompI(sol, G0I = compI, corr = 'EKDh')
-xyplot(fd ~ kt, data = ekdh)
+xyplot(Fd ~ Kt, data = ekdh)
 
 brl <- fCompI(sol, G0I = compI, corr = 'BRL')
-xyplot(fd ~ kt, data = brl)
+xyplot(Fd ~ Kt, data = brl)
 }
 
 \keyword{utilities}

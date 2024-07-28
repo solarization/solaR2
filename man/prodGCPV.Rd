@@ -151,17 +151,18 @@ compare(prodFixed, prod2x, prodHoriz)
 compareLosses(prodFixed, prod2x, prodHoriz)
 
 ##Comparison of power time series
-ComparePac <- CBIND(two = as.zooI(prod2x)$Pac,
-                    horiz = as.zooI(prodHoriz)$Pac,
-                    fixed = as.zooI(prodFixed)$Pac)
+ComparePac <- data.table(Dates = indexI(prod2x),
+                         two = as.data.tableI(prod2x)$Pac,
+                         horiz = as.data.tableI(prodHoriz)$Pac,
+                         fixed = as.data.tableI(prodFixed)$Pac)
 
-AngSol <- as.zooI(as(prodFixed, 'Sol'))
+AngSol <- as.data.tableI(as(prodFixed, 'Sol'))
 
-ComparePac <- CBIND(AngSol, ComparePac)
+ComparePac <- merge(AngSol, ComparePac)
 
-mon <- month(index(ComparePac))
+ComparePac[, month := month(Dates)]
 
-xyplot(two + horiz + fixed ~ AzS|mon, data = ComparePac,
+xyplot(two + horiz + fixed ~ AzS|month, data = ComparePac,
        type = 'l',
        auto.key = list(space = 'right',
                      lines = TRUE,
@@ -211,7 +212,7 @@ xyplot(compareYf, superpose = TRUE,
 ###Shadows
 #Two-axis trackers
 struct2x <- list(W = 23.11, L = 9.8, Nrow = 2, Ncol = 8)
-dist2x <- data.frame(Lew = 40, Lns = 30, H = 0)
+dist2x <- data.table(Lew = 40, Lns = 30, H = 0)
 prod2xShd <- prodGCPV(lat = lat, dataRad = prom,
                       modeTrk = 'two',
                       modeShd = 'area',
@@ -221,7 +222,7 @@ print(prod2xShd)
 
 #Horizontal N-S tracker
 structHoriz <- list(L = 4.83);
-distHoriz <- data.frame(Lew = structHoriz$L*4);
+distHoriz <- data.table(Lew = structHoriz$L*4);
 
 #Without Backtracking
 prodHorizShd <- prodGCPV(lat = lat, dataRad = prom,

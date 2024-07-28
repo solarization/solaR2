@@ -68,9 +68,10 @@ fSolD(lat, BTd[283])
 
 #Solar angles along the year
 SolD <- fSolD(lat, BTd = fBTd())
+SolD <- melt(SolD, id.vars = 'Dates')
 
 library(lattice)
-xyplot(SolD)
+xyplot(value ~ Dates | variable, SolD)
 
 #Calculation of the daylength for several latitudes
 library(latticeExtra)
@@ -80,15 +81,18 @@ NomLats <- ifelse(Lats > 0, paste(Lats,'N', sep = ''),
                   paste(abs(Lats), 'S', sep = ''))
 NomLats[Lats == 0] <- '0'
 
-mat <- matrix(nrow = 365, ncol = length(Lats))
+BTd <- fBTd(mode = 'serie')
+mat <- matrix(nrow = length(BTd), ncol = length(Lats))
 colnames(mat) <- NomLats
-WsZ <- zoo(mat, fBTd(mode = 'serie'))
+WsZ <- data.table(Dates = fBTd(mode = 'serie'), mat)
 
 for (i in seq_along(Lats)){
     SolDaux <- fSolD(lat = Lats[i], BTd = fBTd(mode = 'serie'));
-    WsZ[,i] <- r2h(2*abs(SolDaux$ws))}
+    WsZ[,i+1] <- r2h(2*abs(SolDaux$ws))}
 
-p = xyplot(WsZ, superpose = TRUE,
+WsZ <- melt(WsZ, id.vars = 'Dates')
+
+p = xyplot(value~Dates, WsZ, superpose = TRUE, groups = variable,
         ylab = expression(omega[s] (h)), auto.key = FALSE)
 plab <- p+glayer(panel.text(x[1], y[1], NomLats[group.number], pos = 2))
 print(plab)

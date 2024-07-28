@@ -76,6 +76,8 @@ lonHH(tz)
 }
 
 \examples{
+
+\dontrun{
 t.local <- as.POSIXct("2006-01-08 10:07:52", tz = 'Europe/Madrid')
 
 ##The local time zone and the location have the same longitude (15 degrees)
@@ -89,7 +91,6 @@ t.local.dst <- as.POSIXct("2006-07-08 10:07:52", tz = 'Europe/Madrid')
 local2Solar(t.local.dst)
 local2Solar(t.local.dst, lon = -3)
 
-\dontrun{
 ##Extracted from an example of calcG0
 ##NREL-MIDC
 ##La Ola, Lanai
