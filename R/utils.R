@@ -151,4 +151,14 @@ P2E <- function(x, by){
     sum(x, na.rm = 1)/Nm
 }
 
-
+solvePac <- function(x, Cinv){
+    Vdc <- x[1]
+    PdcN <- x[2]
+    V <- c(1, Vdc, Vdc^2)
+    Ki <- t(colSums(V*t(Cinv)))
+    A <- Ki[3]
+    B <- Ki[2]+1
+    C <- Ki[1]-(PdcN)
+    result <- (-B+sqrt(B^2-4*A*C))/(2*A)
+    return(result)
+}
