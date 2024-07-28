@@ -39,7 +39,6 @@ FdKtPage <- function(sol, G0d){##Page para medias mensuales
 ### Liu and Jordan ###
 FdKtLJ <- function(sol, G0d){
     Kt <- Ktm(sol, G0d)
-    Kt <- Ktd(sol, G0d)
     Fd=(Kt<0.3)*0.595774 +
         (Kt>=0.3 & Kt<=0.7)*(1.39-4.027*Kt+5.531*Kt^2-3.108*Kt^3)+
         (Kt>0.7)*0.215246
@@ -105,18 +104,23 @@ FdKtBRL <- function(sol, G0i){
     Kt <- Kti(sol, G0i)
     sample <- sol@sample
 
-    w <- sol@solI$w
-    night <- sol@solI$night
-    AlS <- sol@solI$AlS
+    solI <- as.data.tableI(sol, complete = TRUE)
+    w <- solI$w
+    night <- solI$night
+    AlS <- solI$AlS
 
     G0d <- Meteoi2Meteod(G0i)
-    Ktd <- Ktd(sol, G0d)
+    ktd <- Ktd(sol, G0d)
     
     ##persistence    
-    pers <- persistence(sol, Ktd)
-    
+    pers <- persistence(sol, ktd)
+
+    ##indexRep for ktd and pers
+    ktd <- ktd[indexRep(sol)]
+    pers <- pers[indexRep(sol)]
+
     ##Cálculo de fd
-    Fd=(1+exp(-5.38+6.63*Kt+0.006*r2h(w)-0.007*r2d(AlS)+1.75*Ktd+1.31*pers))^(-1)
+    Fd=(1+exp(-5.38+6.63*Kt+0.006*r2h(w)-0.007*r2d(AlS)+1.75*ktd+1.31*pers))^(-1)
     
 
   return(data.table(Fd, Kt))
