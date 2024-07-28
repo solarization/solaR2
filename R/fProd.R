@@ -132,12 +132,12 @@ fProd <- function(inclin,
               is.list(effSys)
               )
     ## Extract data from objects
-    if (class(inclin)=='Gef') {
+    if (class(inclin)[1]=='Gef') {
         indInclin <- indexI(inclin)
         Gef <- inclin@GefI$Gef
         Ta <- inclin@Ta$Ta
     } else {
-        if (class(inclin)=='zoo') {
+        if (class(inclin)[1]=='zoo') {
             indInclin <- index(inclin)
             Gef <- coredata(inclin$Gef)
             Ta <- coredata(inclin$Ta)
@@ -249,7 +249,7 @@ fProd <- function(inclin,
                          Vdc, Idc,
                          Pac, Pdc,
                          EffI)
-    if (class(inclin) %in% c('Gef', 'zoo')) {
+    if (class(inclin)[1] %in% c('Gef', 'zoo')) {
         ##result<-zoo(resProd, order.by <- indInclin)
         result <- resProd[, .SD, by=indInclin]
         names(result)[1] <- 'Dates'
