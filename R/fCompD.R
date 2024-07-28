@@ -4,22 +4,17 @@ fCompD <- function(sol, G0d, corr = 'CPR', f)
         warning('Wrong descriptor of correlation Fd-Ktd. Set CPR.')
         corr <- 'CPR'
     }
-    if(class(sol) != 'Sol'){
-        Dates <- unique(as.IDate(sol$Dates))
-        lat <- unique(sol$lat)
-        N <- length(sol$Dates)
-        BTi <- seq(sol$Dates[1], sol$Dates[N], length.out = N)
-        sol <- calcSol(Dates, lat, lon, BTi)
+    if(class(sol)[1] != 'Sol'){
+        sol <- sol[, calcSol(lat = unique(lat), BTi = Dates)]
     }
-    if(class(G0d) != 'Meteo'){
+    if(class(G0d)[1] != 'Meteo'){
         Dates <- unique(as.IDate(G0d$Dates))
-        lat <- unique(G0d$lat)
+        if('lat' %in% G0d){latg <- unique(G0d$lat)}
+        else{latg <- getLat(sol)}
         G0 <- G0d$G0
-        Ta <- G0d$Ta
         dt <- data.table(Dates = Dates,
-                         G0 = G0,
-                         Ta = Ta)
-        G0d <- dt2Meteod(dt, lat)
+                         G0 = G0)
+        G0d <- dt2Meteod(dt, latg)
     }  
 
     stopifnot(indexD(sol) == indexD(G0d))
