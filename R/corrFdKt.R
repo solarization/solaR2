@@ -125,7 +125,7 @@ FdKtBRL <- function(sol, G0i){
 persistence <- function(sol, Ktd){
     kt <- data.table(indexD(sol), Ktd)
     ktNA <- na.omit(kt)
-    iDay <- truncDay(ktNA)
+    iDay <- truncDay(ktNA[[1]])
 
     x <- rle(as.numeric(iDay))$lengths
     xLast <- cumsum(x)
