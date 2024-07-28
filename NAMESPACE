@@ -45,7 +45,7 @@ import("methods")
 import("lattice")
 import("latticeExtra")
 
-import("zoo")
+#import("zoo")
 import("data.table")
 
 export(
@@ -53,7 +53,7 @@ export(
     hour,
     minute,
     second,
-    #hms,
+    hms,
     doy,
     dom,
     month,
@@ -70,6 +70,7 @@ export(
     r2h,
     d2h,
     r2sec,
+    t2h,
     #lonHH,
     #local2Solar,
     #CBIND,
@@ -78,11 +79,12 @@ export(
     sample2Hours,
     P2E,
     truncDay,
-    ##main functions
-    declination, eccentricity, sunrise,
-    #dayLength,
-    eot, bo0d, sunHour, 
-    fBTd,
+    checkIndexD,
+    DOM,
+    ##solar angles
+    declination, eccentricity, eot,
+    sunrise, bo0d, sunHour, zenith, azimuth,
+    fBTd, fBTi,
     fSolD, fSolI,
     fTemp,
     fCompD, fCompI,
@@ -92,6 +94,7 @@ export(
     fPump, HQCurve, NmgPVPS,
     analyzeData, TargetDiagram,
     ## Correlations
+    Ktm, Ktd, Kti,
     FdKtPage,
     FdKtLJ,
     FdKtCPR,
@@ -100,6 +103,7 @@ export(
     FdKtEKDh,
     FdKtCLIMEDh,
     FdKtBRL,
+    persistence,
     ##constructors
     calcSol,
     calcG0,
@@ -114,7 +118,11 @@ export(
     dt2Meteod,
     dt2Meteoi,
     dt2Meteom,
+    dt2Meteo,
+    Meteoi2Meteod,
+    Meteod2Meteom,
     zoo2Meteo,
+    collper,
     ##themes for lattice
     solaR.theme
     )
