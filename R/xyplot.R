@@ -97,13 +97,14 @@ setMethod('xyplot',
                               yscale.components=yscale.solar,
                               strip=FALSE, strip.left=TRUE,...){
               x0=getData(x)
+              N <- length(x0)-1
               x0 <- melt(x0, id.vars = 'Dates')
               x0$variable <- factor(x0$variable,
                                     levels = rev(levels(factor(x0$variable))))
               xyplot(value~Dates | variable, x0, par.settings=par.settings,
                      xscale.components=xscale.components,
                      yscale.components=yscale.components,
-                     layout=c(1, 2),
+                     layout=c(1, N),
                      scales=list(cex=0.6, rot= 0, y = 'free'),
                      strip=strip, strip.left=TRUE,
                      par.strip.text=list(cex=0.6),
@@ -141,10 +142,11 @@ setMethod('xyplot',
                               yscale.components=yscale.solar,
                               ...){
               x0 <- as.data.tableD(x, complete=FALSE)
+              N <- length(x0)-1
               x0 <- melt(x0, id.vars = 'Dates')
               x0$variable <- factor(x0$variable,
                                     levels = rev(levels(factor(x0$variable))))
-              xyplot(value~Dates | variable, x0, layout=c(1, 3),
+              xyplot(value~Dates | variable, x0, layout=c(1, N),
                      par.settings=par.settings,
                      xscale.components=xscale.components,
                      yscale.components=yscale.components,
@@ -164,10 +166,11 @@ setMethod('xyplot',
             yscale.components=yscale.solar,
             ...){
               x0 <- as.data.tableD(x, complete=FALSE)
+              N <- length(x0)-1
               x0 <- melt(x0, id.vars = 'Dates')
               x0$variable <- factor(x0$variable,
                                     levels = rev(levels(factor(x0$variable))))
-              xyplot(value~Dates | variable, x0, layout=c(1, 3),
+              xyplot(value~Dates | variable, x0, layout=c(1, N),
                      par.settings=par.settings,
                      xscale.components=xscale.components,
                      yscale.components=yscale.components,
