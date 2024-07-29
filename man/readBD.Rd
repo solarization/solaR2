@@ -91,11 +91,11 @@ zoo2Meteo(file, lat, source = '')
 }
 \examples{
 data(helios)
-names(helios) = c('date', 'G0', 'TempMax', 'TempMin')
+names(helios) = c('Dates', 'G0', 'TempMax', 'TempMin')
 
-bd = df2Meteo(helios, dates.col = 'date', lat = 41, source = 'helios-IES', format = '\%Y/\%m/\%d')
+bd = dt2Meteod(helios, lat = 41, source = 'helios-IES')
 
-summary(getData(bd))
+getData(bd)
 
 xyplot(bd)
 }

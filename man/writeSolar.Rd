@@ -88,16 +88,21 @@ writeSolar(prodFixed, 'prodFixed.csv')
 
 dir()
 
-zI <- read.zoo("prodFixed.csv",
-               header = TRUE, sep = ",",
-               FUN = as.POSIXct)
-
-zD <- read.zoo("prodFixed.D.csv",
+zI <- fread("prodFixed.csv",
                header = TRUE, sep = ",")
+zI
 
-zD <- read.zoo("prodFixed.D.csv",
-               header = TRUE, sep = ",",
-               FUN = as.yearmon)
+zD <- fread("prodFixed.D.csv",
+               header = TRUE, sep = ",")
+zD
+
+zM <- fread("prodFixed.M.csv",
+               header = TRUE, sep = ",")
+zM
+
+zY <- fread("prodFixed.Y.csv",
+               header = TRUE, sep = ",")
+zY
 
 setwd(old)
 }

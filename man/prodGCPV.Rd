@@ -265,8 +265,8 @@ compareLosses(prodFixed, prod2x, prodHoriz, prod2xShd,
 
 compareYf2 <- mergesolaR(prodFixed, prod2x, prodHoriz, prod2xShd,
                          prodHorizShd, prodHorizBT)
-
-xyplot(compareYf2, superpose = TRUE,
+compareYf2 <- melt(compareYf2, id.vars = 'Dates')
+xyplot(value~Dates|variable, compareYf2, superpose = TRUE,
        ylab = 'kWh/kWp', main = 'Daily productivity',
        auto.key = list(space = 'right'))
 }
