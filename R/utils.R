@@ -162,3 +162,41 @@ solvePac <- function(x, Cinv){
     result <- (-B+sqrt(B^2-4*A*C))/(2*A)
     return(result)
 }
+
+dst <- function(x)                      #Adelanto horario por verano
+   {
+     as.POSIXlt(x)$isdst
+   }
+
+lonHH<-function(tz)
+    {            #Calcula la longitud (en radianes) de un huso horario
+      stopifnot(class(tz)=='character')
+      tHH <- as.POSIXct('2000-1-1 12:00:00', tz=tz)
+      tUTC <- as.POSIXct(format(tHH, tz='UTC'), tz=tz)
+      h2r(as.numeric(tHH-tUTC))
+    }
+
+local2Solar <- function(x, lon=NULL){	
+  tz=attr(x, 'tzone')
+  if (tz=='' || is.null(tz)) {tz='UTC'}
+  ##Adelanto oficial por verano
+  AO=3600*dst(x)
+  AOneg=(AO<0)
+  if (any(AOneg)) {
+    AO[AOneg]=0
+    warning('Some Daylight Savings Time unknown. Set to zero.')
+  }
+  ##Diferencia entre la longitud del lugar y la longitud del huso horario LH
+  LH=lonHH(tz)
+  if (is.null(lon)) 
+    {deltaL=0
+   } else
+  {deltaL=d2r(lon)-LH
+ }
+  ##Hora local corregida en UTC
+  ##    tt <- format(x-AO+r2sec(deltaL), tz=tz)
+  tt <- format(x, tz=tz)
+  result <- as.POSIXct(tt, tz='UTC')-AO+r2sec(deltaL)
+  ##      result <- as.POSIXct(tt, tz='UTC')
+  result
+}
