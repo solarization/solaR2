@@ -2,7 +2,7 @@ BTd <- fBTd(year = 2023)
 lat <- 37.2
 solD <- fSolD(37.2, BTd)
 solI <- fSolI(solD, sample = '1 hour')
-solI_expected <- read.csv('solI.csv')
+solI_expected <- read.csv('sol.csv')
 
 test_that('Sun hour angle in fSolI',{
     expect_equal(solI$w, solI_expected$w, tolerance = 1e-4)

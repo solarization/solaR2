@@ -1,5 +1,5 @@
-solD_expected <- read.csv('solD.csv')
-solI_expected <- read.csv('solI.csv')
+solD_expected <- read.csv('sol.D.csv')
+solI_expected <- read.csv('sol.csv')
 BTd <- fBTd(year = 2023)
 lat <- 37.2
 
