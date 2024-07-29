@@ -137,14 +137,9 @@ fProd <- function(inclin,
         Gef <- inclin@GefI$Gef
         Ta <- inclin@Ta$Ta
     } else {
-        if (class(inclin)[1]=='zoo') {
-            indInclin <- index(inclin)
-            Gef <- coredata(inclin$Gef)
-            Ta <- coredata(inclin$Ta)
-        } else {
-            Gef <- inclin$Gef
-            Ta <- inclin$Ta
-        }
+        indInclin <- inclin$Dates
+        Gef <- inclin$Gef
+        Ta <- inclin$Ta
     }
     
     ## Module, generator, and inverter parameters
@@ -249,8 +244,7 @@ fProd <- function(inclin,
                          Vdc, Idc,
                          Pac, Pdc,
                          EffI)
-    if (class(inclin)[1] %in% c('Gef', 'zoo')) {
-        ##result<-zoo(resProd, order.by <- indInclin)
+    if (class(inclin)[1] %in% c('Gef', 'data.table')) {
         result <- resProd[, .SD, by=indInclin]
         names(result)[1] <- 'Dates'
         attr(result, 'generator') <- generator
