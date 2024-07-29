@@ -148,8 +148,11 @@ readBDi <- function(file, lat,
 #### data.frame/table to Meteo (daily)
 dt2Meteod <- function(file, lat, source = '')
 {
-    #make sure its a data.table
+    ##make sure its a data.table
     bd <- data.table(file)
+
+    ## Dates is an as.POSIX element
+    bd[, Dates := as.POSIXct(Dates, tz = 'UTC')]
        
     nms0 <- NULL
     if(('D0' %in% bd) && ('B0' %in% bd)){
@@ -181,6 +184,9 @@ dt2Meteoi <- function(file, lat, source = '')
 {
     ##make sure its a data.table
     bd <- data.table(file)
+
+    ##Dates is an as.POSIX element
+    bd[, Dates := as.POSIXct(Dates, tz = 'UTC')]
     
     nms0 <- NULL
     if(('D0' %in% bd) && ('B0' %in% bd)){
@@ -214,6 +220,9 @@ dt2Meteom <- function(file, lat, source = '')
     ##make sure its a data.table
     bd <- data.table(file)
 
+    ##Dates is an as.POSIX element
+    bd[, Dates := Dates]
+    
     nms0 <- NULL
     if(('D0' %in% bd) && ('B0' %in% bd)){
         nms0 <- 'D0'
