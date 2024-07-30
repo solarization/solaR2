@@ -1,5 +1,5 @@
 fSolI <- function(solD, sample = 'hour', BTi,
-                  keep.night = TRUE, et = TRUE, method = 'michalsky')
+                  EoT = TRUE, keep.night = TRUE, method = 'michalsky')
 {
     #Solar constant
     Bo <- 1367
@@ -11,9 +11,11 @@ fSolI <- function(solD, sample = 'hour', BTi,
     sun <- data.table(Dates = as.IDate(BTi),
                       Times = as.ITime(BTi))
     sun <- merge(solD, sun, by = 'Dates')
+    sun[, eqtime := EoT]
+    sun[, EoT := NULL]
 
     #sun hour angle
-    sun[, w := sunHour(Dates, BTi, EoT = et, method = method, ET = EoT)]
+    sun[, w := sunHour(Dates, BTi, EoT = EoT, method = method, eqtime = eqtime)]
 
     #classify night elements
     sun[, night := abs(w) >= abs(ws)]
@@ -42,7 +44,7 @@ fSolI <- function(solD, sample = 'hour', BTi,
     #Erase columns that are in solD
     sun[, decl := NULL]
     sun[, eo := NULL]
-    sun[, EoT := NULL]
+    sun[, eqtime := NULL]
     sun[, ws := NULL]
     sun[, Bo0d := NULL]
 

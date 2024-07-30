@@ -1,14 +1,14 @@
-calcSol <- function(lat, BTd, BTi,
-                    sample = 'hour',
+calcSol <- function(lat, BTd,
+                    sample = 'hour', BTi,
+                    EoT = TRUE,
                     keep.night = TRUE,
-                    method = 'michalsky',
-                    et = TRUE)
+                    method = 'michalsky')
 {
     if(missing(BTd)) BTd <- truncDay(BTi)
     solD <- fSolD(lat, BTd, method = method)
     solI <- fSolI(solD = solD, sample = sample,
                   BTi = BTi, keep.night = keep.night,
-                  et = et)
+                  EoT = EoT)
     
     if(!missing(BTi)){
         sample <- solI$Dates[2]-solI$Dates[1]

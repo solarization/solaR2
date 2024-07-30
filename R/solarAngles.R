@@ -100,8 +100,8 @@ eot <- function(d)
 
 
 #### Solar time ####
-sunrise <- function(d, lat, ...,
-                    decl = declination(d, ...))
+sunrise <- function(d, lat, method = 'michalsky',
+                    decl = declination(d, method))
 {
     cosWs <- -tan(d2r(lat)) * tan(decl)
     #sunrise, negative since it is before noon
@@ -113,10 +113,10 @@ sunrise <- function(d, lat, ...,
 }
 
 #### Extraterrestrial irradition ####
-bo0d <- function(d, lat, ...,
-                 decl = declination(d, ...),
-                 eo = eccentricity(d, ...),
-                 ws = sunrise(d, lat, ...))
+bo0d <- function(d, lat, method = 'michalsky',
+                 decl = declination(d, method),
+                 eo = eccentricity(d, method),
+                 ws = sunrise(d, lat, method))
 {
     #solar constant
     Bo <- 1367
@@ -130,7 +130,7 @@ bo0d <- function(d, lat, ...,
 
 #### Sun hour angle ####
 sunHour <- function(d, BTi, sample = '1 hour', EoT = TRUE, method = 'michalsky',
-                    ET = eot(d))
+                    eqtime = eot(d))
 {
     if(missing(BTi)){
         BTi <- fBTi(d = d, sample = sample)
@@ -147,7 +147,7 @@ sunHour <- function(d, BTi, sample = '1 hour', EoT = TRUE, method = 'michalsky',
     rep <- cumsum(c(1, diff(BTi) != 0))
     if(EoT)
     {
-        EoT <- ET
+        EoT <- eqtime
         if(length(EoT) != length(BTi)){EoT <- EoT[rep]}
     }else{EoT <- 0}
 
@@ -203,9 +203,9 @@ sunHour <- function(d, BTi, sample = '1 hour', EoT = TRUE, method = 'michalsky',
 }
 
 #### zenith angle ####
-zenith <- function(d, lat, BTi, sample = '1 hour',  ...,
-                   decl = declination(d, ...),
-                   w = sunHour(d, BTi, sample, ...))
+zenith <- function(d, lat, BTi, sample = '1 hour',  method = 'michalsky',
+                   decl = declination(d, method),
+                   w = sunHour(d, BTi, sample, method = method))
 {
     if(missing(BTi)){BTi <- fBTi(d, sample)}
     x <- as.Date(BTi)
@@ -220,10 +220,10 @@ zenith <- function(d, lat, BTi, sample = '1 hour',  ...,
 }
 
 #### azimuth ####
-azimuth <- function(d, lat, BTi, sample = '1 hour', ...,
-                    decl = declination(d, ...),
-                    w = sunHour(d, BTi, sample, ...),
-                    cosThzS = zenith(d, lat, BTi, sample, ...))
+azimuth <- function(d, lat, BTi, sample = '1 hour', method = 'michalsky',
+                    decl = declination(d, method),
+                    w = sunHour(d, BTi, sample, method = method),
+                    cosThzS = zenith(d, lat, BTi, sample, method, decl, w))
 {
     signLat <- ifelse(sign(lat) == 0, 1, sign(lat)) #if the sign of lat is 0, it changes it to 1
     if(missing(BTi)){BTi <- fBTi(d, sample)}
