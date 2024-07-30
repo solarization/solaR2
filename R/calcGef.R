@@ -39,12 +39,12 @@ calcGef<-function(lat,
     nms <- c('Bo', 'Bn', 'G', 'D', 'B', 'Gef', 'Def', 'Bef')
     nmsd <- paste(nms, 'd', sep = '')
 
-    Gefdm <- inclin[, lapply(.SD/1000, P2E, by),
-                    .SDcols = nms,
-                    by = .(month(Dates), year(Dates))]
-    names(Gefdm)[-c(1,2)] <- nmsd
-
+    
     if(radHoriz@type == 'prom'){
+        Gefdm <- inclin[, lapply(.SD/1000, P2E, by),
+                        .SDcols = nms,
+                        by = .(month(Dates), year(Dates))]
+        names(Gefdm)[-c(1,2)] <- nmsd
         GefD <- Gefdm[, .SD*1000,
                       .SDcols = nmsd,
                       by = indexD(radHoriz)]
@@ -55,11 +55,14 @@ calcGef<-function(lat,
                       by = year]
         Gefdm[, DayOfMonth := NULL]
     } else{
-        GefD <- inclin[, lapply(.SD/1000, P2E, by),
+        GefD <- inclin[, lapply(.SD, P2E, by),
                        .SDcols = nms,
                        by = truncDay(Dates)]
         names(GefD)[-1] <- nmsd
 
+        Gefdm <- GefD[, lapply(.SD/1000, mean, na.rm = TRUE),
+                      .SDcols = nmsd,
+                      by = .(month(indexD(radHoriz)), year(indexD(radHoriz)))]
         Gefy <- GefD[, lapply(.SD/1000, sum, na.rm = TRUE),
                      .SDcols = nmsd,
                      by = year(indexD(radHoriz))]

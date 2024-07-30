@@ -102,18 +102,20 @@ prodPVPS<-function(lat,
     
     by <- radEf@sample
     
-    prodDm <- prodI[, .(Eac = P2E(Pac, by)/1000,
-                        Qd = P2E(Q, by)),
-                    by = .(month(Dates), year(Dates))]
-    prodDm[, Yf := Eac/(Pg/1000)]
 
     if(radEf@type == 'prom'){
+        prodDm <- prodI[, .(Eac = P2E(Pac, by)/1000,
+                            Qd = P2E(Q, by)),
+                        by = .(month(Dates), year(Dates))]
+        prodDm[, Yf := Eac/(Pg/1000)]
+
         prodD <- prodDm[, .(Eac = Eac*1000,
                             Qd,
                             Yf),
                         by = indexD(radEf)]
 
         prodDm[, DayOfMonth := DOM(prodDm)]
+        
         prody <- prodDm[, lapply(.SD*DayOfMonth, sum, na.rm = TRUE),
                         .SDcols = c('Eac', 'Qd', 'Yf'),
                         by = year]
@@ -122,8 +124,11 @@ prodPVPS<-function(lat,
         prodD <- prodI[, .(Eac = P2E(Pac, by)/1000,
                            Qd = P2E(Q, by)),
                        by = truncDay(Dates)]
-        prodD[, Yf := Eac/Pg]
+        prodD[, Yf := Eac/Pg*1000]
 
+        prodDm <- prodD[, lapply(.SD, mean, na.rm = TRUE),
+                        .SDcols = c('Eac','Qd', 'Yf'),
+                        by = .(month(indexD(radEf)), year(indexD(radEf)))]
         prody <- prodD[, lapply(.SD, sum, na.rm = TRUE),
                        .SDcols = c('Eac', 'Qd', 'Yf'),
                        by = year(indexD(radEf))]
