@@ -40,8 +40,7 @@
   \item{..., drop}{Additional arguments for \code{window.zoo}}
 }
 \seealso{
-  \code{\link{window.zoo}}
-\code{\link{indexD}}
+  \code{\link{indexD}}
 }
 \examples{
 lat = 37.2
