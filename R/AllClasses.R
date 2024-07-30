@@ -20,7 +20,7 @@ setClass(
 setClass(
     Class = 'Meteo', ##radiation and temperature data
     slots = c(
-        lat='numeric',#latitud in degrees, >0 if North
+        latm='numeric',#latitud in degrees, >0 if North
         data='data.table',#data, incluying G (Wh/m2) and Ta(ºC)
         type='character',#choose between 'prom', 'bd' and 'bdI'
         source='character'#origin of the data

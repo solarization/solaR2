@@ -83,8 +83,8 @@ setMethod('getLat',
           definition = function(object, units = 'rad'){
               stopifnot(units %in% c('deg', 'rad'))
               result = switch(units,
-                              rad = d2r(object@lat),
-                              deg = object@lat)
+                              rad = d2r(object@latm),
+                              deg = object@latm)
               return(result)
           })
 
@@ -134,7 +134,7 @@ setMethod('show',
                   paste(round(getLat(as(object, 'Meteo'),'deg'), 1),
                         'degrees\n'))
               cat('Latitude for calculations: ',
-                  paste(round(getLat(object, 'deg'),1), 'degrees\n\n'))
+                  paste(round(getLat(as(object, 'Sol'), 'deg'),1), 'degrees\n\n'))
               cat('Monthly avarages:\n')
               print(as.data.tableM(object))
               cat('\nYearly values:\n')

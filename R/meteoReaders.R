@@ -11,7 +11,7 @@ readG0dm <- function(lat, G0dm, Ta = 25,
                           Ta = Ta)
     setkey(G0dm.dt, 'Dates')
     results <- new(Class = 'Meteo',
-                   lat = lat,
+                   latm = lat,
                    data = G0dm.dt,
                    type = 'prom',
                    source = source)
@@ -67,7 +67,7 @@ readBDd <- function(file, lat,
 
     setkey(bd, 'Dates')
     result <- new(Class = 'Meteo',
-                  lat = lat,
+                  latm = lat,
                   data = bd,
                   type = 'bd',
                   source = file)
@@ -138,7 +138,7 @@ readBDi <- function(file, lat,
     
     setkey(bd, 'Dates')
     result <- new(Class = 'Meteo',
-                  lat = lat,
+                  latm = lat,
                   data = bd,
                   type = 'bdI',
                   source = file)
@@ -172,7 +172,7 @@ dt2Meteod <- function(file, lat, source = '')
 
     setkey(bd, 'Dates')
     result <- new(Class = 'Meteo',
-                  lat = lat,
+                  latm = lat,
                   data = bd,
                   type = 'bd',
                   source = source)
@@ -208,7 +208,7 @@ dt2Meteoi <- function(file, lat, source = '')
    
     setkey(bd, 'Dates')
     result <- new(Class = 'Meteo',
-                  lat = lat,
+                  latm = lat,
                   data = bd,
                   type = 'bdI',
                   source = source)
@@ -221,12 +221,12 @@ dt2Meteom <- function(file, lat, source = '')
     bd <- data.table(file)
 
     ##Dates is an as.POSIX element
-    bd[, Dates := Dates]
+    bd[, Dates := as.POSIXct(Dates, tz = 'UTC')]
     
     nms0 <- NULL
-    if(('D0' %in% bd) && ('B0' %in% bd)){
-        nms0 <- 'D0'
-        nms0[2] <- 'B0'
+    if(('D0d' %in% bd) && ('B0d' %in% bd)){
+        nms0 <- 'D0d'
+        nms0[2] <- 'B0d'
     }
 
     if('Ta' %in% bd){
@@ -239,11 +239,11 @@ dt2Meteom <- function(file, lat, source = '')
     }
     
     ##reorder the columns
-    setcolorder(bd, c('Dates', 'G0', nms0))
+    setcolorder(bd, c('Dates', 'G0d', nms0))
     
     setkey(bd, 'Dates')
     result <- new(Class = 'Meteo',
-                  lat = lat,
+                  latm = lat,
                   data = bd,
                   type = 'prom',
                   source = source)
@@ -304,7 +304,7 @@ collper <- function(sol, compD)
 #### intradaily Meteo to daily Meteo ####
 Meteoi2Meteod <- function(G0i)
 {
-    lat <- G0i@lat
+    lat <- G0i@latm
     source <- G0i@source
 
     dt <- getData(G0i)
@@ -318,7 +318,7 @@ Meteoi2Meteod <- function(G0i)
 #### daily Meteo to monthly Meteo ####
 Meteod2Meteom <- function(G0d)
 {
-    lat <- G0d@lat
+    lat <- G0d@latm
     source <- G0d@source
 
     dt <- getData(G0d)
@@ -326,8 +326,7 @@ Meteod2Meteom <- function(G0d)
     dt <- dt[, lapply(.SD, mean),
              .SDcols = nms,
              by = .(month(Dates), year(Dates))]
-    promDays <- c(17, 14, 15, 15, 15, 10, 18, 18, 18, 19, 18, 13)
-    dt <- dt[, Dates := as.Date(paste(year, month, promDays, sep = '-'), format = '%Y-%m-%d')]
+    dt[, Dates := fBTd()]
     dt <- dt[, c('month', 'year') := NULL]
     
     setcolorder(dt, 'Dates')
@@ -342,24 +341,31 @@ zoo2Meteo <- function(file, lat, source = '')
     IsDaily <- as.numeric(sample, units = 'days')>=1
     type <- ifelse(IsDaily, 'bd', 'bdI')
     result <- new(Class = 'Meteo',
-                  lat = lat,
+                  latm = lat,
                   data = file,
                   type = type,
                   source = source)
 }
 
-dt2Meteo <- function(file, lat, source = '')
+dt2Meteo <- function(file, lat, source = '', type)
 {
-    if(!('Ta' %in% names(file))){
-        file <- data.table(Dates = file[[1]],
-                           G0 = file[[2]],
-                           Ta = 25)
+    ##Make sure is a data.table
+    file <- data.table(file)
+    
+    stopifnot('Dates' %in% names(file))
+    if(!('Ta' %in% names(file)) && !('TempMin' %in% names(file))){
+        ## file <- data.table(Dates = file$Dates,
+        ##                    G0 = file$G0,
+        ##                    Ta = 25)
+        file[, Ta := 25]
     }
     sample <- median(diff(file$Dates))
-    IsDaily <- as.numeric(sample, units = 'days')>=1
-    type <- ifelse(IsDaily, 'bd', 'bdI')
+    if(missing(type)){
+        IsDaily <- as.numeric(sample, units = 'days')>=1
+        type <- ifelse(IsDaily, 'bd', 'bdI')
+    }
     result <- new(Class = 'Meteo',
-                  lat = lat,
+                  latm = lat,
                   data = file,
                   type = type,
                   source = source)
