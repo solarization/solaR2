@@ -371,9 +371,8 @@ dt2Meteo <- function(file, lat, source = '', type)
                   source = source)
 }
 
-clave <- '_Q8L_niYFBBmBs-vB3UomUqdUYy98FTRX1aYbrZ8n2FXuHYGTV'
 
-siarGET <- function(id, inicio, final, tipo = 'Diarios', ambito = 'Estacion', clave){
+siarGET <- function(id, inicio, final, tipo = 'Diarios', ambito = 'Estacion'){
     mainURL <- "https://servicio.mapama.gob.es"
 
     path <- paste('/apisiar/API/v1/Datos', tipo, ambito, sep = '/')
@@ -381,10 +380,10 @@ siarGET <- function(id, inicio, final, tipo = 'Diarios', ambito = 'Estacion', cl
     ## APIsiar
     req <- request(mainURL) |>
         req_url_path(path) |>
-        req_url_query(##Id = id,
-                      ## FechaInicial = inicio,
-                      ## FechaFinal = final,
-                      ClaveAPI = clave)
+        req_url_query(Id = id,
+                      FechaInicial = inicio,
+                      FechaFinal = final,
+                      ClaveAPI = '_Q8L_niYFBBmBs-vB3UomUqdUYy98FTRX1aYbrZ8n2FXuHYGTV')
     resp <- req_perform(req)
 
     ##JSON to R
@@ -395,3 +394,34 @@ siarGET <- function(id, inicio, final, tipo = 'Diarios', ambito = 'Estacion', cl
     else
         respJSON$MensajeRespuesta
 }
+
+haversine <- function(lat1, lon1, lat2, lon2) {
+    R <- 6371  # Radio de la tierra en kilómetros
+    dLat <- (lat2 - lat1) * pi / 180
+    dLon <- (lon2 - lon1) * pi / 180
+    a <- sin(dLat / 2) * sin(dLat / 2) + cos(lat1 * pi / 180) *
+        cos(lat2 * pi / 180) * sin(dLon / 2) * sin(dLon / 2)
+    c <- 2 * atan2(sqrt(a), sqrt(1 - a))
+    d <- R * c
+    return(d)
+}
+
+readSIAR <- function(Lon = 0, Lat = 0,
+                     inicio = paste(year(Sys.Date()), '01-01', sep = '-'),
+                     final = paste(year(Sys.Date()), '01-01', sep = '-'),
+                     tipo = 'Diarios'){
+    inicio <- as.Date(inicio)
+    final <- as.Date(final)
+    siar <- est_SIAR[
+        Fecha_Instalacion <= final & (is.na(Fecha_Baja) | Fecha_Baja >= inicio)
+    ]
+    siar[, dist := haversine(Latitud, Longitud, Lat, Lon)]
+    siar <- siar[order(dist)][1:4]
+    ## ¿Dentro del cuadrado?
+    siar[, .(Codigo, dist)]
+    ## res <- do.call(siarGET, id = siar$Codigo,
+    ##         inicio = inicio, final = final,
+    ##         tipo = tipo)
+    ## res
+}
+
