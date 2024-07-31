@@ -95,13 +95,14 @@ calcG0 <- function(lat,
     
 ### Angulos solares y componentes de irradiancia
     if (modeRad=='bdI') {
-        sol <- calcSol(lat, indexI(BD), sample = sample,
+        sol <- calcSol(lat, sample = sample,
                        BTi = indexI(BD), keep.night=keep.night, method=sunGeometry)
         compI <- fCompI(sol=sol, G0I=BD, corr=corr, f=f, ...)
         compD <- compI[, lapply(.SD, P2E, sol@sample),
                        .SDcols = c('G0', 'D0', 'B0'),
-                       by = indexD(sol)]
+                       by = truncDay(Dates)]
         names(compD)[1] <- 'Dates'
+        names(compD)[-1] <- paste(names(compD)[-1], 'd', sep = '')
         compD$Fd <- compD$D0d/compD$G0d
         compD$Ktd <- compD$G0d/sol@solD$Bo0d
     } else { ##modeRad!='bdI'
