@@ -9,8 +9,6 @@ markovG0 <- function(G0dm, solD){
     solD <- copy(solD)
     timeIndex <- solD$Dates
     Bo0d <- solD$Bo0d
-    #solD[, Bo0d := NULL]
-    ## Bo0dm <- aggregate(Bo0d, by=as.yearmon, FUN=mean)
     Bo0dm <- solD[, mean(Bo0d), by = .(month(Dates), year(Dates))][[3]]
     ktm <- G0dm/Bo0dm
     
@@ -21,7 +19,7 @@ markovG0 <- function(G0dm, solD){
     state[1] <- 1
     ktd[1] <- ktm[state[1]]
     for (i in 2:length(timeIndex)){
-        iMonth <- month(timeIndex)[i]
+        iMonth <- month(timeIndex[i])
         colMonth <- whichMatrix[iMonth]
         rng <- Ktlim[, colMonth]
         classes <- seq(rng[1], rng[2], length=11)
@@ -30,11 +28,8 @@ markovG0 <- function(G0dm, solD){
         state[i] <- sample(1:10, size=1, prob=matMonth[state[i-1],])
         ktd[i] <- runif(1, min=classes[state[i]], max=classes[state[i]+1])
     }
-    ## G0dmMarkov <- aggregate(Ktd * Bo0d, as.yearmon(timeIndex), FUN=mean)
-    ## G0dmMarkov <- solD[, mean(ktd * Bo0d), by = .(month(Dates), year(Dates))][[3]]
     G0dmMarkov <- data.table(ktd, Bo0d)
     G0dmMarkov <- G0dmMarkov[, mean(ktd*Bo0d), by = .(month(timeIndex), year(timeIndex))][[3]]
-    ## fix <- na.locf(G0dm/G0dmMarkov, x=as.POSIXct, xout=timeIndex)
     fix <- G0dm/G0dmMarkov
     indRep <- month(timeIndex)
     fix <- fix[indRep]
