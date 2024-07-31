@@ -98,10 +98,9 @@ calcG0 <- function(lat,
         sol <- calcSol(lat, indexI(BD), sample = sample,
                        BTi = indexI(BD), keep.night=keep.night, method=sunGeometry)
         compI <- fCompI(sol=sol, G0I=BD, corr=corr, f=f, ...)
-        compD <- compI[, .(G0d = P2E(G0, sol@sample),
-                           D0d = P2E(D0, sol@sample),
-                           B0d = P2E(B0, sol@sample)),
-                       by = truncDay(Dates)]
+        compD <- compI[, lapply(.SD, P2E, sol@sample),
+                       .SDcols = c('G0', 'D0', 'B0'),
+                       by = indexD(sol)]
         names(compD)[1] <- 'Dates'
         compD$Fd <- compD$D0d/compD$G0d
         compD$Ktd <- compD$G0d/sol@solD$Bo0d
@@ -119,16 +118,13 @@ calcG0 <- function(lat,
     ##o de una base de datos que contenga dos variables con información sobre
     ##valores diarios máximos y mínimos de temperatura.
 
-    ind.rep <- indexRep(sol) ##para repetir valores diarios de Ta, si es necesario
-    indSol <- indexI(sol)
-
     Ta=switch(modeRad,
               bd={
                   if (all(c("TempMax","TempMin") %in% names(BD@data))) {
                       fTemp(sol, BD)
                   } else {
                       if ("Ta" %in% names(BD@data)) {
-                          data.table(indSol, BD@data$Ta[ind.rep])
+                          data.table(indexD(sol), BD@data$Ta)
                       } else {
                           warning('No temperature information available!')
                       }
@@ -136,19 +132,21 @@ calcG0 <- function(lat,
               },
               bdI={
                   if ("Ta" %in% names(BD@data)) {
-                      data.table(indSol, BD@data$Ta)
+                      data.table(indexI(sol), BD@data$Ta)
                   } else {
                       warning('No temperature information available!')
                   }
               },
               prom={
                   if ("Ta" %in% names(BD@data)) {
-                      data.table(indSol, BD@data$Ta[ind.rep])
+                      data.table(indexD(sol), BD@data$Ta)
                   } else {
                       warning('No temperature information available!')
                   }                  
               },
-              aguiar={data.table(indSol, BD@data$Ta[ind.rep])}
+              aguiar={ 
+                  data.table(indexI(sol), BD@data$Ta)
+              }
               )
     names(Ta)[1] <- 'Dates'
     names(Ta)[2] <- 'Ta'
@@ -172,7 +170,7 @@ calcG0 <- function(lat,
     }
     G0dm[, Dates := paste(month.abb[month], year, sep = '. ')]
     G0dm[, c('month', 'year') := NULL]
-    setcolorder(G0dm, c('Dates', names(G0dm)[-length(G0dm)]))
+    setcolorder(G0dm, 'Dates')
     names(G0y)[1] <- 'Dates'
 
 ###Resultado
