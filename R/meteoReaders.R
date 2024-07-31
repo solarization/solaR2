@@ -370,3 +370,28 @@ dt2Meteo <- function(file, lat, source = '', type)
                   type = type,
                   source = source)
 }
+
+clave <- '_Q8L_niYFBBmBs-vB3UomUqdUYy98FTRX1aYbrZ8n2FXuHYGTV'
+
+siarGET <- function(id, inicio, final, tipo = 'Diarios', ambito = 'Estacion', clave){
+    mainURL <- "https://servicio.mapama.gob.es"
+
+    path <- paste('/apisiar/API/v1/Datos', tipo, ambito, sep = '/')
+
+    ## APIsiar
+    req <- request(mainURL) |>
+        req_url_path(path) |>
+        req_url_query(##Id = id,
+                      ## FechaInicial = inicio,
+                      ## FechaFinal = final,
+                      ClaveAPI = clave)
+    resp <- req_perform(req)
+
+    ##JSON to R
+    respJSON <- resp_body_json(resp, simplifyVector = TRUE)
+
+    if(is.null(respJSON$MensajeRespuesta))
+        data.table(respJSON$Datos)
+    else
+        respJSON$MensajeRespuesta
+}
