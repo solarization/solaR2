@@ -372,7 +372,14 @@ dt2Meteo <- function(file, lat, source = '', type)
 }
 
 
-siarGET <- function(id, inicio, final, tipo = 'Diarios', ambito = 'Estacion'){
+siarGET <- function(id, inicio, final, tipo = 'Mensuales', ambito = 'Estacion'){
+    if(!(tipo %in% c('Horarios', 'Diarios', 'Semanales', 'Mensuales'))){
+        stop('argument \'tipo\' must be: Horarios, Diarios, Semanales or Mensuales')
+    }
+    if(!(ambito %in% c('CCAA', 'Provincia', 'Estacion'))){
+        stop('argument \'ambito\' must be: CCAA, Provincia or Estacion')
+    }
+    
     mainURL <- "https://servicio.mapama.gob.es"
 
     path <- paste('/apisiar/API/v1/Datos', tipo, ambito, sep = '/')
@@ -390,10 +397,48 @@ siarGET <- function(id, inicio, final, tipo = 'Diarios', ambito = 'Estacion'){
     ##JSON to R
     respJSON <- resp_body_json(resp, simplifyVector = TRUE)
 
-    if(is.null(respJSON$MensajeRespuesta))
-        res <- data.table(respJSON$Datos)
-    else
-        res <- respJSON$MensajeRespuesta
+    if(!is.null(respJSON$MensajeRespuesta)){
+        stop(respJSON$MensajeRespuesta)
+    }
+
+    res0 <- data.table(respJSON$Datos)
+
+    res <- switch(tipo,
+                  Horarios = {
+                      res0[, HoraMin := as.ITime(sprintf('%04d', HoraMin),
+                                                 format = '%H%M')]
+                      res0[, Fecha := as.IDate(Fecha, format = '%Y-%m-%d')]
+                      res0[, Fecha := as.IDate(ifelse(HoraMin == as.ITime(0),
+                                                      Fecha+1, Fecha))]
+                      res0[, Dates := as.POSIXct(HoraMin, Fecha,
+                                                 tz = 'Europe/Madrid')]
+                      res0 <- res0[, .(Dates,
+                                       G0 = Radiacion,
+                                       Ta = TempMedia)]
+                      return(res0)
+                  },
+                  Diarios = {
+                      res0[, Dates := as.IDate(Fecha)]
+                      res0 <- res0[, .(Dates,
+                                       G0 = Radiacion * 277.78,
+                                       Ta = TempMedia,
+                                       TempMin,
+                                       TempMax)]
+                      return(res0)
+                  },
+                  Semanales = res0,
+                  Mensuales = {
+                      promDays<-c(17,14,15,15,15,10,18,18,18,19,18,13)
+                      res0[, Dates := as.IDate(paste(Año, Mes,
+                                                     promDays[Mes],
+                                                     sep = '-'))]
+                      res0 <- res0[, .(Dates,
+                                       G0 = Radiacion * 277.78,
+                                       Ta = TempMedia,
+                                       TempMin,
+                                       TempMax)]
+                  })
+    
     return(res)
 }
 
@@ -411,17 +456,37 @@ haversine <- function(lat1, lon1, lat2, lon2) {
 readSIAR <- function(Lon = 0, Lat = 0,
                      inicio = paste(year(Sys.Date())-1, '01-01', sep = '-'),
                      final = paste(year(Sys.Date())-1, '12-31', sep = '-'),
-                     tipo = 'Diarios'){
+                     tipo = 'Mensuales', n_est = 3){
     inicio <- as.Date(inicio)
     final <- as.Date(final)
     siar <- est_SIAR[
         Fecha_Instalacion <= final & (is.na(Fecha_Baja) | Fecha_Baja >= inicio)
     ]
     siar[, dist := haversine(Latitud, Longitud, Lat, Lon)]
-    siar <- siar[order(dist)][1:2]
+    siar <- siar[order(dist)][1:n_est]
+    siar[, peso := 1/dist]
+    siar[, peso := peso/sum(peso)]
     ## ¿Dentro del cuadrado?
-    siar[, .(Estacion, Codigo, dist)]
-    ## for(codigo in siar$Codigo){
-        
-    ## }
+    siar[, .(Estacion, Codigo, dist, peso)]
+    siar_list <- list()
+    for(codigo in siar$Codigo){
+        siar_list[[codigo]] <- siarGET(id = codigo,
+                                       inicio = as.character(inicio),
+                                       final = as.character(final),
+                                       tipo = tipo)
+        siar_list[[codigo]]$peso <- siar[Codigo == codigo, peso]
+    }
+    s_comb <- rbindlist(siar_list, use.names = TRUE, fill = TRUE)
+
+    nms <- names(s_comb)
+    nms <- nms[-c(1, length(nms))]
+    
+    res <- s_comb[, lapply(.SD*peso, sum, na.rm = TRUE),
+                  .SDcols = nms,
+                  by = Dates]
+    return(res)
 }
+
+s <- readSIAR(Lon = -3.535278, Lat = 40.425556,
+              inicio = '2023-01-01', final = '2023-12-31',
+              tipo = 'Mensuales', n_est = 3)
