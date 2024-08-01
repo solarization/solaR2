@@ -123,6 +123,8 @@ export(
     Meteod2Meteom,
     zoo2Meteo,
     collper,
+    readSIAR,
+    siarGET,
     ##themes for lattice
     solaR.theme
     )
