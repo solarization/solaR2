@@ -459,15 +459,21 @@ readSIAR <- function(Lon = 0, Lat = 0,
                      tipo = 'Mensuales', n_est = 3){
     inicio <- as.Date(inicio)
     final <- as.Date(final)
+
+    ## Obtain the nearest stations
     siar <- est_SIAR[
         Fecha_Instalacion <= final & (is.na(Fecha_Baja) | Fecha_Baja >= inicio)
     ]
+
+    ## Weigths for the interpolation
     siar[, dist := haversine(Latitud, Longitud, Lat, Lon)]
     siar <- siar[order(dist)][1:n_est]
     siar[, peso := 1/dist]
     siar[, peso := peso/sum(peso)]
     ## ¿Dentro del cuadrado?
     siar[, .(Estacion, Codigo, dist, peso)]
+
+    ## List for the data.tables of siarGET
     siar_list <- list()
     for(codigo in siar$Codigo){
         siar_list[[codigo]] <- siarGET(id = codigo,
@@ -476,17 +482,28 @@ readSIAR <- function(Lon = 0, Lat = 0,
                                        tipo = tipo)
         siar_list[[codigo]]$peso <- siar[Codigo == codigo, peso]
     }
+
+    ## Bind the data.tables
     s_comb <- rbindlist(siar_list, use.names = TRUE, fill = TRUE)
 
     nms <- names(s_comb)
     nms <- nms[-c(1, length(nms))]
-    
-    res <- s_comb[, lapply(.SD*peso, sum, na.rm = TRUE),
+
+    ## Interpole
+    res <- s_comb[, lapply(.SD * peso, sum, na.rm = TRUE),
                   .SDcols = nms,
                   by = Dates]
+
+    mainURL <- "https://servicio.mapama.gob.es"
+ 
+    res <- switch(tipo,
+                  Horarios = {dt2Meteoi(res, lat = Lat, source = mainURL)},
+                  Diarios = {dt2Meteod(res, lat = Lat, source = mainURL)},
+                  Semanales = {res},
+                  Mensuales = {dt2Meteod(res, lat = Lat, source = mainURL)})
     return(res)
 }
 
-s <- readSIAR(Lon = -3.535278, Lat = 40.425556,
-              inicio = '2023-01-01', final = '2023-12-31',
-              tipo = 'Mensuales', n_est = 3)
+## s <- readSIAR(Lon = -3.535278, Lat = 40.425556, 
+##               inicio = '2024-05-17', final = '2024-07-24',
+##               tipo = 'Diarios', n_est = 1)
