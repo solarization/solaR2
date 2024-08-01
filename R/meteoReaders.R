@@ -377,22 +377,24 @@ siarGET <- function(id, inicio, final, tipo = 'Diarios', ambito = 'Estacion'){
 
     path <- paste('/apisiar/API/v1/Datos', tipo, ambito, sep = '/')
 
-    ## APIsiar
+    ## prepare the APIsiar
     req <- request(mainURL) |>
         req_url_path(path) |>
         req_url_query(Id = id,
                       FechaInicial = inicio,
                       FechaFinal = final,
                       ClaveAPI = '_Q8L_niYFBBmBs-vB3UomUqdUYy98FTRX1aYbrZ8n2FXuHYGTV')
+    ## execute it
     resp <- req_perform(req)
 
     ##JSON to R
     respJSON <- resp_body_json(resp, simplifyVector = TRUE)
 
     if(is.null(respJSON$MensajeRespuesta))
-        data.table(respJSON$Datos)
+        res <- data.table(respJSON$Datos)
     else
-        respJSON$MensajeRespuesta
+        res <- respJSON$MensajeRespuesta
+    return(res)
 }
 
 haversine <- function(lat1, lon1, lat2, lon2) {
@@ -407,8 +409,8 @@ haversine <- function(lat1, lon1, lat2, lon2) {
 }
 
 readSIAR <- function(Lon = 0, Lat = 0,
-                     inicio = paste(year(Sys.Date()), '01-01', sep = '-'),
-                     final = paste(year(Sys.Date()), '01-01', sep = '-'),
+                     inicio = paste(year(Sys.Date())-1, '01-01', sep = '-'),
+                     final = paste(year(Sys.Date())-1, '12-31', sep = '-'),
                      tipo = 'Diarios'){
     inicio <- as.Date(inicio)
     final <- as.Date(final)
@@ -416,12 +418,10 @@ readSIAR <- function(Lon = 0, Lat = 0,
         Fecha_Instalacion <= final & (is.na(Fecha_Baja) | Fecha_Baja >= inicio)
     ]
     siar[, dist := haversine(Latitud, Longitud, Lat, Lon)]
-    siar <- siar[order(dist)][1:4]
+    siar <- siar[order(dist)][1:2]
     ## ¿Dentro del cuadrado?
-    siar[, .(Codigo, dist)]
-    ## res <- do.call(siarGET, id = siar$Codigo,
-    ##         inicio = inicio, final = final,
-    ##         tipo = tipo)
-    ## res
+    siar[, .(Estacion, Codigo, dist)]
+    ## for(codigo in siar$Codigo){
+        
+    ## }
 }
-
