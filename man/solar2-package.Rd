@@ -1,9 +1,9 @@
-\name{solaR-package}
-\alias{solaR-package}
-\alias{solaR}
+\name{solaR2-package}
+\alias{solaR2-package}
+\alias{solaR2}
 \docType{package}
 \title{
-Solar Radiation and Photovoltaic Systems with R
+Solar Radiation and Photovoltaic Systems with R version 2
 }
 \description{
 The \code{solaR} package allows for reproducible research both for
