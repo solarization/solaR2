@@ -239,7 +239,7 @@ dt2Meteom <- function(file, lat, source = '')
     }
     
     ##reorder the columns
-    setcolorder(bd, c('Dates', 'G0d', nms0))
+    setcolorder(bd, c('Dates', 'G0', nms0))
     
     setkey(bd, 'Dates')
     result <- new(Class = 'Meteo',
@@ -500,7 +500,7 @@ readSIAR <- function(Lon = 0, Lat = 0,
                   Horarios = {dt2Meteoi(res, lat = Lat, source = mainURL)},
                   Diarios = {dt2Meteod(res, lat = Lat, source = mainURL)},
                   Semanales = {res},
-                  Mensuales = {dt2Meteod(res, lat = Lat, source = mainURL)})
+                  Mensuales = {dt2Meteom(res, lat = Lat, source = mainURL)})
     return(res)
 }
 
