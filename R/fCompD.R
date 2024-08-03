@@ -8,12 +8,16 @@ fCompD <- function(sol, G0d, corr = 'CPR', f)
         sol <- sol[, calcSol(lat = unique(lat), BTi = Dates)]
     }
     if(class(G0d)[1] != 'Meteo'){
-        Dates <- unique(as.IDate(G0d$Dates))
-        if('lat' %in% G0d){latg <- unique(G0d$lat)}
-        else{latg <- getLat(sol)}
-        G0 <- G0d$G0
-        dt <- data.table(Dates = Dates,
-                         G0 = G0)
+        dt <- copy(data.table(G0d))
+        if(!('Dates' %in% names(dt))){
+            dt[, Dates := indexD(sol)]
+            setcolorder(dt, 'Dates')
+            setkey(dt, 'Dates')
+        }
+        if('lat' %in% names(dt)){
+            latg <- unique(dt$lat)
+            dt[, lat := NULL]
+        }else{latg <- getLat(sol)}
         G0d <- dt2Meteo(dt, latg)
     }  
 

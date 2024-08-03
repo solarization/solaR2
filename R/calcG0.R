@@ -38,7 +38,7 @@ calcG0 <- function(lat,
                                 data.frame={
                                     bd.default=list(file='', lat=lat)
                                     bd=modifyList(bd.default, dataRad)
-                                    res <- do.call('dt2Meteod', bd)
+                                    res <- do.call('dt2Meteo', bd)
                                     res
                                 },
                                 zoo={
@@ -77,7 +77,7 @@ calcG0 <- function(lat,
                                 data.frame = {
                                     bdI.default <- list(file='', lat=lat)
                                     bdI <- modifyList(bdI.default, dataRad)
-                                    res <- do.call('dt2Meteoi', bdI)
+                                    res <- do.call('dt2Meteo', bdI)
                                     res
                                 },
                                 zoo = {
@@ -162,18 +162,17 @@ calcG0 <- function(lat,
         G0dm[, DayOfMonth := DOM(G0dm)]
         G0y <- G0dm[, lapply(.SD*DayOfMonth, sum, na.rm = TRUE),
                     .SDcols = nms,
-                    by = year]
+                    by = .(Dates = year)]
         G0dm[, DayOfMonth := NULL]        
     } else{
         G0y <- compD[, lapply(.SD/1000, sum, na.rm = TRUE),
                      .SDcols = nms,
-                     by = year(Dates)]
+                     by = .(Dates = year(Dates))]
     }
     G0dm[, Dates := paste(month.abb[month], year, sep = '. ')]
     G0dm[, c('month', 'year') := NULL]
     setcolorder(G0dm, 'Dates')
-    names(G0y)[1] <- 'Dates'
-
+    
 ###Resultado
     result <- new(Class='G0',
                   BD,                     #G0 contains "Meteo"

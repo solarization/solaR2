@@ -70,7 +70,7 @@ BTd = fBTd(mode = 'serie')
 
 SolD <- fSolD(lat, BTd[100])
 
-G0d = data.table(Dates = SolD$Dates, G0d = 5000)
+G0d = 5000
 fCompD(SolD, G0d, corr = "Page")
 fCompD(SolD, G0d, corr = "CPR")
 

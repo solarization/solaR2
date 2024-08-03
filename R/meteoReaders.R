@@ -7,7 +7,7 @@ readG0dm <- function(lat, G0dm, Ta = 25,
     if(missing(lat)){lat <- 0}
     Dates <- as.IDate(paste(year, 1:12, promDays, sep = '-'), tz = 'UTC')
     G0dm.dt <- data.table(Dates = Dates,
-                          G0 = G0dm,
+                          G0d = G0dm,
                           Ta = Ta)
     setkey(G0dm.dt, 'Dates')
     results <- new(Class = 'Meteo',
@@ -156,11 +156,19 @@ dt2Meteo <- function(file, lat, source = '', type){
     if(missing(type)){
         sample <- median(diff(file$Dates))
         IsDaily <- as.numeric(sample, units = 'days')
+        if(is.na(IsDaily)) IsDaily <- ifelse('G0d' %in% names(bd),
+                                             1, 0)
         if(IsDaily >= 30) type <- 'prom'
         else{
             type <- ifelse(IsDaily >= 1, 'bd', 'bdI') 
         }
+        
     }
+    if(!('Ta' %in% names(bd))){
+        if(all(c('Tempmin', 'TempMax') %in% names(bd)))
+            bd[, Ta := mean(c(Tempmin, TempMax))]
+        else bd[, Ta := 25]
+            }
 
     ## Columns of the data.table
     nms0 <- switch(type,
@@ -170,9 +178,7 @@ dt2Meteo <- function(file, lat, source = '', type){
                        if(all(c('D0d', 'B0d') %in% names(bd))){
                            nms0 <- c(nms0, 'D0d', 'B0d')
                        }
-                       if('Ta' %in% names(bd)){
-                           nms0 <- c(nms0, 'Ta')
-                       }
+                       nms0 <- c(nms0, 'Ta')
                        if(all(c('TempMin', 'TempMax') %in% names(bd))){
                            nms0 <- c(nms0, 'TempMin', 'TempMax')
                        }
@@ -256,10 +262,27 @@ Meteoi2Meteod <- function(G0i)
     lat <- G0i@latm
     source <- G0i@source
 
-    dt <- getData(G0i)
-    dt <- dt[, lapply(.SD, mean), by = as.IDate(Dates)]
-    names(dt)[1] <- 'Dates'
-    
+    dt0 <- getData(G0i)
+    dt <- dt0[, lapply(.SD, sum), 
+             .SDcols = names(dt0)[!names(dt0) %in% c('Dates', 'Ta')],
+             by = .(Dates = as.IDate(Dates))]
+    if('Ta' %in% names(dt0)){
+        Ta <- dt0[, .(Ta = mean(Ta),
+                      TempMin = min(Ta),
+                      TempMax = max(Ta)),
+                  by = .(Dates = as.IDate(Dates))]
+        if(all(Ta$Ta == c(Ta$TempMin, Ta$TempMax))) Ta[, c('TempMin', 'TempMax') := NULL]
+        dt <- merge(dt, Ta)
+    }
+    if('G0' %in% names(dt)){
+        names(dt)[names(dt) == 'G0'] <- 'G0d'
+    }
+    if('D0' %in% names(dt)){
+        names(dt)[names(dt) == 'D0'] <- 'D0d'
+    }
+    if('B0' %in% names(dt)){
+        names(dt)[names(dt) == 'B0'] <- 'B0d'
+    }
     G0d <- dt2Meteo(dt, lat, source, type = 'bd')
     return(G0d)
 }

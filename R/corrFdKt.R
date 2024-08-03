@@ -1,12 +1,12 @@
 #### monthly Kt ####
-Ktm <- function(sol, G0d){
+Ktm <- function(sol, G0dm){
     solf <- sol@solD[, .(Dates, Bo0d)]
     solf[, c('month', 'year') := .(month(Dates), year(Dates))]
     solf[,Bo0m := mean(Bo0d), by = .(month, year)]
-    G0df <- G0d@data[, .(Dates, G0)]
+    G0df <- G0dm@data[, .(Dates, G0d)]
     G0df[, c('month', 'year') := .(month(Dates), year(Dates))]
-    G0df[, G0m := mean(G0), by = .(month, year)]
-    Ktm <- G0df$G0m/solf$Bo0m
+    G0df[, G0d := mean(G0d), by = .(month, year)]
+    Ktm <- G0df$G0d/solf$Bo0m
     return(Ktm)
 }
 
@@ -30,15 +30,15 @@ Kti <- function(sol, G0i){
 #### monthly correlations ####
 
 ### Page ###
-FdKtPage <- function(sol, G0d){##Page para medias mensuales
-    Kt <- Ktm(sol, G0d)
+FdKtPage <- function(sol, G0dm){##Page para medias mensuales
+    Kt <- Ktm(sol, G0dm)
     Fd=1-1.13*Kt
     return(data.table(Fd, Kt))
 }
 
 ### Liu and Jordan ###
-FdKtLJ <- function(sol, G0d){
-    Kt <- Ktm(sol, G0d)
+FdKtLJ <- function(sol, G0dm){
+    Kt <- Ktm(sol, G0dm)
     Fd=(Kt<0.3)*0.595774 +
         (Kt>=0.3 & Kt<=0.7)*(1.39-4.027*Kt+5.531*Kt^2-3.108*Kt^3)+
         (Kt>0.7)*0.215246
