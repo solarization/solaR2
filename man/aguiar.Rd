@@ -15,7 +15,7 @@
   Transition Matrices defined in the paper "Simple procedure for
   generating sequences of daily radiation values using a library of
   Markov transition matrices", Aguiar et al., Solar Energy,
-  1998. \code{Ktlim} (matrix) and \code{Ktm} (vector) are auxiliary data
+  1998. \code{Ktlim} (matrix) and \code{Ktmtm} (vector) are auxiliary data
   to choose the correspondent matrix of the collection.
 }
 
