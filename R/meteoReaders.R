@@ -145,110 +145,59 @@ readBDi <- function(file, lat,
 }
 
 
-#### data.frame/table to Meteo (daily)
-dt2Meteod <- function(file, lat, source = '')
-{
-    ##make sure its a data.table
+dt2Meteo <- function(file, lat, source = '', type){
+    ## Make sure its a data.table
     bd <- data.table(file)
 
     ## Dates is an as.POSIX element
     bd[, Dates := as.POSIXct(Dates, tz = 'UTC')]
-       
-    nms0 <- NULL
-    if(('D0' %in% bd) && ('B0' %in% bd)){
-        nms0 <- 'D0'
-        nms0[2] <- 'B0'
+
+    ## type
+    if(missing(type)){
+        sample <- median(diff(file$Dates))
+        IsDaily <- as.numeric(sample, units = 'days')
+        if(IsDaily >= 30) type <- 'prom'
+        else{
+            type <- ifelse(IsDaily >= 1, 'bd', 'bdI') 
+        }
     }
 
-    if('Ta' %in% bd){nms0[length(nms0)+1] <- 'Ta'}
-
-    if(('TempMin' %in% bd) && ('TempMax' %in% bd)){
-        nms0[length(nms0)+1] <- 'TempMin'
-        nms0[length(nms0)+1] <- 'TempMax'
-    }
-    
-    ##reorder the columns
-    setcolorder(bd, c('Dates', 'G0', nms0))
-
+    ## Columns of the data.table
+    nms0 <- switch(type,
+                   bd = ,
+                   prom = {
+                       nms0 <- 'G0d'
+                       if(all(c('D0d', 'B0d') %in% names(bd))){
+                           nms0 <- c(nms0, 'D0d', 'B0d')
+                       }
+                       if('Ta' %in% names(bd)){
+                           nms0 <- c(nms0, 'Ta')
+                       }
+                       if(all(c('TempMin', 'TempMax') %in% names(bd))){
+                           nms0 <- c(nms0, 'TempMin', 'TempMax')
+                       }
+                       nms0
+                   },
+                   bdI = {
+                       nms0 <- 'G0'
+                       if(all(c('D0', 'B0') %in% names(bd))){
+                           nms0 <- c(nms0, 'D0', 'B0')
+                       }
+                       if('Ta' %in% names(bd)){
+                           nms0 <- c(nms0, 'Ta')
+                       }
+                       nms0
+                   })
+    ## Columns order and set key
+    setcolorder(bd, c('Dates', nms0))
     setkey(bd, 'Dates')
+    ## Result
     result <- new(Class = 'Meteo',
                   latm = lat,
                   data = bd,
-                  type = 'bd',
+                  type = type,
                   source = source)
 }
-
-
-#### data.frame/table to Meteo (intradaily) ####
-dt2Meteoi <- function(file, lat, source = '')
-{
-    ##make sure its a data.table
-    bd <- data.table(file)
-
-    ##Dates is an as.POSIX element
-    bd[, Dates := as.POSIXct(Dates, tz = 'UTC')]
-    
-    nms0 <- NULL
-    if(('D0' %in% bd) && ('B0' %in% bd)){
-        nms0 <- 'D0'
-        nms0[2] <- 'B0'
-    }
-
-    if('Ta' %in% bd){
-        nms0[length(nms0)+1] <- 'Ta'
-    }
-
-    if(('TempMin' %in% bd) && ('TempMax' %in% bd)){
-        nms0[length(nms0)+1] <- 'TempMin'
-        nms0[length(nms0)+1] <- 'TempMax'
-    }
-    
-    ##reorder the columns
-    setcolorder(bd, c('Dates', 'G0', nms0))
-   
-    setkey(bd, 'Dates')
-    result <- new(Class = 'Meteo',
-                  latm = lat,
-                  data = bd,
-                  type = 'bdI',
-                  source = source)
-}
-
-#### data.frame/table to Meteo (monthly) ####
-dt2Meteom <- function(file, lat, source = '')
-{
-    ##make sure its a data.table
-    bd <- data.table(file)
-
-    ##Dates is an as.POSIX element
-    bd[, Dates := as.POSIXct(Dates, tz = 'UTC')]
-    
-    nms0 <- NULL
-    if(('D0d' %in% bd) && ('B0d' %in% bd)){
-        nms0 <- 'D0d'
-        nms0[2] <- 'B0d'
-    }
-
-    if('Ta' %in% bd){
-        nms0[length(nms0)+1] <- 'Ta'
-    }
-
-    if(('TempMin' %in% bd) && ('TempMax' %in% bd)){
-        nms0[length(nms0)+1] <- 'TempMin'
-        nms0[length(nms0)+1] <- 'TempMax'
-    }
-    
-    ##reorder the columns
-    setcolorder(bd, c('Dates', 'G0', nms0))
-    
-    setkey(bd, 'Dates')
-    result <- new(Class = 'Meteo',
-                  latm = lat,
-                  data = bd,
-                  type = 'prom',
-                  source = source)
-}
-
 
 #### Liu and Jordan, Collares-Pereira and Rabl proposals ####
 collper <- function(sol, compD)
@@ -311,7 +260,7 @@ Meteoi2Meteod <- function(G0i)
     dt <- dt[, lapply(.SD, mean), by = as.IDate(Dates)]
     names(dt)[1] <- 'Dates'
     
-    G0d <- dt2Meteod(dt, lat, source)
+    G0d <- dt2Meteo(dt, lat, source, type = 'bd')
     return(G0d)
 }
 
@@ -331,7 +280,7 @@ Meteod2Meteom <- function(G0d)
     
     setcolorder(dt, 'Dates')
 
-    G0m <- dt2Meteom(dt, lat, source)
+    G0m <- dt2Meteo(dt, lat, source, type = 'prom')
     return(G0m)
 }
 
@@ -346,31 +295,6 @@ zoo2Meteo <- function(file, lat, source = '')
                   type = type,
                   source = source)
 }
-
-dt2Meteo <- function(file, lat, source = '', type)
-{
-    ##Make sure is a data.table
-    file <- data.table(file)
-    
-    stopifnot('Dates' %in% names(file))
-    if(!('Ta' %in% names(file)) && !('TempMin' %in% names(file))){
-        ## file <- data.table(Dates = file$Dates,
-        ##                    G0 = file$G0,
-        ##                    Ta = 25)
-        file[, Ta := 25]
-    }
-    sample <- median(diff(file$Dates))
-    if(missing(type)){
-        IsDaily <- as.numeric(sample, units = 'days')>=1
-        type <- ifelse(IsDaily, 'bd', 'bdI')
-    }
-    result <- new(Class = 'Meteo',
-                  latm = lat,
-                  data = file,
-                  type = type,
-                  source = source)
-}
-
 
 siarGET <- function(id, inicio, final, tipo = 'Mensuales', ambito = 'Estacion'){
     if(!(tipo %in% c('Horarios', 'Diarios', 'Semanales', 'Mensuales'))){
@@ -413,7 +337,7 @@ siarGET <- function(id, inicio, final, tipo = 'Mensuales', ambito = 'Estacion'){
                       res0[, Dates := as.POSIXct(HoraMin, Fecha,
                                                  tz = 'Europe/Madrid')]
                       res0 <- res0[, .(Dates,
-                                       G0 = Radiacion,
+                                       G0d = Radiacion,
                                        Ta = TempMedia)]
                       return(res0)
                   },
@@ -497,10 +421,10 @@ readSIAR <- function(Lon = 0, Lat = 0,
     mainURL <- "https://servicio.mapama.gob.es"
  
     res <- switch(tipo,
-                  Horarios = {dt2Meteoi(res, lat = Lat, source = mainURL)},
-                  Diarios = {dt2Meteod(res, lat = Lat, source = mainURL)},
+                  Horarios = {dt2Meteo(res, lat = Lat, source = mainURL, type = 'bdI')},
+                  Diarios = {dt2Meteo(res, lat = Lat, source = mainURL, type = 'bd')},
                   Semanales = {res},
-                  Mensuales = {dt2Meteom(res, lat = Lat, source = mainURL)})
+                  Mensuales = {dt2Meteo(res, lat = Lat, source = mainURL, type = 'prom')})
     return(res)
 }
 

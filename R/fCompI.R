@@ -30,19 +30,15 @@ fCompI <- function(sol, compD, G0I,
     } else { ## Use instantaneous values if provided through G0I
 
         if(class(G0I)[1] != 'Meteo'){
-            ## Dates <- unique(as.IDate(G0I$Dates))
-            ## lat <- unique(G0I$lat)
-            ## G0 <- G0I$G0
-            ## Ta <- G0I$Ta
-            ## dt <- data.table(Dates = Dates,
-            ##                  G0 = G0,
-            ##                  Ta = Ta)
-            dt <- G0I[, .(Dates, G0)]
+            dt <- copy(G0I)
+            if(!('Dates' %in% names(G0I))){
+                dt[, Dates := indexI(sol)]
+                setcolorder(dt, 'Dates')
+                setkey(dt, 'Dates')
+            }
             if('lat' %in% names(G0I)){latg <- unique(G0I$lat)}
             else{latg <- lat}
-            if('B0' %in% names(G0I)){dt[, B0 := G0I$B0]}
-            if('D0' %in% names(G0I)){dt[, D0 := G0I$D0]}
-            G0I <- dt2Meteod(dt, latg)
+            G0I <- dt2Meteo(dt, latg)
         }
     
         if (corr!='none'){

@@ -14,7 +14,7 @@ fCompD <- function(sol, G0d, corr = 'CPR', f)
         G0 <- G0d$G0
         dt <- data.table(Dates = Dates,
                          G0 = G0)
-        G0d <- dt2Meteod(dt, latg)
+        G0d <- dt2Meteo(dt, latg)
     }  
 
     stopifnot(indexD(sol) == indexD(G0d))
