@@ -40,14 +40,14 @@ calcG0(lat, modeRad = 'prom', dataRad,
     reference below).
 
     If \code{modeRad = 'bd'} the information of \emph{daily} irradiation is read from a
-    file, a \code{data.frame} defined by \code{dataRad}, a \code{zoo} or a
-    \code{Meteo} object. (See \code{\link{readBD}}, \code{\link{df2Meteo}}
+    file, a \code{data.table} defined by \code{dataRad}, a \code{zoo} or a
+    \code{Meteo} object. (See \code{\link{readBDd}}, \code{\link{dt2Meteod}}
     and \code{\link{zoo2Meteo}} for details).
 
     If \code{modeRad = 'bdI'} the information of \emph{intradaily} irradiation is read from a
-    file, a \code{data.frame} defined by \code{dataRad}, a \code{zoo} or a
+    file, a \code{data.table} defined by \code{dataRad}, a \code{zoo} or a
     \code{Meteo} object. (See \code{\link{readBDi}},
-    \code{\link{dfI2Meteo}} and \code{\link{zoo2Meteo}} for details).
+    \code{\link{dt2Meteoi}} and \code{\link{zoo2Meteo}} for details).
   }
 
   \item{dataRad}{\itemize{
@@ -57,18 +57,18 @@ calcG0(lat, modeRad = 'prom', dataRad,
 	processed with \code{\link{readG0dm}}.}
       
       \item{If \code{modeRad = 'bd'} a character (name of the file to be
-    read with \code{readBD}), a \code{data.frame} (to be processed with
-    \code{df2Meteo}), a \code{zoo} (to be processed with
+    read with \code{readBDd}), a \code{data.table} (to be processed with
+    \code{dt2Meteod}), a \code{zoo} (to be processed with
     \code{zoo2Meteo}), a \code{Meteo} object, or a \code{list} as
-    defined by \code{\link{readBD}}, \code{\link{df2Meteo}} or
+    defined by \code{\link{readBDd}}, \code{\link{dt2Meteod}} or
     \code{\link{zoo2Meteo}}. The resulting object will include a column
     named \code{Ta}, with information about ambient temperature.}
 
         \item{If \code{modeRad = 'bdI'} a character (name of the file to
-    be read with \code{readBDi}), a \code{data.frame} (to be processed
-    with \code{dfI2Meteo}), a \code{zoo} (to be processed with
+    be read with \code{readBDi}), a \code{data.table} (to be processed
+    with \code{dt2Meteoi}), a \code{zoo} (to be processed with
     \code{zoo2Meteo}), a \code{Meteo} object, or a \code{list} as
-    defined by \code{\link{readBDi}}, \code{\link{dfI2Meteo}} or
+    defined by \code{\link{readBDi}}, \code{\link{dt2Meteoi}} or
     \code{\link{zoo2Meteo}}. The resulting object will include a column
     named \code{Ta}, with information about ambient temperature.}
   }}
@@ -84,7 +84,7 @@ calcG0(lat, modeRad = 'prom', dataRad,
   \item{sunGeometry}{\code{character}, method for the sun geometry
     calculations. See \code{\link{calcSol}}, \code{\link{fSolD}} and \code{\link{fSolI}}.}
 
-  \item{corr}{A character, the correlation between the the fraction of diffuse irradiation and the
+  \item{corr}{A character, the correlation between the fraction of diffuse irradiation and the
     clearness index to be used.
 
     With this version several options are available, as described in
@@ -132,8 +132,10 @@ calcG0(lat, modeRad = 'prom', dataRad,
   \code{\link{fCompD}},
   \code{\link{fCompI}},
   \code{\link{readG0dm}},
-  \code{\link{readBD}},
+  \code{\link{readBDd}},
   \code{\link{readBDi}},
+  \code{\link{dt2Meteod}},
+  \code{\link{dt2Meteoi}},
   \code{\link{corrFdKt}}.
 }
 \examples{

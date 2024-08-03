@@ -91,9 +91,9 @@ zoo2Meteo(file, lat, source = '')
 }
 \examples{
 data(helios)
-names(helios) = c('Dates', 'G0', 'TempMax', 'TempMin')
+names(helios) = c('Dates', 'G0d', 'TempMax', 'TempMin')
 
-bd = dt2Meteod(helios, lat = 41, source = 'helios-IES')
+bd = dt2Meteo(helios, lat = 41, source = 'helios-IES', type = 'bd')
 
 getData(bd)
 
