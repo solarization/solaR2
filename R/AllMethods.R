@@ -101,17 +101,10 @@ setMethod('show', 'Meteo',
           }
           )
 
-### indexD ###
+### index ###
 setMethod('indexD',
           signature = (object = 'Meteo'),
-          definition = function(object){as.POSIXct(object@data$Dates)
-          })
-
-### indexI ###
-setMethod('indexI',
-          signature = (object = 'Meteo'),
-          definition = function(object){as.POSIXct(object@data$Dates)
-          })
+          definition = function(object){as.POSIXct(getData(object)$Dates)})
 
 #### Methods for G0 ####
 

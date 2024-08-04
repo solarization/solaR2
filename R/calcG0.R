@@ -96,7 +96,7 @@ calcG0 <- function(lat,
 ### Angulos solares y componentes de irradiancia
     if (modeRad=='bdI') {
         sol <- calcSol(lat, sample = sample,
-                       BTi = indexI(BD), keep.night=keep.night, method=sunGeometry)
+                       BTi = indexD(BD), keep.night=keep.night, method=sunGeometry)
         compI <- fCompI(sol=sol, G0I=BD, corr=corr, f=f, ...)
         compD <- compI[, lapply(.SD, P2E, sol@sample),
                        .SDcols = c('G0', 'D0', 'B0'),
