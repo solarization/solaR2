@@ -15,7 +15,6 @@ setMethod('[',
             stopifnot(j>i)
             if (!is.null(i)) i <- truncDay(i)
             if (!is.null(j)) j <- truncDay(j)+86400-1
-            ## d <- as.POSIXct(indexD(x))
             d <- indexD(x)
             x@data <- x@data[(d >= i & d <= j)]
             x
@@ -67,18 +66,16 @@ setMethod('[',
                   G0dmw[, DayOfMonth := DOM(G0dmw)]
                   G0yw <- G0dmw[, lapply(.SD*DayOfMonth, sum, na.rm = TRUE),
                                 .SDcols = c('G0d', 'D0d', 'B0d'),
-                                by = year]
+                                by = .(Dates = year)]
                   G0dmw[, DayOfMonth := NULL]
               } else {
                   G0yw <- G0dw[, lapply(.SD/1000, sum, na.rm = TRUE),
                                .SDcols = c('G0d', 'D0d', 'B0d'),
-                               by = year(unique(truncDay(Dates)))]
+                               by = .(Dates = year(unique(truncDay(Dates))))]
               }
               G0dmw[, Dates := paste(month.abb[month], year, sep = '. ')]
               G0dmw[, c('month', 'year') := NULL]
-              setcolorder(G0dmw, c('Dates', names(G0dmw)[-length(G0dmw)]))
-              names(G0yw)[1] <- 'Dates'
-              names(G0dw)[1] <- 'Dates'
+              setcolorder(G0dmw, 'Dates')
               result <- new('G0',
                             meteo,
                             sol,
