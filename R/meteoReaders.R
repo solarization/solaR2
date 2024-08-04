@@ -360,14 +360,14 @@ siarGET <- function(id, inicio, final, tipo = 'Mensuales', ambito = 'Estacion'){
                       res0[, Dates := as.POSIXct(HoraMin, Fecha,
                                                  tz = 'Europe/Madrid')]
                       res0 <- res0[, .(Dates,
-                                       G0d = Radiacion,
+                                       G0 = Radiacion,
                                        Ta = TempMedia)]
                       return(res0)
                   },
                   Diarios = {
                       res0[, Dates := as.IDate(Fecha)]
                       res0 <- res0[, .(Dates,
-                                       G0 = Radiacion * 277.78,
+                                       G0d = Radiacion * 277.78,
                                        Ta = TempMedia,
                                        TempMin,
                                        TempMax)]
@@ -376,11 +376,12 @@ siarGET <- function(id, inicio, final, tipo = 'Mensuales', ambito = 'Estacion'){
                   Semanales = res0,
                   Mensuales = {
                       promDays<-c(17,14,15,15,15,10,18,18,18,19,18,13)
-                      res0[, Dates := as.IDate(paste(Año, Mes,
+                      names(res0)[1] <- 'Year'
+                      res0[, Dates := as.IDate(paste(Year, Mes,
                                                      promDays[Mes],
                                                      sep = '-'))]
                       res0 <- res0[, .(Dates,
-                                       G0 = Radiacion * 277.78,
+                                       G0d = Radiacion * 277.78,
                                        Ta = TempMedia,
                                        TempMin,
                                        TempMax)]
@@ -390,7 +391,7 @@ siarGET <- function(id, inicio, final, tipo = 'Mensuales', ambito = 'Estacion'){
 }
 
 haversine <- function(lat1, lon1, lat2, lon2) {
-    R <- 6371  # Radio de la tierra en kilómetros
+    R <- 6371  # Radius of the Earth in kilometers
     dLat <- (lat2 - lat1) * pi / 180
     dLon <- (lon2 - lon1) * pi / 180
     a <- sin(dLat / 2) * sin(dLat / 2) + cos(lat1 * pi / 180) *
@@ -406,7 +407,35 @@ readSIAR <- function(Lon = 0, Lat = 0,
                      tipo = 'Mensuales', n_est = 3){
     inicio <- as.Date(inicio)
     final <- as.Date(final)
-
+    
+    n_reg <- switch(tipo,
+                    Horarios = {
+                        tt <- difftime(final, inicio, units = 'days')
+                        tt <- (as.numeric(tt)+1)*48
+                        tt <- tt*n_est
+                        tt
+                    },
+                    Diarios = {
+                        tt <- difftime(final, inicio, units = 'days')
+                        tt <- as.numeric(tt)+1
+                        tt <- tt*n_est
+                        tt
+                    },
+                    Semanales = {
+                        tt <- difftime(final, inicio, units = 'weeks')
+                        tt <- as.numeric(tt)
+                        tt <- tt*n_est
+                        tt
+                    },
+                    Mensuales = {
+                        tt <- difftime(final, inicio, units = 'weeks')
+                        tt <- as.numeric(tt)/4.34524
+                        tt <- ceiling(tt)
+                        tt <- tt*n_est
+                        tt
+                    })
+    if(n_reg > 100) stop(paste('Number of requested records (', n_reg,
+                                ') exceeds the maximum allowed (100)', sep = ''))
     ## Obtain the nearest stations
     siar <- est_SIAR[
         Fecha_Instalacion <= final & (is.na(Fecha_Baja) | Fecha_Baja >= inicio)
@@ -417,7 +446,7 @@ readSIAR <- function(Lon = 0, Lat = 0,
     siar <- siar[order(dist)][1:n_est]
     siar[, peso := 1/dist]
     siar[, peso := peso/sum(peso)]
-    ## ¿Dentro del cuadrado?
+    ## Dentro del cuadrado?
     siar[, .(Estacion, Codigo, dist, peso)]
 
     ## List for the data.tables of siarGET
@@ -450,7 +479,3 @@ readSIAR <- function(Lon = 0, Lat = 0,
                   Mensuales = {dt2Meteo(res, lat = Lat, source = mainURL, type = 'prom')})
     return(res)
 }
-
-## s <- readSIAR(Lon = -3.535278, Lat = 40.425556, 
-##               inicio = '2024-05-17', final = '2024-07-24',
-##               tipo = 'Diarios', n_est = 1)
