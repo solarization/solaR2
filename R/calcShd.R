@@ -7,25 +7,25 @@ calcShd<-function(radEf,##class='Gef'
 {
     stopifnot(is.list(struct), is.data.frame(distances))
 
-    ##Por ahora sólo utilizo modeShd='area'
+    ##Por ahora solo utilizo modeShd='area'
     ##Con diferentes modeShd (por definir) podré calcular Gef de diferente forma
     ##Ver tesis de Macagnan
     prom=("prom"  %in%  modeShd)
     prev <- as.data.tableI(radEf, complete=TRUE)
-    ## Cálculo de sombras
+    ## Calculo de sombras
     sol <- data.table(AzS = prev$AzS,
                       AlS = prev$AlS)
     theta <- radEf@Theta
     AngGen <- data.table(theta, sol)
     FS <- fSombra(AngGen, distances, struct, modeTrk, prom)
-    ## Cálculo de irradiancia
+    ## Calculo de irradiancia
     gef0 <- radEf@GefI
     Bef0 <- gef0$Bef
     Dcef0 <- gef0$Dcef
     Gef0 <- gef0$Gef
     Dief0 <- gef0$Dief
     Ref0 <- gef0$Ref
-    ##Cálculos
+    ##Calculos
     Bef <- Bef0*(1-FS)
     Dcef <- Dcef0*(1-FS)
     Def <- Dief0+Dcef
@@ -34,14 +34,10 @@ calcShd<-function(radEf,##class='Gef'
     nms <- c('Gef', 'Def', 'Dcef', 'Bef')
     nmsIndex <- which(names(gef0) %in% nms)
     names(gef0)[nmsIndex]<- paste(names(gef0)[nmsIndex], '0', sep='')
-    ##Entrego zoo con resultados, incluyendo previos sin sombras
-    ##GefShd=CBIND(gef0, data.frame(Gef, Def, Bef, Dcef, FS), index=indexI(radEf))
     GefShd <- gef0
     GefShd[, c(nms, 'FS') := .(Gef, Def, Dcef, Bef, FS)]
 
     ## Valores diarios, mensuales y anuales
-    d <- truncDay(GefShd$Dates)
-    d <- unique(d)
     by <- radEf@sample
     nms <- c('Gef0', 'Def0', 'Bef0', 'G', 'D', 'B', 'Gef', 'Def', 'Bef')
     nmsd <- paste(nms, 'd', sep = '')
@@ -52,28 +48,30 @@ calcShd<-function(radEf,##class='Gef'
     names(Gefdm)[-c(1, 2)] <- nmsd
 
     if(radEf@type == 'prom'){
-        GefD <- Gefdm[, .SD[, -c(1, 2)] * 1000, by = d]
+        GefD <- Gefdm[, .SD[, -c(1, 2)] * 1000,
+                      .SDcols = nmsd,
+                      by = .(Dates = indexD(radEf))] 
        
         Gefdm[, DayOfMonth := DOM(Gefdm)]
        
         Gefy <- Gefdm[, lapply(.SD*DayOfMonth, sum, na.rm = TRUE),
-                      by = year(d),
-                      .SDcols = nmsd]
+                      .SDcols = nmsd,
+                      by = .(Dates = year)]
         Gefdm[, DayOfMonth := NULL]
     } else{    
         GefD <- GefShd[, lapply(.SD/1000, P2E, by),
-                       by = truncDay(Dates),
-                       .SDcols = nms]
+                       .SDcols = nms,
+                       by = .(Dates = truncDay(Dates))]
         names(GefD)[-1] <- nmsd
             
-        Gefy <- GefD[, lapply(.SD[, -1], sum, na.rm = TRUE), by = year(d)]
+        Gefy <- GefD[, lapply(.SD[, -1], sum, na.rm = TRUE),
+                     .SDcols = nmsd,
+                     by = .(Dates = year(Dates))]
     }
 
     Gefdm[, Dates := paste(month.abb[month], year, sep = '. ')]
     Gefdm[, c('month', 'year') := NULL]
     setcolorder(Gefdm, c('Dates', names(Gefdm)[-length(Gefdm)]))
-    names(Gefy)[1] <- 'Dates'
-    names(GefD)[1] <- 'Dates'
 
     ## Entrego un objecto de clase Gef
     ## modificando los slots 'modeShd', 'GefI', 'GefD', 'Gefdm', y 'Gefy'

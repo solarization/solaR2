@@ -47,17 +47,17 @@ calcGef<-function(lat,
         names(Gefdm)[-c(1,2)] <- nmsd
         GefD <- Gefdm[, .SD*1000,
                       .SDcols = nmsd,
-                      by = indexD(radHoriz)]
+                      by = .(Dates = indexD(radHoriz))]
        
         Gefdm[, DayOfMonth := DOM(Gefdm)]
         Gefy <- Gefdm[, lapply(.SD*DayOfMonth, sum, na.rm = TRUE),
                       .SDcols = nmsd,
-                      by = year]
+                      by = .(Dates = year)]
         Gefdm[, DayOfMonth := NULL]
     } else{
         GefD <- inclin[, lapply(.SD, P2E, by),
                        .SDcols = nms,
-                       by = truncDay(Dates)]
+                       by = .(Dates = truncDay(Dates))]
         names(GefD)[-1] <- nmsd
 
         Gefdm <- GefD[, lapply(.SD/1000, mean, na.rm = TRUE),
@@ -65,14 +65,12 @@ calcGef<-function(lat,
                       by = .(month(indexD(radHoriz)), year(indexD(radHoriz)))]
         Gefy <- GefD[, lapply(.SD/1000, sum, na.rm = TRUE),
                      .SDcols = nmsd,
-                     by = year(indexD(radHoriz))]
+                     by = .(Dates = year(indexD(radHoriz)))]
     }
 
     Gefdm[, Dates := paste(month.abb[month], year, sep = '. ')]
     Gefdm[, c('month', 'year') := NULL]
-    setcolorder(Gefdm, c('Dates', names(Gefdm)[-length(Gefdm)]))
-    names(Gefy)[1] <- 'Dates'
-    names(GefD)[1] <- 'Dates'
+    setcolorder(Gefdm, 'Dates')
     
 ###Resultado antes de sombras
     result0=new('Gef',

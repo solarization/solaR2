@@ -109,18 +109,16 @@ setMethod('[',
                   Gefdmw[, DayOfMonth:= DOM(Gefdmw)]
                   Gefyw <- Gefdmw[, lapply(.SD*DayOfMonth, sum),
                                   .SDcols = nms,
-                                  by = year]
+                                  by = .(Dates = year)]
                   Gefdmw[, DayOfMonth := NULL]
               } else {
                   Gefyw <- Gefdw[, lapply(.SD/1000, sum, na.rm = TRUE),
                                  .SDcols = nms,
-                                 by = year]
+                                 by = .(Dates = year)]
               }
               Gefdmw[, Dates := paste(month.abb[month], year, sep = '. ')]
               Gefdmw[, c('month', 'year') := NULL]
-              setcolorder(Gefdmw, c('Dates', names(Gefdmw)[-length(Gefdmw)]))
-              names(Gefyw)[1] <- 'Dates'
-              names(Gefdw)[1] <- 'Dates'
+              setcolorder(Gefdmw, 'Dates')
               result <- new('Gef',
                             g0,
                             GefD=Gefdw,
@@ -159,18 +157,16 @@ setMethod('[',
                   prodDmw[, DayOfMonth := DOM(prodDmw)]
                   prodyw <- prodDmw[, lapply(.SD*DayOfMonth, sum, na.rm = TRUE),
                                     .SDcols = c('Eac', 'Edc', 'Yf'),
-                                    by = year]
+                                    by = .(Dates = year)]
                   prodDmw[, DayOfMonth := NULL]
               } else {
                 prodyw <- prodDw[, lapply(.SD/1000, sum, na.rm = TRUE),
                                  .SDcols = c('Eac', 'Edc', 'Yf'),
-                                 by = year]
+                                 by = .(Dates = year)]
             }
               prodDmw[, Dates := paste(month.abb[month], year, sep = '. ')]
               prodDmw[, c('month', 'year') := NULL]
               setcolorder(prodDmw, c('Dates', names(prodDmw)[-length(prodDmw)]))
-              names(prodyw)[1] <- 'Dates'
-              names(prodDw)[1] <- 'Dates'
               result <- new('ProdGCPV',
                             gef,
                             prodD=prodDw,
@@ -204,19 +200,17 @@ setMethod('[',
                 prodDmw[, DayOfMonth := DOM(prodDmw)]
                 prodyw <- prodDmw[, lapply(.SD*DayOfMonth, sum, na.rm = TRUE),
                                   .SDcols = c('Eac', 'Qd', 'Yf'),
-                                  by = year]
+                                  by = .(Dates = year)]
                 prodDmw[, DayOfMonth := NULL]
             } else {
                 prodyw <- prodDw[, .(Eac = sum(Eac, na.rm = TRUE)/1000,
                                      Qd = sum(Qd, na.rm = TRUE),
                                      Yf = sum(Yf, na.rm = TRUE)),
-                                 by = year]
+                                 by = .(Dates = year)]
             }
             prodDmw[, Dates := paste(month.abb[month], year, sep = '. ')]
             prodDmw[, c('month', 'year') := NULL]
             setcolorder(prodDmw, c('Dates', names(prodDmw)[-length(prodDmw)]))
-            names(prodyw)[1] <- 'Dates'
-            names(prodDw)[1] <- 'Dates'
             result <- new('ProdPVPS',
                           gef,
                           prodD=prodDw,

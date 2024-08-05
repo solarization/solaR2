@@ -137,7 +137,6 @@ fProd <- function(inclin,
         Gef <- inclin@GefI$Gef
         Ta <- inclin@Ta$Ta
     } else {
-        indInclin <- inclin$Dates
         Gef <- inclin$Gef
         Ta <- inclin$Ta
     }
@@ -244,9 +243,9 @@ fProd <- function(inclin,
                          Vdc, Idc,
                          Pac, Pdc,
                          EffI)
-    if (class(inclin)[1] %in% c('Gef', 'data.table')) {
-        result <- resProd[, .SD, by=indInclin]
-        names(result)[1] <- 'Dates'
+    if (class(inclin)[1] %in% 'Gef'){
+        result <- resProd[, .SD,
+                          by=.(Dates = indInclin)]
         attr(result, 'generator') <- generator
         attr(result, 'module') <- module
         attr(result, 'inverter') <- inverter

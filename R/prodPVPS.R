@@ -112,34 +112,32 @@ prodPVPS<-function(lat,
         prodD <- prodDm[, .(Eac = Eac*1000,
                             Qd,
                             Yf),
-                        by = indexD(radEf)]
+                        by = .(Dates = indexD(radEf))]
 
         prodDm[, DayOfMonth := DOM(prodDm)]
         
         prody <- prodDm[, lapply(.SD*DayOfMonth, sum, na.rm = TRUE),
                         .SDcols = c('Eac', 'Qd', 'Yf'),
-                        by = year]
+                        by = .(Dates = year)]
         prodDm[, DayOfMonth := NULL]
     } else {
         prodD <- prodI[, .(Eac = P2E(Pac, by)/1000,
                            Qd = P2E(Q, by)),
-                       by = truncDay(Dates)]
+                       by = .(Dates = truncDay(Dates))]
         prodD[, Yf := Eac/Pg*1000]
 
         prodDm <- prodD[, lapply(.SD, mean, na.rm = TRUE),
                         .SDcols = c('Eac','Qd', 'Yf'),
-                        by = .(month(indexD(radEf)), year(indexD(radEf)))]
+                        by = .(month(Dates), year(Dates))]
         prody <- prodD[, lapply(.SD, sum, na.rm = TRUE),
                        .SDcols = c('Eac', 'Qd', 'Yf'),
-                       by = year(indexD(radEf))]
+                       by = .(Dates = year(Dates))]
         
     }
 
     prodDm[, Dates := paste(month.abb[month], year, sep = '. ')]
     prodDm[, c('month', 'year') := NULL]
-    setcolorder(prodDm, c('Dates', names(prodDm)[-length(prodDm)]))
-    names(prody)[1] <- 'Dates'
-    names(prodD)[1] <- 'Dates'    
+    setcolorder(prodDm, 'Dates')
     
     result <- new('ProdPVPS',
                   radEf,                  #contains 'Gef'
