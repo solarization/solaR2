@@ -32,6 +32,11 @@ readBDd <- function(file, lat,
     #read from file and set it in a data.table
     bd <- fread(file, header = header, fill = fill, dec = dec, sep = sep)
 
+    #check the columns
+    if(!(dates.col %in% names(bd))) stop(paste('The column', dates.col, 'is not in the file'))
+    if(!(g0.col %in% names(bd))) stop(paste('The column', g0.col, 'is not in the file'))
+    if(!(ta.col %in% names(bd))) stop(paste('The column', ta.col, 'is not in the file'))
+    
     #name the dates column by Dates
     Dates <- bd[[dates.col]]
     bd[,(dates.col) := NULL]
@@ -48,20 +53,24 @@ readBDd <- function(file, lat,
     bd[, Ta := as.numeric(Ta)]
 
     names0 <- NULL
-    if(!('D0' %in% bd) && !('B0' %in% bd)){
-        names0 <- c(names0, 'D0')
-        names0 <- c(names0, 'B0')
+    if(all(c('D0', 'B0') %in% names(bd))){
+        names0 <- c(names0, 'D0', 'B0')
     }
-    
+
+    names0 <- c(names0, 'Ta')
+
+    if(all(c('TempMin', 'TempMax') %in% names(bd))){
+        names0 <- c(names0, 'TempMin', 'TempMax')
+    }
     if(keep.cols)
     {
         #keep the rest of the columns but reorder the columns
-        setcolorder(bd, c('Dates', 'G0', names0, 'Ta'))
+        setcolorder(bd, c('Dates', 'G0', names0))
     }
     else
     {
         #erase the rest of the columns
-        cols <- c('Dates', 'G0', names0, 'Ta')
+        cols <- c('Dates', 'G0', names0)
         bd <- bd[, ..cols]
     }
 
@@ -88,8 +97,14 @@ readBDi <- function(file, lat,
     #read from file and set it in a data.table
     bd <- fread(file, header = header, fill = fill, dec = dec, sep = sep)
 
+    #check the columns
+    if(!(dates.col %in% names(bd))) stop(paste('The column', dates.col, 'is not in the file'))
+    if(!(g0.col %in% names(bd))) stop(paste('The column', g0.col, 'is not in the file'))
+    if(!(ta.col %in% names(bd))) stop(paste('The column', ta.col, 'is not in the file'))
+    
     if(!missing(times.col)){
         stopifnot(is.character(times.col) || is.numeric(times.col))
+        if(!(times.col %in% names(bd))) stop(paste('The column', times.col, 'is not in the file'))
  
         #name the dates column by Dates
         format <- strsplit(format, ' ')
@@ -98,7 +113,6 @@ readBDi <- function(file, lat,
         bd[,(dates.col) := NULL]
         bd[,(times.col) := NULL]
         bd[, Dates := as.POSIXct(dd, tt, tz = 'UTC')]
-
     }
 
     else
@@ -119,20 +133,21 @@ readBDi <- function(file, lat,
     bd[, Ta := as.numeric(Ta)]
 
     names0 <- NULL
-    if(!('D0' %in% bd) && !('B0' %in% bd)){
-        names0 <- 'D0'
-        names0[2] <- 'B0'
+    if(all(c('D0', 'B0') %in% names(bd))){
+        names0 <- c(names0, 'D0', 'B0')
     }
+
+    names0 <- c(names0, 'Ta')
     
     if(keep.cols)
     {
         #keep the rest of the columns but reorder the columns
-        setcolorder(bd, c('Dates', 'G0', names0, 'Ta'))
+        setcolorder(bd, c('Dates', 'G0', names0))
     }
     else
     {
         #erase the rest of the columns
-        cols <- c('Dates', 'G0', names0, 'Ta')
+        cols <- c('Dates', 'G0', names0)
         bd <- bd[, ..cols]
     }
     
