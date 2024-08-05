@@ -462,7 +462,7 @@ readSIAR <- function(Lon = 0, Lat = 0,
     siar[, peso := 1/dist]
     siar[, peso := peso/sum(peso)]
     ## Dentro del cuadrado?
-    siar[, .(Estacion, Codigo, dist, peso)]
+    siar <- siar[, .(Estacion, Codigo, dist, peso)]
 
     ## List for the data.tables of siarGET
     siar_list <- list()
@@ -485,12 +485,16 @@ readSIAR <- function(Lon = 0, Lat = 0,
                   .SDcols = nms,
                   by = Dates]
 
+    ## Source
     mainURL <- "https://servicio.mapama.gob.es"
- 
+    Estaciones <- siar[, paste(Estacion, '(', Codigo, ')', sep = '')]
+    Estaciones <- paste(Estaciones, collapse = ', ')
+    source <- paste(mainURL, '\n  -Estaciones:', Estaciones, sep = ' ')
+    
     res <- switch(tipo,
                   Horarios = {dt2Meteo(res, lat = Lat, source = mainURL, type = 'bdI')},
                   Diarios = {dt2Meteo(res, lat = Lat, source = mainURL, type = 'bd')},
                   Semanales = {res},
-                  Mensuales = {dt2Meteo(res, lat = Lat, source = mainURL, type = 'prom')})
+                  Mensuales = {dt2Meteo(res, lat = Lat, source = source, type = 'prom')})
     return(res)
 }
