@@ -49,8 +49,8 @@ readBDd <- function(file, lat,
 
     names0 <- NULL
     if(!('D0' %in% bd) && !('B0' %in% bd)){
-        names0 <- 'D0'
-        names0[2] <- 'B0'
+        names0 <- c(names0, 'D0')
+        names0 <- c(names0, 'B0')
     }
     
     if(keep.cols)
