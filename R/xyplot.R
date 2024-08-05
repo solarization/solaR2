@@ -25,6 +25,27 @@ solaR.theme.2 <- function(pch=19, cex=0.7, region=rev(brewer.pal(9, 'YlOrRd')), 
 setGeneric('xyplot')
 
 setMethod('xyplot',
+          signature = c(x = 'data.frame', data = 'missing'),
+          definition = function(x, data,
+                                par.settings = solaR.theme.2,
+                                xscale.components=xscale.solar,
+                                yscale.components=yscale.solar,
+                                scales = list(y = 'free'),
+                                ...){
+              N <- length(x)-1
+              x0 <- melt(x, id.vars = 'Dates')
+              x0$variable <- factor(x0$variable,
+                                    levels = rev(levels(factor(x0$variable))))
+              xyplot(value ~ Dates | variable, x0,
+                     par.settings = par.settings,
+                     xscale.components = xscale.components,
+                     yscale.components = yscale.components,
+                     scales = scales,
+                     type = 'l', layout = c(1,N),
+                     ...)
+          })
+
+setMethod('xyplot',
           signature=c(x='formula', data='Meteo'),
           definition=function(x, data,
                               par.settings=solaR.theme,
@@ -92,92 +113,50 @@ setMethod('xyplot',
 setMethod('xyplot',
           signature=c(x='Meteo', data='missing'),
           definition=function(x, data,
-                              par.settings=solaR.theme.2,
-                              xscale.components=xscale.solar,
-                              yscale.components=yscale.solar,
-                              strip=FALSE, strip.left=TRUE,...){
+                              ...){
               x0=getData(x)
-              N <- length(x0)-1
-              x0 <- melt(x0, id.vars = 'Dates')
-              x0$variable <- factor(x0$variable,
-                                    levels = rev(levels(factor(x0$variable))))
-              xyplot(value~Dates | variable, x0, par.settings=par.settings,
-                     xscale.components=xscale.components,
-                     yscale.components=yscale.components,
-                     layout=c(1, N),
-                     scales=list(cex=0.6, rot= 0, y = 'free'),
-                     strip=strip, strip.left=TRUE,
+              xyplot(x0,
+                     scales=list(cex=0.6, rot=0, y='free'),
+                     strip=FALSE, strip.left=TRUE,
                      par.strip.text=list(cex=0.6),
                      ylab = '',
-                     type = 'l',
                      ...)
           }
           )
 
 setMethod('xyplot',
           signature=c(x='G0', data='missing'),
-          definition=function(x, data,
-                              par.settings=solaR.theme.2,
-                              xscale.components=xscale.solar,
-                              yscale.components=yscale.solar,
-                              ...){
+          definition=function(x, data, ...){
               x0 <- as.data.tableD(x, complete=FALSE)              
               x0 <- melt(x0, id.vars = 'Dates')
-              xyplot(value~Dates, x0, groups = variable, par.settings=par.settings,
-                     xscale.components=xscale.components,
-                     yscale.components=yscale.components,
+              xyplot(value~Dates, x0, groups = variable,
+                     par.settings=solaR.theme.2,
+                     xscale.components=xscale.solar,
+                     yscale.components=yscale.solar,
                      superpose=TRUE,
                      auto.key=list(space='right'),
                      ylab='Wh/m\u00b2',
                      type = 'l',
-                     ...)
+                     ...)     
           }
           )
 
 setMethod('xyplot',
           signature=c(x='ProdGCPV', data='missing'),
-          definition=function(x, data,
-                              par.settings=solaR.theme.2,
-                              xscale.components=xscale.solar,
-                              yscale.components=yscale.solar,
-                              ...){
+          definition=function(x, data, ...){
               x0 <- as.data.tableD(x, complete=FALSE)
-              N <- length(x0)-1
-              x0 <- melt(x0, id.vars = 'Dates')
-              x0$variable <- factor(x0$variable,
-                                    levels = rev(levels(factor(x0$variable))))
-              xyplot(value~Dates | variable, x0, layout=c(1, N),
-                     par.settings=par.settings,
-                     xscale.components=xscale.components,
-                     yscale.components=yscale.components,
-                     strip=FALSE,
-                     strip.left=TRUE,
-                     scales = list(y='free'),
-                     type = 'l',
-                     ...)
+              xyplot(x0,
+                     strip = FALSE, strip.left = TRUE,
+                     ylab = '', ...)
           }
           )
 
 setMethod('xyplot',
           signature=c(x='ProdPVPS', data='missing'),
-          definition=function(x, data,
-            par.settings=solaR.theme.2,
-            xscale.components=xscale.solar,
-            yscale.components=yscale.solar,
-            ...){
+          definition=function(x, data, ...){
               x0 <- as.data.tableD(x, complete=FALSE)
-              N <- length(x0)-1
-              x0 <- melt(x0, id.vars = 'Dates')
-              x0$variable <- factor(x0$variable,
-                                    levels = rev(levels(factor(x0$variable))))
-              xyplot(value~Dates | variable, x0, layout=c(1, N),
-                     par.settings=par.settings,
-                     xscale.components=xscale.components,
-                     yscale.components=yscale.components,
-                     strip=FALSE,
-                     strip.left=TRUE,
-                     scales = list(y='free'),
-                     type = 'l',
-                     ...)
+              xyplot(x0,
+                     strip = FALSE, strip.left = TRUE,
+                     ylab = '', ...)
           }
           )
