@@ -104,7 +104,7 @@ calcG0 <- function(lat,
         names(compD)[1] <- 'Dates'
         names(compD)[-1] <- paste(names(compD)[-1], 'd', sep = '')
         compD$Fd <- compD$D0d/compD$G0d
-        compD$Ktd <- compD$G0d/sol@solD$Bo0d
+        compD$Kt <- compD$G0d/sol@solD$Bo0d
     } else { ##modeRad!='bdI'
         sol <- calcSol(lat, indexD(BD), sample = sample,
                        keep.night = keep.night, method = sunGeometry)

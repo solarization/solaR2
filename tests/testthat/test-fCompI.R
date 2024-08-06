@@ -7,5 +7,5 @@ prom <- readG0dm(lat, G0dm, year = 2023)
 sol <- calcSol(lat, fBTd(year = 2023))
 compD <- fCompD(sol, G0d = prom, corr = 'Page')
 compI <- fCompI(sol, compD)
-compI_expected <- read.csv('compI.csv', sep = ';')
+compI_expected <- read.csv('files/compI.csv', sep = ';')
 

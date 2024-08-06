@@ -33,7 +33,8 @@ setMethod('xyplot',
                                 scales = list(y = 'free'),
                                 ...){
               N <- length(x)-1
-              x0 <- melt(x, id.vars = 'Dates')
+              x0 <- x[, lapply(.SD, as.numeric), by = Dates]
+              x0 <- melt(x0, id.vars = 'Dates')
               x0$variable <- factor(x0$variable,
                                     levels = rev(levels(factor(x0$variable))))
               xyplot(value ~ Dates | variable, x0,

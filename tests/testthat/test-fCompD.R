@@ -4,7 +4,7 @@ G0dm <- c(2.766,3.491,4.494,5.912,6.989,7.742,
 prom <- readG0dm(lat, G0dm, year = 2023)
 sol <- calcSol(lat, fBTd(year = 2023))
 compD <- fCompD(sol, G0d = prom, corr = 'Page')
-compD_expected <- read.csv('compD.csv', header = T, sep = ';')
+compD_expected <- read.csv('files/compD.csv', header = T, sep = ';')
 
 test_that('daily components of radiation',{
     expect_equal(compD$Fd, compD_expected$Fd)

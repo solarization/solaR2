@@ -72,8 +72,8 @@ lat = 37.2
 sol = calcSol(lat, BTd[100])
 print(as.data.tableD(sol))
 
-## library(lattice)
-## xyplot(as.zooI(sol))
+library(lattice)
+xyplot(as.data.tableI(sol))
 
 solStrous = calcSol(lat, BTd[100], method = 'strous')
 print(as.data.tableD(solStrous))
