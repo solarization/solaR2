@@ -1,5 +1,5 @@
 #### monthly means of irradiation ####
-readG0dm <- function(lat, G0dm, Ta = 25,
+readG0dm <- function(G0dm, Ta = 25, lat = 0,
                      year = as.POSIXlt(Sys.Date())$year + 1900,
                      promDays = c(17, 14, 15, 15, 15, 10, 18, 18, 18, 19, 18, 13),
                      source = '')

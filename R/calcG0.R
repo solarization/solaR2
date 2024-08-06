@@ -58,7 +58,7 @@ calcG0 <- function(lat,
                      if (is.list(dataRad)) dataRad <- dataRad$G0dm
                      BTd <- fBTd(mode='serie')
                      solD <- fSolD(lat, BTd)
-                     G0d <- markovG0(G0dm, solD)
+                     G0d <- markovG0(dataRad, solD)
                      res <- dt2Meteo(G0d, lat=lat, source='aguiar')
                  },                     #Fin de aguiar
                  bdI = {
