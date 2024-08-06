@@ -22,6 +22,7 @@ fSolI <- function(solD, sample = 'hour', BTi,
     
     #zenith angle
     sun[, cosThzS := zenith(Dates, lat, BTi,
+                            method = method,
                             decl = decl,
                             w = w
                             )]
@@ -31,9 +32,10 @@ fSolI <- function(solD, sample = 'hour', BTi,
     
     #azimuth
     sun[, AzS := azimuth(Dates, lat, BTi, sample,
-                            decl = decl, 
-                            w = w,
-                            cosThzS = cosThzS)]
+                         method = method,
+                         decl = decl, 
+                         w = w,
+                         cosThzS = cosThzS)]
 
     #Extraterrestrial irradiance
     sun[, Bo0 := Bo * eo * cosThzS]

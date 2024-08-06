@@ -8,7 +8,7 @@ calcSol <- function(lat, BTd,
     solD <- fSolD(lat, BTd, method = method)
     solI <- fSolI(solD = solD, sample = sample,
                   BTi = BTi, keep.night = keep.night,
-                  EoT = EoT)
+                  EoT = EoT, method = method)
     
     if(!missing(BTi)){
         sample <- solI$Dates[2]-solI$Dates[1]

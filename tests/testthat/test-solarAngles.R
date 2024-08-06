@@ -1,5 +1,5 @@
-solD_expected <- read.csv('sol.D.csv')
-solI_expected <- read.csv('sol.csv')
+solD_expected <- read.csv('files/sol.D.csv')
+solI_expected <- read.csv('files/sol.csv')
 BTd <- fBTd(year = 2023)
 lat <- 37.2
 
@@ -24,13 +24,13 @@ test_that("extraterrestrial irradiation in certain days",{
 })
 
 test_that("sun hour angle throughout the day",{
-    expect_equal(sunHour(BTd), solI_expected$w, tolerance = 1e-4)
+    expect_equal(sunHour(BTd), solI_expected$w)
 })
 
 test_that("zenith angle throughout the day",{
-    expect_equal(zenith(BTd, lat), solI_expected$cosThzS, tolerance = 1e-4)
+    expect_equal(zenith(BTd, lat), solI_expected$cosThzS)
 })
 
 test_that("azimuth angle throughout the day",{
-    expect_equal(azimuth(BTd, lat), solI_expected$AzS, tolerance = 1e-4)
+    expect_equal(azimuth(BTd, lat), solI_expected$AzS)
 })

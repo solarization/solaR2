@@ -1,7 +1,7 @@
 BTd <- fBTd(year = 2023)
 lat <- 37.2
 solD <- fSolD(37.2, BTd)
-solD_expected <- read.csv('sol.D.csv')
+solD_expected <- read.csv('files/sol.D.csv')
 
 test_that('declination in fSolD',{
     expect_equal(solD$decl, solD_expected$decl)
