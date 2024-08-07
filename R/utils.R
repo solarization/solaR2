@@ -24,23 +24,6 @@ r2sec<-function(x){x*12/pi*3600}
 r2min<-function(x){x*12/pi*60}
 
 #### Time ###
-#hour
-hour <- function(x) 
-{
-    as.numeric(format(x, "%H"))
-}
-
-#minute
-minute <- function(x)
-{
-    as.numeric(format(x, "%M"))
-}
-
-#second
-second <- function(x) 
-{
-    as.numeric(format(x, "%S"))
-}
 
 #complete time to hours
 t2h <- function(x)
@@ -62,16 +45,6 @@ doy <- function(x){
 #day of the month
 dom <- function(x){
   as.numeric(format(x, '%d'))
-}
-
-#month
-month <- function(x){
-  as.numeric(format(x, '%m'))
-}
-
-#year
-year <- function(x){
-  as.numeric(format(x, '%Y'))
 }
 
 #trunc days
