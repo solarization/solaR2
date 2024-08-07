@@ -9,3 +9,10 @@ compD <- fCompD(sol, G0d = prom, corr = 'Page')
 compI <- fCompI(sol, compD)
 compI_expected <- read.csv('files/compI.csv', sep = ';')
 
+test_that('Calculation of solar irradiance on a horizontal surface', {
+    expect_equal(compI$G0, compI_expected$G0)
+    expect_equal(compI$D0, compI_expected$D0)
+    expect_equal(compI$B0, compI_expected$B0)
+    expect_equal(compI$Fd, compI_expected$fd)
+    expect_equal(compI$Kt, compI_expected$kt)
+})
