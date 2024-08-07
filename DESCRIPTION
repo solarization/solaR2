@@ -9,8 +9,8 @@ URL: https://oscarperpinan.github.io/solar/
 BugReports: https://github.com/oscarperpinan/solar/issues
 License: GPL-3
 LazyData: yes
-Depends: R (>= 4.0.0), data.table, lattice
-Imports: RColorBrewer, latticeExtra, graphics, grDevices, stats, methods, utils
-Suggests: zoo, sp, raster, rasterVis, tdr, meteoForecast, testthat (>= 3.0.0)
+Depends: R (>= 4.0.0), data.table, lattice, latticeExtra
+Imports: RColorBrewer, graphics, grDevices, stats, methods, utils
+Suggests: zoo, sp, raster, rasterVis, tdr, meteoForecast, httr2, jsonlite, testthat (>= 3.0.0)
 Config/testthat/edition: 3
 
