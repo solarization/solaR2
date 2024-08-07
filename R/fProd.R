@@ -134,13 +134,14 @@ fProd <- function(inclin,
     ## Extract data from objects
     if (class(inclin)[1]=='Gef') {
         indInclin <- indexI(inclin)
-        Gef <- inclin@GefI$Gef
-        Ta <- inclin@Ta$Ta
+        gefI <- as.data.tableI(inclin, complete = TRUE)
+        Gef <- gefI$Gef
+        Ta <- gefI$Ta
     } else {
         Gef <- inclin$Gef
         Ta <- inclin$Ta
     }
-    
+
     ## Module, generator, and inverter parameters
     module.default <- list(Vocn = 57.6,
                            Iscn = 4.7,
