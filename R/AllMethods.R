@@ -17,9 +17,6 @@ setGeneric('indexD', function(object){standardGeneric('indexD')})
 ## extract the index of the intradaily data ##
 setGeneric('indexI', function(object){standardGeneric('indexI')})
 
-## convert daily values ​​to the same length as intradaily values ##
-setGeneric('indexRep', function(object){standardGeneric('indexRep')})
-
 #### Methods for Sol ####
 ### getLat ###
 setMethod('getLat',
@@ -57,16 +54,6 @@ setMethod('indexI',
           signature = (object = 'Sol'),
           definition = function(object){as.POSIXct(object@solI$Dates)
           })
-
-### indexRep###
-setMethod('indexRep',
-          signature=(object='Sol'),
-          definition=function(object){
-              #########
-              x <- as.Date(indexI(object))
-              cumsum(c(1, diff(x) != 0))
-          }
-          )
 
 #### Methods for Meteo ####
 ### getData ####

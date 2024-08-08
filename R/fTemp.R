@@ -9,7 +9,8 @@ fTemp<-function(sol, BD)
     checkIndexD(indexD(sol), indexD(BD))
 
     Dates<-indexI(sol)	
-    ind.rep<-indexRep(sol)
+    x <- as.Date(Dates)
+    ind.rep <- cumsum(c(1, diff(x) != 0))
     
     TempMax <-  BD@data$TempMax[ind.rep]
     TempMin <-  BD@data$TempMin[ind.rep]

@@ -116,8 +116,9 @@ FdKtBRL <- function(sol, G0i){
     pers <- persistence(sol, ktd)
 
     ##indexRep for ktd and pers
-    ktd <- ktd[indexRep(sol)]
-    pers <- pers[indexRep(sol)]
+    ind.rep <- cumsum(c(1, as.Date(indexI(sol)) != 0))
+    ktd <- ktd[ind.rep]
+    pers <- pers[ind.rep]
 
     ##fd calculation
     Fd=(1+exp(-5.38+6.63*Kt+0.006*r2h(w)-0.007*r2d(AlS)+1.75*ktd+1.31*pers))^(-1)
