@@ -95,7 +95,7 @@ prodPVPS<-function(lat,
     prodI[, Dates := indexI(radEf)]
     setcolorder(prodI, c('Dates', names(prodI)[-length(prodI)]))
     
-###Cálculo de valores diarios, mensuales y anuales
+###daily, monthly and yearly values
     
     by <- radEf@sample
     
