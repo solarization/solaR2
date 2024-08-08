@@ -166,7 +166,7 @@ calcG0 <- function(lat,
     G0dm[, c('month', 'year') := NULL]
     setcolorder(G0dm, 'Dates')
     
-###Resultado
+###Result
     result <- new(Class='G0',
                   BD,        #G0 contains "Meteo"
                   sol,       #G0 contains 'Sol'
