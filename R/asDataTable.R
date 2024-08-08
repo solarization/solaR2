@@ -1,4 +1,5 @@
-###as.data.tableI
+### as.data.tableI ###
+## Extracts a data.table with intradaily data ##
 setGeneric('as.data.tableI',
            function(object, complete=FALSE, day=FALSE){standardGeneric('as.data.tableI')})
 
@@ -161,7 +162,8 @@ setMethod('as.data.tableI',
           }
           )
 
-###as.data.tableD
+### as.data.tableD ###
+## Extracts a data.table with daily values ##
 setGeneric('as.data.tableD', function(object, complete=FALSE, day=FALSE){standardGeneric('as.data.tableD')})
 
 setMethod('as.data.tableD',
@@ -277,7 +279,8 @@ setMethod('as.data.tableD',
           }
           )
 
-###as.data.tableM
+### as.data.tableM ###
+## Extracts a data.table with monthly means ##
 setGeneric('as.data.tableM', function(object, complete = FALSE, day=FALSE){standardGeneric('as.data.tableM')})
 
 setMethod('as.data.tableM',
@@ -355,7 +358,8 @@ setMethod('as.data.tableM',
           }
           )
 
-###as.data.frameY
+### as.data.frameY ###
+## Extracts a data.table with yearly values ##
 setGeneric('as.data.tableY', function(object, complete=FALSE, day=FALSE){standardGeneric('as.data.tableY')})
 
 setMethod('as.data.tableY',

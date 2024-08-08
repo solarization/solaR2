@@ -10,7 +10,7 @@ calcGef<-function(lat,
                   iS=2, alb=0.2, horizBright=TRUE, HCPV=FALSE,
                   modeShd='',    #modeShd=c('area','bt','prom')
                   struct=list(), #list(W=23.11, L=9.8, Nrow=2, Ncol=8), 
-                  distances=data.table(),#data.table(Lew=40, Lns=30, H=0)){
+                  distances=data.frame(),#data.table(Lew=40, Lns=30, H=0)){
                   ...){
     
     stopifnot(is.list(struct), is.data.frame(distances))
@@ -19,22 +19,22 @@ calcGef<-function(lat,
         modeShd[which(modeShd=='bt')]='area'
         warning('backtracking is only implemented for modeTrk=horiz')}
     
-    if (modeRad!='prev'){                 #No utilizamos un cálculo prev
+    if (modeRad!='prev'){ #not use a prev calculation
         radHoriz <- calcG0(lat=lat, modeRad=modeRad,
                            dataRad=dataRad,
                            sample=sample, keep.night=keep.night,
                            sunGeometry=sunGeometry,
                            corr=corr, f=f, ...)
-    } else {#Utilizamos un cálculo prev de calcG0
-        radHoriz <- as(dataRad, 'G0') ##OJO: ¿hace falta comprobar que coinciden lat y otras?
+    } else {                          #use a prev calculation
+        radHoriz <- as(dataRad, 'G0') 
     } 
     
-###Paso a inclinada y radiación efectiva
+### Inclined and effective radiation
     BT=("bt" %in% modeShd) 
     angGen <- fTheta(radHoriz, beta, alfa, modeTrk, betaLim, BT, struct, distances)
     inclin <- fInclin(radHoriz, angGen, iS, alb, horizBright, HCPV)
     
-###Valores diarios, mensuales y anuales
+### Daily, monthly and yearly values
     by <- radHoriz@sample
     nms <- c('Bo', 'Bn', 'G', 'D', 'B', 'Gef', 'Def', 'Bef')
     nmsd <- paste(nms, 'd', sep = '')
@@ -89,8 +89,8 @@ calcGef<-function(lat,
                 distances=distances
                 )
 ###Cálculo de sombras
-    if (isTRUE(modeShd == "") ||        #Si modeShd=='' no hace calculo de sombras
-        ('bt' %in% modeShd)) {            #tampoco si hay backtracking
+    if (isTRUE(modeShd == "") ||        #If modeShd=='' there is no shadow calculation
+        ('bt' %in% modeShd)) {            #nor if there is backtracking
         return(result0)
     } else {
         result <- calcShd(result0, modeTrk, modeShd, struct, distances)

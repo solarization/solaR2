@@ -33,14 +33,6 @@ setMethod('shadeplot', signature(x='Shade'),
                   } else {
                       paleta=rev(heat.colors(n))}
                   par(mar=c(4.1,4.1,2.1,2.1)) 
-                  ##alternativa con levelplot y layer
-                  ## levelplot((1-FS)~Lew*Lns,  data=Red, aspect='iso',
-                  ##           xlab=xlab, ylab=ylab, main=main,
-                  ##           subscripts=TRUE, contour=TRUE, lwd=0.6) +
-                  ##     layer(panel.contourplot(Lew, Lns, GRR,
-                  ##                             lty=3, labels=TRUE,
-                  ##                             region=FALSE, contour=TRUE,
-                  ##                             subscripts=TRUE), data=Red)
                   filled.contour(x=Lew,y=Lns,z=FS.m,#...,
                                  col=paleta, #levels=niveles,
                                  nlevels=n,

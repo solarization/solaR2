@@ -12,7 +12,7 @@ markovG0 <- function(G0dm, solD){
     Bo0dm <- solD[, mean(Bo0d), by = .(month(Dates), year(Dates))][[3]]
     ktm <- G0dm/Bo0dm
     
-    ##Calcula con que matriz debe trabajar para cada mes
+    ##Calculates which matrix to work with for each month
     whichMatrix <- findInterval(ktm, Ktmtm, all.inside = TRUE)
     
     ktd <- state <- numeric(length(timeIndex))

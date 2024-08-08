@@ -461,7 +461,7 @@ readSIAR <- function(Lon = 0, Lat = 0,
     siar <- siar[order(dist)][1:n_est]
     siar[, peso := 1/dist]
     siar[, peso := peso/sum(peso)]
-    ## Dentro del cuadrado?
+    ## Is the given location within the polygon formed by the stations?
     siar <- siar[, .(Estacion, Codigo, dist, peso)]
 
     ## List for the data.tables of siarGET

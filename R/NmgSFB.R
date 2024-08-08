@@ -8,7 +8,7 @@ NmgPVPS <- function(pump, Pg, H, Gd, Ta=30,
                     eta=0.95, Gmax=1200, t0=6, Nm=6,
                     title='', theme=custom.theme.2()){
 
-    ##Construyo el dia tipo mediante procedimiento IEC
+    ##I build the type day by IEC procedure
     t=seq(-t0,t0,l=2*t0*Nm);
     d=Gd/(Gmax*2*t0)
     s=(d*pi/2-1)/(1-pi/4)
@@ -17,8 +17,8 @@ NmgPVPS <- function(pump, Pg, H, Gd, Ta=30,
     G=G/(sum(G,na.rm=1)/Nm)*Gd
     Red<-expand.grid(G=G,Pnom=Pg,H=H,Ta=Ta)
     Red<-within(Red,{Tcm<-Ta+G*(TONC-20)/800
-                     Pdc=Pnom*G/1000*(1-lambda*(Tcm-25)) #Potencia DC disponible
-                     Pac=Pdc*eta})      #Rendimiento del inversor
+                     Pdc=Pnom*G/1000*(1-lambda*(Tcm-25)) #Available DC power
+                     Pac=Pdc*eta})                       #Inverter yield
 
     res=data.table(Red,Q=0)
 
@@ -27,7 +27,7 @@ NmgPVPS <- function(pump, Pg, H, Gd, Ta=30,
         Cond=res$H==H[i]
         x=res$Pac[Cond]
         z=res$Pdc[Cond]
-        rango=with(fun,x>=lim[1] & x<=lim[2]) #Limito la potencia al rango de funcionamiento de la bomba
+        rango=with(fun,x>=lim[1] & x<=lim[2]) #I limit the power to the operating range of the pump.
         x[!rango]<-0
         z[!rango]<-0
         y=res$Q[Cond]
@@ -44,9 +44,9 @@ NmgPVPS <- function(pump, Pg, H, Gd, Ta=30,
                Gmax=Gmax, t0=t0, Nm=Nm)
 
 
-###Abaco con los ejes X comunes
+###Abacus with common X-axes
 
-    ##Compruebo si tengo disponible el paquete lattice, que debiera haber sido cargado en .First.lib
+    ##I check if I have the lattice package available, which should have been loaded in .First.lib
     lattice.disp<-("lattice" %in% .packages())
     latticeExtra.disp<-("latticeExtra" %in% .packages())
     if (lattice.disp && latticeExtra.disp){
@@ -65,7 +65,7 @@ NmgPVPS <- function(pump, Pg, H, Gd, Ta=30,
 
         p1lab<-p1+glayer(panel.text(x[1], y[1], group.value, pos=2, cex=0.7))
 
-        ##Pinto la regresion lineal porque Pnom~Pdc depende de la altura
+        ##I paint the linear regression because Pnom~Pdc depends on the height.
         p2 <- xyplot(Pnom~Pdc, groups=H, data=resumen,
                      ylab="Pg",type=c('l','g'), #type=c('smooth','g'),
                      par.settings = tema2)
@@ -76,7 +76,7 @@ NmgPVPS <- function(pump, Pg, H, Gd, Ta=30,
                   'Gd ', Gd/1000," kWh/m\u00b2",sep=''),
                   layout = c(1, 2),
                   scales=list(x=list(draw=FALSE)),
-                  xlab='',              #no dibuja el eje X
+                  xlab='',              
                   ylab = list(c("Qd (m\u00b3/d)","Pg (Wp)"), y = c(1/4, 3/4)),
                   par.settings = temaT
                   )

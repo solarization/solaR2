@@ -1,26 +1,24 @@
 fTheta<-function(sol, beta, alfa=0, modeTrk='fixed', betaLim=90, 
                  BT=FALSE, struct, dist)
 {
-
     stopifnot(modeTrk %in% c('two','horiz','fixed'))
     if (!missing(struct)) {stopifnot(is.list(struct))}
     if (!missing(dist)) {stopifnot(is.data.frame(dist))}
     
     betaLim=d2r(betaLim)
     lat=getLat(sol, 'rad')
-    signLat=ifelse(sign(lat)==0, 1, sign(lat)) ##Cuando lat=0, sign(lat)=0. Lo cambio a sign(lat)=1
-
+    signLat=ifelse(sign(lat)==0, 1, sign(lat)) ##When lat=0, sign(lat)=0. I change it to sign(lat)=1
+    
     solI<-as.data.tableI(sol, complete=TRUE, day = TRUE)
     AlS=solI$AlS
     AzS=solI$AzS
     decl=solI$decl
     w<-solI$w
-
+    
     night<-solI$night
 
     Beta<-switch(modeTrk,
-                 two = {Beta2x=pi/2-AlS
-                                        #if (BT==TRUE) {Beta=	
+                 two = {Beta2x=pi/2-AlS	
                      Beta=Beta2x+(betaLim-Beta2x)*(Beta2x>betaLim)},
                  fixed = rep(d2r(beta), length(w)), 
                  horiz={BetaHoriz0=atan(abs(sin(AzS)/tan(AlS)))
@@ -28,13 +26,10 @@ fTheta<-function(sol, beta, alfa=0, modeTrk='fixed', betaLim=90,
                          Longitud=lew*cos(BetaHoriz0)
                          Cond=(Longitud>=1)
                          Longitud[Cond]=1
-                                        #Cuando Cond==TRUE Longitud=1 
-                                        #y por tanto asin(Longitud)=pi/2,
-                                        #de forma que BetaHoriz=BetaHoriz0
-                         BetaHoriz=BetaHoriz0+asin(Longitud)-pi/2
-                                        #=ifelse(Cond, 
-                                        #BetaHoriz0,#No hay sombra
-                                        #BetaHoriz0+asin(Longitud)-pi/2)
+                         ## When Cond==TRUE Length=1
+                         ## and therefore asin(Length)=pi/2,
+                         ## so that BetaHoriz=BetaHoriz0
+                         BetaHoriz=BetaHoriz0+asin(Longitud)-pi/2                                     
                      } else {
                          BetaHoriz=BetaHoriz0
                          rm(BetaHoriz0)}
@@ -47,7 +42,7 @@ fTheta<-function(sol, beta, alfa=0, modeTrk='fixed', betaLim=90,
                  fixed = rep(d2r(alfa), length(w)),
                  horiz=pi/2*sign(AzS))
     is.na(Alfa) <- night
-
+    
     cosTheta<-switch(modeTrk,
                      two=cos(Beta-(pi/2-AlS)),
                      horiz={
@@ -70,7 +65,7 @@ fTheta<-function(sol, beta, alfa=0, modeTrk='fixed', betaLim=90,
                      }
                      )
     is.na(cosTheta) <- night
-    cosTheta=cosTheta*(cosTheta>0) #cuando cosTheta<0, Theta es mayor de 90º, y por tanto el Sol está detras del panel.
+    cosTheta=cosTheta*(cosTheta>0) #when cosTheta<0, Theta is greater than 90º, and therefore the Sun is behind the panel.
     
     result <- data.table(Dates = indexI(sol),
                          Beta, Alfa, cosTheta)

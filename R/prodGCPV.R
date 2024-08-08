@@ -28,7 +28,7 @@ prodGCPV<-function(lat,
       modeShd[which(modeShd=='bt')]='area'
       warning('backtracking is only implemented for modeTrk=horiz')}
     
-    if (modeRad!='prev'){               #No utilizamos un cálculo previo
+    if (modeRad!='prev'){ #We do not use a previous calculation
         
     radEf<-calcGef(lat=lat, modeTrk=modeTrk, modeRad=modeRad,
                    dataRad=dataRad,
@@ -39,7 +39,7 @@ prodGCPV<-function(lat,
                    iS=iS, alb=alb, horizBright=horizBright, HCPV=HCPV,
                    modeShd=modeShd, struct=struct, distances=distances, ...)
         
-  } else { #Utilizamos un cálculo previo de calcG0, calcGef o prodSFCR
+  } else { #We use a previous calcG0, calcGef or prodGCPV calculation.
       
       stopifnot(class(dataRad) %in% c('G0', 'Gef', 'ProdGCPV'))
       radEf <- switch(class(dataRad),
@@ -55,18 +55,15 @@ prodGCPV<-function(lat,
   }
     
     
-    ##Producción 
-    ##=======================================
-    
+    ##Production
     prodI<-fProd(radEf,module,generator,inverter,effSys)
     module=attr(prodI, 'module')
     generator=attr(prodI, 'generator')
     inverter=attr(prodI, 'inverter')
     effSys=attr(prodI, 'effSys')
   
-    ##Cálculo de valores diarios, mensuales y anuales
-  ##=======================================
-    Pg=generator$Pg                                   #Wp
+    ##Calculation of daily, monthly and annual values
+    Pg=generator$Pg #Wp
     
     by <- radEf@sample
     nms1 <- c('Pac', 'Pdc')

@@ -30,7 +30,7 @@ Kti <- function(sol, G0i){
 #### monthly correlations ####
 
 ### Page ###
-FdKtPage <- function(sol, G0dm){##Page para medias mensuales
+FdKtPage <- function(sol, G0dm){
     Kt <- Ktm(sol, G0dm)
     Fd=1-1.13*Kt
     return(data.table(Fd, Kt))
@@ -71,7 +71,7 @@ FdKtEKDd <- function(sol, G0d){
 }
 
 ### CLIMED1 ###
-FdKtCLIMEDd <- function(sol, G0d){##CLIMED1 para diarios
+FdKtCLIMEDd <- function(sol, G0d){
     Kt <- Ktd(sol, G0d)
     Fd=(Kt<=0.13)*(0.952)+
     (Kt>0.13 & Kt<=0.8)*(0.868+1.335*Kt-5.782*Kt^2+3.721*Kt^3)+
@@ -82,7 +82,7 @@ FdKtCLIMEDd <- function(sol, G0d){##CLIMED1 para diarios
 #### intradaily correlations ####
 
 ### intradaily EKD ###
-FdKtEKDh <- function(sol, G0i){##Erbs, Klein y Duffie para horarios
+FdKtEKDh <- function(sol, G0i){
     Kt <- Kti(sol, G0i)
     Fd=(Kt<=0.22)*(1-0.09*Kt)+
     (Kt>0.22 & Kt<=0.8)*(0.9511-0.1604*Kt+4.388*Kt^2-16.638*Kt^3+12.336*Kt^4)+
@@ -119,11 +119,10 @@ FdKtBRL <- function(sol, G0i){
     ktd <- ktd[indexRep(sol)]
     pers <- pers[indexRep(sol)]
 
-    ##Cálculo de fd
+    ##fd calculation
     Fd=(1+exp(-5.38+6.63*Kt+0.006*r2h(w)-0.007*r2d(AlS)+1.75*ktd+1.31*pers))^(-1)
     
-
-  return(data.table(Fd, Kt))
+    return(data.table(Fd, Kt))
 }
 
 persistence <- function(sol, Ktd){

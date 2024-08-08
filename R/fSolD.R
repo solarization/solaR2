@@ -3,7 +3,6 @@ fSolD <- function(lat, BTd, method = 'michalsky'){
         lat <- sign(lat) * 90
         warning(paste('Latitude outside acceptable values. Set to', lat))
     }
-    ## Dates <- unique(as.IDate(BTd))
     sun <- data.table(Dates = unique(as.IDate(BTd)),
                       lat = lat)
     

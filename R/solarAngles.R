@@ -1,7 +1,7 @@
 #### Declination ####
 declination <- function(d, method = 'michalsky')
 {
-    ##Method comprobation
+    ##Method check
     if(!(method %in% c("michalsky", "cooper", "strous", "spencer"))){
         warning("'method' must be: michalsky, cooper, strous or spencer. Set michalsky")
         method = 'michalsky'
@@ -56,7 +56,7 @@ declination <- function(d, method = 'michalsky')
 #### Eccentricity ####
 eccentricity <- function(d, method = 'michalsky')
 {
-        ##Method comprobation
+    ##Method check
     if(!(method %in% c("michalsky", "cooper", "strous", "spencer"))){
         warning("'method' must be: michalsky, cooper, strous or spencer. Set michalsky")
         method = 'michalsky'
@@ -103,6 +103,12 @@ eot <- function(d)
 sunrise <- function(d, lat, method = 'michalsky',
                     decl = declination(d, method))
 {
+    ##Method check
+    if(!(method %in% c("michalsky", "cooper", "strous", "spencer"))){
+        warning("'method' must be: michalsky, cooper, strous or spencer. Set michalsky")
+        method = 'michalsky'
+    }
+    
     cosWs <- -tan(d2r(lat)) * tan(decl)
     #sunrise, negative since it is before noon
     ws <- -acos(cosWs)
@@ -118,6 +124,12 @@ bo0d <- function(d, lat, method = 'michalsky',
                  eo = eccentricity(d, method),
                  ws = sunrise(d, lat, method))
 {
+    ##Method check
+    if(!(method %in% c("michalsky", "cooper", "strous", "spencer"))){
+        warning("'method' must be: michalsky, cooper, strous or spencer. Set michalsky")
+        method = 'michalsky'
+    }
+
     #solar constant
     Bo <- 1367
     latr <- d2r(lat)
@@ -132,6 +144,12 @@ bo0d <- function(d, lat, method = 'michalsky',
 sunHour <- function(d, BTi, sample = '1 hour', EoT = TRUE, method = 'michalsky',
                     eqtime = eot(d))
 {
+    ##Method check
+    if(!(method %in% c("michalsky", "cooper", "strous", "spencer"))){
+        warning("'method' must be: michalsky, cooper, strous or spencer. Set michalsky")
+        method = 'michalsky'
+    }
+
     if(missing(BTi)){
         BTi <- fBTi(d = d, sample = sample)
     }else {
@@ -207,6 +225,12 @@ zenith <- function(d, lat, BTi, sample = '1 hour',  method = 'michalsky',
                    decl = declination(d, method),
                    w = sunHour(d, BTi, sample, method = method))
 {
+    ##Method check
+    if(!(method %in% c("michalsky", "cooper", "strous", "spencer"))){
+        warning("'method' must be: michalsky, cooper, strous or spencer. Set michalsky")
+        method = 'michalsky'
+    }
+
     if(missing(BTi)){BTi <- fBTi(d, sample)}
     x <- as.Date(BTi)
     rep <- cumsum(c(1, diff(x) != 0))
@@ -225,6 +249,12 @@ azimuth <- function(d, lat, BTi, sample = '1 hour', method = 'michalsky',
                     w = sunHour(d, BTi, sample, method = method),
                     cosThzS = zenith(d, lat, BTi, sample, method, decl, w))
 {
+    ##Method check
+    if(!(method %in% c("michalsky", "cooper", "strous", "spencer"))){
+        warning("'method' must be: michalsky, cooper, strous or spencer. Set michalsky")
+        method = 'michalsky'
+    }
+
     signLat <- ifelse(sign(lat) == 0, 1, sign(lat)) #if the sign of lat is 0, it changes it to 1
     if(missing(BTi)){BTi <- fBTi(d, sample)}
     x <- as.Date(BTi)

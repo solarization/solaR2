@@ -5,8 +5,8 @@ calcSol <- function(lat, BTd,
                     method = 'michalsky')
 {
     if(missing(BTd)) BTd <- truncDay(BTi)
-    solD <- fSolD(lat, BTd, method = method)
-    solI <- fSolI(solD = solD, sample = sample,
+    solD <- fSolD(lat, BTd, method = method) #daily values
+    solI <- fSolI(solD = solD, sample = sample, #intradaily values
                   BTi = BTi, keep.night = keep.night,
                   EoT = EoT, method = method)
     

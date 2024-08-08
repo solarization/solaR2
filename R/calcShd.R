@@ -2,42 +2,42 @@ calcShd<-function(radEf,##class='Gef'
                   modeTrk='fixed',     #c('two','horiz','fixed')
                   modeShd='prom',      #modeShd=c('area','bt','prom')
                   struct=list(), #list(W=23.11, L=9.8, Nrow=2, Ncol=8), 
-                  distances=data.table() #data.table(Lew=40, Lns=30, H=0)){
+                  distances=data.frame() #data.table(Lew=40, Lns=30, H=0)){
                   )
 {
     stopifnot(is.list(struct), is.data.frame(distances))
 
-    ##Por ahora solo utilizo modeShd='area'
-    ##Con diferentes modeShd (por definir) podré calcular Gef de diferente forma
-    ##Ver tesis de Macagnan
+    ##For now I only use modeShd = 'area'
+    ##With different modeShd (to be defined) I will be able to calculate Gef in a different way
+    ##See macagnan thesis
     prom=("prom"  %in%  modeShd)
     prev <- as.data.tableI(radEf, complete=TRUE)
-    ## Calculo de sombras
+    ## shadow calculations
     sol <- data.table(AzS = prev$AzS,
                       AlS = prev$AlS)
     theta <- radEf@Theta
     AngGen <- data.table(theta, sol)
     FS <- fSombra(AngGen, distances, struct, modeTrk, prom)
-    ## Calculo de irradiancia
+    ## irradiance calculation
     gef0 <- radEf@GefI
     Bef0 <- gef0$Bef
     Dcef0 <- gef0$Dcef
     Gef0 <- gef0$Gef
     Dief0 <- gef0$Dief
     Ref0 <- gef0$Ref
-    ##Calculos
+    ## calculation
     Bef <- Bef0*(1-FS)
     Dcef <- Dcef0*(1-FS)
     Def <- Dief0+Dcef
-    Gef <- Dief0+Ref0+Bef+Dcef               #Incluyendo sombras
-    ##Cambio nombres
+    Gef <- Dief0+Ref0+Bef+Dcef #Including shadows
+    ##Change names
     nms <- c('Gef', 'Def', 'Dcef', 'Bef')
     nmsIndex <- which(names(gef0) %in% nms)
     names(gef0)[nmsIndex]<- paste(names(gef0)[nmsIndex], '0', sep='')
     GefShd <- gef0
     GefShd[, c(nms, 'FS') := .(Gef, Def, Dcef, Bef, FS)]
 
-    ## Valores diarios, mensuales y anuales
+    ## daily, monthly and yearly values
     by <- radEf@sample
     nms <- c('Gef0', 'Def0', 'Bef0', 'G', 'D', 'B', 'Gef', 'Def', 'Bef')
     nmsd <- paste(nms, 'd', sep = '')
@@ -73,9 +73,9 @@ calcShd<-function(radEf,##class='Gef'
     Gefdm[, c('month', 'year') := NULL]
     setcolorder(Gefdm, c('Dates', names(Gefdm)[-length(Gefdm)]))
 
-    ## Entrego un objecto de clase Gef
-    ## modificando los slots 'modeShd', 'GefI', 'GefD', 'Gefdm', y 'Gefy'
-    ## del objecto original radEf
+    ## Object of class Gef
+    ## modifying the 'modeShd', 'GefI', 'GefD', 'Gefdm', and 'Gefy' slots
+    ## from the original radEf object
     radEf@modeShd=modeShd
     radEf@GefI=GefShd
     radEf@GefD=GefD

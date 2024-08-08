@@ -15,10 +15,10 @@ calcG0 <- function(lat,
 ###Datos de Radiacion
     if (missing(corr)){
         corr = switch(modeRad,
-                      bd = 'CPR', #Correlacion entre Fd y Kt para valores diarios
-                      aguiar = 'CPR', #Correlacion entre Fd y Kt para valores diarios
-                      prom = 'Page', #Correlacion entre Fd y Kt para promedios mensuales
-                      bdI = 'BRL' #Correlación entre fd y kt para valores intradiarios
+                      bd = 'CPR', #Correlation between Fd and Kt for daily values
+                      aguiar = 'CPR', #Correlation between Fd and Kt for daily values
+                      prom = 'Page',  #Correlation between Fd and Kt for monthly averages
+                      bdI = 'BRL'     #Correlation between fd and kt for intraday values
                       )
     }
     
@@ -47,49 +47,45 @@ calcG0 <- function(lat,
                                     res <- do.call('zoo2Meteo', bd)
                                     res
                                 })
-                     },                #Fin de bd
+                     }, #End of bd
                  prom = {
                      if (!is.list(dataRad)) dataRad <- list(G0dm=dataRad)
                      prom.default <- list(G0dm=numeric(), lat=lat)
                      prom = modifyList(prom.default, dataRad)
                      res <- do.call('readG0dm', prom)
-                 },                     #Fin de prom
+                 }, #End of prom
                  aguiar = {
                      if (is.list(dataRad)) dataRad <- dataRad$G0dm
                      BTd <- fBTd(mode='serie')
                      solD <- fSolD(lat, BTd)
                      G0d <- markovG0(dataRad, solD)
                      res <- dt2Meteo(G0d, lat=lat, source='aguiar')
-                 },                     #Fin de aguiar
+                 }, #End of aguiar
                  bdI = {
-                     if (is(dataRad, 'Meteo')) {
-                         dataRad
-                     } else {
-                         if (!is.list(dataRad)) dataRad <- list(file=dataRad)
-                         switch(class(dataRad$file)[1],
-                                character = {
-                                    bdI.default <- list(file='', lat=lat)
-                                    bdI <- modifyList(bdI.default, dataRad)
-                                    res <- do.call('readBDi', bdI)
-                                    res
-                                },
-                                data.table = ,
-                                data.frame = {
-                                    bdI.default <- list(file='', lat=lat)
-                                    bdI <- modifyList(bdI.default, dataRad)
-                                    res <- do.call('dt2Meteo', bdI)
-                                    res
-                                },
-                                zoo = {
-                                    bdI.default <- list(file='', lat=lat, source='')
-                                    bdI <- modifyList(bdI.default, dataRad)
-                                    res <- do.call('zoo2Meteo', bdI)
-                                    res
-                                },
-                                stop('dataRad$file should be a character, a data.table, a data.frame or a zoo.')
-                                )}}     #Fin de bdI
-                 )                      #Fin del switch general
-    
+                     if (!is.list(dataRad)) dataRad <- list(file=dataRad)
+                     switch(class(dataRad$file)[1],
+                            character = {
+                                bdI.default <- list(file='', lat=lat)
+                                bdI <- modifyList(bdI.default, dataRad)
+                                res <- do.call('readBDi', bdI)
+                                res
+                            },
+                            data.table = ,
+                            data.frame = {
+                                bdI.default <- list(file='', lat=lat)
+                                bdI <- modifyList(bdI.default, dataRad)
+                                res <- do.call('dt2Meteo', bdI)
+                                res
+                            },
+                            zoo = {
+                                bdI.default <- list(file='', lat=lat, source='')
+                                bdI <- modifyList(bdI.default, dataRad)
+                                res <- do.call('zoo2Meteo', bdI)
+                                res
+                            },
+                            stop('dataRad$file should be a character, a data.table, a data.frame or a zoo.')
+                            )} #End of btI
+                 )             #End of general switch    
     }
         
     
@@ -112,20 +108,16 @@ calcG0 <- function(lat,
         compI<-fCompI(sol=sol, compD=compD, ...)
     }
     
-###Temperatura
+###Temperature
     
-    ##Compruebo si tengo información de temperatura a partir de la cual
-    ##generar una secuencia de datos. Para eso, debo estar leyendo de www.mapa.es
-    ##o de una base de datos que contenga dos variables con información sobre
-    ##valores diarios máximos y mínimos de temperatura.
-
     Ta=switch(modeRad,
               bd={
                   if (all(c("TempMax","TempMin") %in% names(BD@data))) {
                       fTemp(sol, BD)
                   } else {
                       if ("Ta" %in% names(BD@data)) {
-                          data.table(indexD(sol), BD@data$Ta)
+                          data.table(Dates = indexD(sol),
+                                     Ta =BD@data$Ta)
                       } else {
                           warning('No temperature information available!')
                       }
@@ -133,24 +125,25 @@ calcG0 <- function(lat,
               },
               bdI={
                   if ("Ta" %in% names(BD@data)) {
-                      data.table(indexI(sol), BD@data$Ta)
+                      data.table(Dates = indexI(sol),
+                                 Ta = BD@data$Ta)
                   } else {
                       warning('No temperature information available!')
                   }
               },
               prom={
                   if ("Ta" %in% names(BD@data)) {
-                      data.table(indexD(sol), BD@data$Ta)
+                      data.table(Dates = indexD(sol),
+                                 Ta = BD@data$Ta)
                   } else {
                       warning('No temperature information available!')
                   }                  
               },
               aguiar={ 
-                  data.table(indexI(sol), BD@data$Ta)
+                  data.table(Dates = indexI(sol),
+                             Ta = BD@data$Ta)
               }
               )
-    names(Ta)[1] <- 'Dates'
-    names(Ta)[2] <- 'Ta'
     
 ###Medias mensuales y anuales
     nms <- c('G0d', 'D0d', 'B0d')
@@ -175,13 +168,13 @@ calcG0 <- function(lat,
     
 ###Resultado
     result <- new(Class='G0',
-                  BD,                     #G0 contains "Meteo"
-                  sol,                    #G0 contains 'Sol'
-                  G0D=compD,              #resultado de fCompD
-                  G0dm=G0dm,          #medias mensuales
-                  G0y=G0y,            #valores anuales
-                  G0I=compI,          #resultado de fCompI
-                  Ta=Ta               #temperatura ambiente
+                  BD,        #G0 contains "Meteo"
+                  sol,       #G0 contains 'Sol'
+                  G0D=compD, #results of fCompD
+                  G0dm=G0dm, #monthly means
+                  G0y=G0y,   #yearly values
+                  G0I=compI, #results of fCompD
+                  Ta=Ta      #ambient temperature
                   )
     return(result)
 }

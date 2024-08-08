@@ -10,13 +10,12 @@ setGeneric('compare', signature='...', function(...){standardGeneric('compare')}
 compareFunction <- function(..., vars){
     dots <- list(...)
     nms0 <- substitute(list(...))
-    if (!is.null(names(nms0))){ ##estamos dentro de do.call
+    if (!is.null(names(nms0))){ ##in do.call
         nms <- names(nms0[-1])
     } else {
         nms <- as.character(nms0[-1])
     }
     foo <- function(object, label){
-        ###yY <- colMeans(as.data.frameY(object, complete=TRUE)[vars])
         yY <- colMeans(as.data.tableY(object, complete = TRUE)[, ..vars])
         yY <- cbind(stack(yY), name=label)
         yY

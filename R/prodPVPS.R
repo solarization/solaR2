@@ -16,7 +16,7 @@ prodPVPS<-function(lat,
     stopifnot(is.list(converter),
               is.list(effSys))
     
-    if (modeRad!='prev'){                 #No utilizamos un cálculo prev
+    if (modeRad!='prev'){ #We do not use a previous calculation
         
         radEf<-calcGef(lat=lat, modeTrk=modeTrk, modeRad=modeRad,
                        dataRad=dataRad,
@@ -27,7 +27,7 @@ prodPVPS<-function(lat,
                        iS=iS, alb=alb, horizBright=horizBright, HCPV=HCPV,
                    modeShd='', ...)
         
-    } else { #Utilizamos un cálculo previo de calcG0, calcGef o prodSFCR
+    } else { #We use a previous calculation of calcG0, calcGef or prodPVPS
         stopifnot(class(dataRad) %in% c('G0', 'Gef', 'ProdPVPS'))
         radEf <- switch(class(dataRad),
                         G0=calcGef(lat=lat, 
@@ -41,8 +41,7 @@ prodPVPS<-function(lat,
                       )
     }
     
-    
-###Producción eléctrica
+###Electric production
     converter.default=list(Ki = c(0.01,0.025,0.05), Pnom=Pg)
     converter=modifyList(converter.default, converter)
     
@@ -58,7 +57,7 @@ prodPVPS<-function(lat,
     
     Tc=Ta+Ct*Gef
     Pdc=Pg*Gef/1000*(1-lambda*(Tc-25))
-    Pdc[is.na(Pdc)]=0    #Necesario para las funciones que entrega fPump
+    Pdc[is.na(Pdc)]=0 #Necessary for the functions provided by fPump
     PdcN=with(effSys,
               Pdc/converter$Pnom*(1-ModQual/100)*(1-ModDisp/100)*(1-OhmDC/100)
               )
@@ -66,7 +65,7 @@ prodPVPS<-function(lat,
         A=Ki[3]
         B=Ki[2]+1
         C=Ki[1]-(PdcN)
-        ##Potencia AC normalizada al inversor
+        ##AC power normalized to the inverter
         result=(-B+sqrt(B^2-4*A*C))/(2*A)
     })
     PacN[PacN<0]<-0
@@ -76,9 +75,9 @@ prodPVPS<-function(lat,
     Pdc=PdcN*converter$Pnom*(Pac>0)
 	
     
-###Bomba
+###Pump
     fun<-fPump(pump=pump, H=H)
-    ##Limito la potencia al rango de funcionamiento de la bomba
+    ##I limit power to the pump operating range.
     rango=with(fun,Pac>=lim[1] & Pac<=lim[2]) 
     Pac[!rango]<-0
     Pdc[!rango]<-0
@@ -97,12 +96,9 @@ prodPVPS<-function(lat,
     setcolorder(prodI, c('Dates', names(prodI)[-length(prodI)]))
     
 ###Cálculo de valores diarios, mensuales y anuales
-    ##Cálculo de valores diarios, mensuales y anuales
-    ##=======================================
     
     by <- radEf@sample
     
-
     if(radEf@type == 'prom'){
         prodDm <- prodI[, .(Eac = P2E(Pac, by)/1000,
                             Qd = P2E(Q, by)),

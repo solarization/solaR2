@@ -212,12 +212,12 @@ fProd <- function(inclin,
                          (1 - OhmDC / 100)
                  ) 
 
-    ##Potencia AC normalizada al inverter
+    ##Normalized AC power to the inverter
     Ki <- inverter$Ki
-    if (is.matrix(Ki)) { #Ki es una matriz de nueve coeficientes-->dependencia con tensión
+    if (is.matrix(Ki)) { #Ki is a matrix of nine coefficients-->dependence with tension
         VP <- cbind(Vdc, PdcN)
         PacN <- apply(VP, 1, solvePac, Ki)
-    } else { #Ki es un vector de tres coeficientes-->sin dependencia con la tensión
+    } else { #Ki is a vector of three coefficients-->without dependence on voltage
         A <- Ki[3]
         B <- Ki[2] + 1
         C <- Ki[1] - (PdcN)
@@ -228,7 +228,7 @@ fProd <- function(inclin,
     PacN[pacNeg] <- PdcN[pacNeg] <- EffI[pacNeg] <- 0
 
     
-    ##Potencia AC y DC sin la normalización
+    ##AC and DC power without normalization
     Pac <- with(effSys, PacN * Pinv *
                         (Gef > inverter$Gumb) *
                         (1 - OhmAC / 100) *

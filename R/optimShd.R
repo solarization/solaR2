@@ -14,14 +14,14 @@ optimShd<-function(lat,
                    modeShd='',    
                    struct=list(), 
                    distances=data.table(),
-                   res=2,     #resolución, separación entre distancias
-                   prog=TRUE){          #Pinto barra de progreso
+                   res=2,      #resolution, distance spacing
+                   prog=TRUE){ #Drawing progress bar
 		
     if (('bt' %in% modeShd) & (modeTrk!='horiz')) {
         modeShd[which(modeShd=='bt')]='area'
         warning('backtracking is only implemented for modeTrk=horiz')}
 
-    ##Guardo argumentos de la función para utilizar después
+    ##I save function arguments for later use
 
     listArgs<-list(lat=lat, modeTrk=modeTrk, modeRad=modeRad,
                    dataRad=dataRad,
@@ -35,7 +35,7 @@ optimShd<-function(lat,
                    distances=data.table(Lew=NA, Lns=NA, D=NA))
   
     
-    ##Creo red en la que haré los cálculos
+    ##I think network on which I will do the calculations
     Red=switch(modeTrk,
                horiz=with(distances,
                           data.table(Lew=seq(Lew[1],Lew[2],by=res),
@@ -50,27 +50,27 @@ optimShd<-function(lat,
                                      H=0))
     )
   
-    casos<-dim(Red)[1]               #Número de posibilidades a estudiar
+    casos<-dim(Red)[1] #Number of possibilities to study
 
-    ##Preparo la barra de progreso
+    ##I prepare the progress bar
     if (prog) {pb <- txtProgressBar(min = 0, max = casos+1, style = 3)
         setTxtProgressBar(pb, 0)}
     
-###Cálculos	
-    ##Referencia: Sin sombras	
+###Calculations	
+    ##Reference: No shadows	
     listArgs0 <- modifyList(listArgs,
                             list(modeShd='', struct=NULL, distances=NULL) )
     Prod0<-do.call(prodGCPV, listArgs0)
-    YfAnual0=mean(Prod0@prody$Yf)   #Utilizo mean por si hay varios años
+    YfAnual0=mean(Prod0@prody$Yf) #I use mean in case there are several years
     if (prog) {setTxtProgressBar(pb, 1)}
     
-    ##Empieza el bucle
+    ##The loop begins
     
-    ##Creo un vector vacío de la misma longitud que los casos a estudiar
+    ##I create an empty vector of the same length as the cases to be studied
     YfAnual<-numeric(casos) 
     
     BT=('bt' %in% modeShd)
-    if (BT) { ##Hay backtracking, luego debo partir de radiación horizontal
+    if (BT) { ##There is backtracking, then I must start from horizontal radiation.
         RadBT <- as(Prod0, 'G0')
         for (i in seq_len(casos)){
             listArgsBT <- modifyList(listArgs,
@@ -97,7 +97,7 @@ optimShd<-function(lat,
     if (prog) {close(pb)}
     
     
-###Entrego resultados
+###Results
     FS=1-YfAnual/YfAnual0
     GRR=switch(modeTrk,
                two=with(Red,Lew*Lns)/with(struct,L*W),

@@ -10,11 +10,11 @@ fooG0 <- function(object, var){yY <- as.data.tableD(object)[, .SD,
 
 mergeFunction <- function(..., foo, var){
     dots <- list(...)
-    dots <- lapply(dots, as, class(dots[[1]])) ##el primer elemento es el que dicta la clase a todos
+    dots <- lapply(dots, as, class(dots[[1]])) ##the first element is the one that dictates the class to everyone
     nms0 <- substitute(list(...))
-    if (!is.null(names(nms0))){ ##estamos dentro de do.call
+    if (!is.null(names(nms0))){ ##do.call
         nms <- names(nms0[-1])
-    } else { ##llamada convencional
+    } else { 
         nms <- as.character(nms0[-1])
     }
     cdata <- sapply(dots, FUN=foo, var, simplify=FALSE)

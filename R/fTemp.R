@@ -1,7 +1,7 @@
 fTemp<-function(sol, BD)
 {
-    ##sol es un objeto con class='Sol'
-    ##BD es un objecto con class='Meteo', cuyo slot 'data' contiene dos columnas llamadas "TempMax" y "TempMin"
+    ##sol is an object with class='Sol'
+    ##BD is an object with class='Meteo', whose 'data' slot contains two columns called "TempMax" and "TempMin"
 
     stopifnot(class(sol)=='Sol')
     stopifnot(class(BD)=='Meteo')
@@ -16,7 +16,7 @@ fTemp<-function(sol, BD)
     ws <- sol@solD$ws[ind.rep]
     w <- sol@solI$w
     
-    ## Genera secuencia de temperatura a partir de Maxima y Minima de base de datos
+    ##Generate temperature sequence from database Maxima and Minima
 
     Tm=(TempMin+TempMax)/2
     Tr=(TempMax-TempMin)/2
@@ -33,7 +33,7 @@ fTemp<-function(sol, BD)
 
     Ta=T1*(w<=ws)+T2*(w>ws&w<=wp)+T3*(w>wp)
 
-    ## Resultado
+    ##Result
     result<-data.table(Dates, Ta)
 }
 			

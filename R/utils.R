@@ -74,7 +74,7 @@ char2diff <- function(by){
   if (!is.character(by)) {
     stop('This function is only useful for character strings.')
   } else {
-    ##Adaptado de seq.POSIXt
+    ##Adapted from seq.POSIXt
     by2 <- strsplit(by, " ", fixed = TRUE)[[1L]]
     if (length(by2) > 2L || length(by2) < 1L) 
       stop("invalid 'by' string")
@@ -136,13 +136,13 @@ solvePac <- function(x, Cinv){
     return(result)
 }
 
-dst <- function(x)                      #Adelanto horario por verano
+dst <- function(x) #Daylight Savings Time
    {
      as.POSIXlt(x)$isdst
    }
 
 lonHH<-function(tz)
-    {            #Calcula la longitud (en radianes) de un huso horario
+    { #Calculates the longitude (in radians) of a time zone.
       stopifnot(class(tz)=='character')
       tHH <- as.POSIXct('2000-1-1 12:00:00', tz=tz)
       tUTC <- as.POSIXct(format(tHH, tz='UTC'), tz=tz)
@@ -152,24 +152,22 @@ lonHH<-function(tz)
 local2Solar <- function(x, lon=NULL){	
   tz=attr(x, 'tzone')
   if (tz=='' || is.null(tz)) {tz='UTC'}
-  ##Adelanto oficial por verano
+  ##Daylight savings time
   AO=3600*dst(x)
   AOneg=(AO<0)
   if (any(AOneg)) {
     AO[AOneg]=0
     warning('Some Daylight Savings Time unknown. Set to zero.')
   }
-  ##Diferencia entre la longitud del lugar y la longitud del huso horario LH
+  ##Difference between local longitude and time zone longitude LH
   LH=lonHH(tz)
   if (is.null(lon)) 
     {deltaL=0
    } else
   {deltaL=d2r(lon)-LH
  }
-  ##Hora local corregida en UTC
-  ##    tt <- format(x-AO+r2sec(deltaL), tz=tz)
+  ##Local time corrected to UTC
   tt <- format(x, tz=tz)
   result <- as.POSIXct(tt, tz='UTC')-AO+r2sec(deltaL)
-  ##      result <- as.POSIXct(tt, tz='UTC')
   result
 }

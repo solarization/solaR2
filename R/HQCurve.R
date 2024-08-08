@@ -7,18 +7,17 @@
 if(getRversion() >= "2.15.1") globalVariables(c('fb', 'Q', 'x', 'y', 'group.value'))
 
 HQCurve<-function(pump){
-
-  w1=3000                              #frecuencia rpm sincronica
-  wm=2870 #frecuencia rpm con deslizamiento al aplicar tensión a 50 Hz
+  w1=3000 #synchronous rpm frequency
+  wm=2870 #rpm frequency with slip when applying voltage at 50 Hz
   s=(w1-wm)/w1
-  fen=50                               # Frecuencia electrica nominal
+  fen=50 #Nominal electrical frequency
 
   f=seq(35,50,by=5)
-  Hn=with(pump,a*50^2+b*50*Qn+c*Qn^2) #altura correspondiente a Caudal y frecuencia nominal
+  Hn=with(pump,a*50^2+b*50*Qn+c*Qn^2) #height corresponding to flow rate and nominal frequency
 
-  kiso=Hn/pump$Qn^2 #para pintar la curva de isorendimiento tengo en cuenta las leyes de semejanza
+  kiso=Hn/pump$Qn^2 #To paint the isoyield curve I take into account the laws of similarity
   Qiso=with(pump,seq(0.1*Qn,Qmax,l=10))
-  Hiso=kiso*Qiso^2                     #Curva de isorendimiento
+  Hiso=kiso*Qiso^2 #Isoperformance curve
 
   Curva<-expand.grid(fb=f,Q=Qiso)
 
@@ -38,14 +37,14 @@ HQCurve<-function(pump){
     Pmc=Pbc/etam
     Pm=Pmc*fe/50
 
-    etac=0.95                # Rendimiento del variador de frecuencia
-    cab=0.05                 # Perdidas de cableado
+    etac=0.95 #Variable frequency drive performance
+    cab=0.05  #Cable losses
     Pdc=Pm/(etac*(1-cab))
     rm(etac,cab,Pmc,Pbc,Pb50,Q50,H50)
   })
 
-###Curva H-Q a diferentes frecuencias
-  ##Compruebo si tengo disponible el paquete lattice, que debiera haber sido cargado en .First.lib
+###H-Q curve at different frequencies
+  ##I check if I have the lattice package available, which should have been loaded in .First.lib
   lattice.disp<-("lattice" %in% .packages())
   latticeExtra.disp<-("latticeExtra" %in% .packages())
   if (lattice.disp && latticeExtra.disp) {
