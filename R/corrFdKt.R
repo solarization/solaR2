@@ -116,7 +116,9 @@ FdKtBRL <- function(sol, G0i){
     pers <- persistence(sol, ktd)
 
     ##indexRep for ktd and pers
-    ind.rep <- cumsum(c(1, as.Date(indexI(sol)) != 0))
+    Dates <- indexI(sol)
+    x <- as.Date(Dates)
+    ind.rep <- cumsum(c(1, diff(x) != 0))
     ktd <- ktd[ind.rep]
     pers <- pers[ind.rep]
 

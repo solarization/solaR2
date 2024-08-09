@@ -7,9 +7,9 @@ setMethod('as.data.tableI',
           signature=(object='Sol'),
           definition=function(object, complete=FALSE, day=FALSE){
               sol <- copy(object)
-              BTi <- indexI(sol)
-              BTi <- truncDay(BTi)
-              ind.rep <- cumsum(c(1, diff(BTi, units='days')!=0))
+              Dates <- indexI(sol)
+              x <- truncDay(Dates)
+              ind.rep <- cumsum(c(1, diff(x)!=0))
               solI <- sol@solI
               solD <- sol@solD[ind.rep]
               if(complete){
@@ -29,9 +29,9 @@ setMethod('as.data.tableI',
           signature = (object='G0'),
           definition = function(object, complete=FALSE, day=FALSE){
               g0 <- copy(object)
-              BTi <- indexI(g0)
-              BTi <- truncDay(BTi)
-              ind.rep <- cumsum(c(1, diff(BTi)!=0))
+              Dates <- indexI(g0)
+              x <- truncDay(Dates)
+              ind.rep <- cumsum(c(1, diff(x)!=0))
               G0I <- g0@G0I
               solI <- g0@solI
               solD <- g0@solD[ind.rep]
@@ -61,9 +61,9 @@ setMethod('as.data.tableI',
           signature = (object='Gef'),
           definition = function(object, complete=FALSE, day=FALSE){
               gef <- copy(object)
-              BTi <- indexI(gef)
-              BTi <- truncDay(BTi)
-              ind.rep <- cumsum(c(1, diff(BTi, units='days')!=0))
+              Dates <- indexI(gef)
+              x <- truncDay(Dates)
+              ind.rep <- cumsum(c(1, diff(x)!=0))
               GefI <- gef@GefI
               G0I <- gef@G0I
               solI <- gef@solI
@@ -94,9 +94,9 @@ setMethod('as.data.tableI',
           signature = (object='ProdGCPV'),
           definition = function(object, complete=FALSE, day=FALSE){
               prodgcpv <- copy(object)
-              BTi <- indexI(prodgcpv)
-              BTi <- truncDay(BTi)
-              ind.rep <- cumsum(c(1, diff(BTi, units = 'days')!=0))
+              Dates <- indexI(prodgcpv)
+              x <- truncDay(Dates)
+              ind.rep <- cumsum(c(1, diff(x)!=0))
               prodI <- prodgcpv@prodI
               Theta <- prodgcpv@Theta
               GefI <- prodgcpv@GefI
@@ -130,9 +130,9 @@ setMethod('as.data.tableI',
           signature = (object='ProdPVPS'),
           definition = function(object, complete=FALSE, day=FALSE){
               prodpvps <- copy(object)
-              BTi <- indexI(prodpvps)
-              BTi <- truncDay(BTi)
-              ind.rep <- cumsum(c(1, diff(BTi, units='days')!=0))
+              Dates <- indexI(prodpvps)
+              x <- truncDay(Dates)
+              ind.rep <- cumsum(c(1, diff(x)!=0))
               prodI <- prodpvps@prodI
               Theta <- prodpvps@Theta
               GefI <- prodpvps@GefI

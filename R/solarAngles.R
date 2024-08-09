@@ -162,7 +162,7 @@ sunHour <- function(d, BTi, sample = '1 hour', EoT = TRUE, method = 'michalsky',
             BTi <- as.POSIXct(BTi, tz = 'UTC')
         }   
     }
-    rep <- cumsum(c(1, diff(BTi, units = 'days') > 1))
+    rep <- cumsum(c(1, diff(as.Date(BTi)) != 0))
     if(EoT)
     {
         EoT <- eqtime

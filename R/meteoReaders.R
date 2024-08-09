@@ -223,7 +223,9 @@ dt2Meteo <- function(file, lat, source = '', type){
 #### Liu and Jordan, Collares-Pereira and Rabl proposals ####
 collper <- function(sol, compD)
 {
-    ind.rep <- cumsum(c(1, as.Date(indexI(sol)) != 0))
+    Dates <- indexI(sol)
+    x <- as.Date(Dates)
+    ind.rep <- cumsum(c(1, diff(x) != 0))
     solI <- as.data.tableI(sol, complete = T)
     ws <- solI$ws
     w <- solI$w
