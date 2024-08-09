@@ -10,22 +10,22 @@ importFrom("grDevices",
            "heat.colors")
 
 importFrom("stats",
-           "IQR",
-           "aggregate",
-           "as.formula",
+           ## "IQR",
+           ## "aggregate",
+           ## "as.formula",
            "ave",
-           "end",
-           "lag",
+           ## "end",
+           ## "lag",
            "loess",
-           "mad",
+           ## "mad",
            "median",
            "na.omit",
            "predict",
-           "quantile",
+           ## "quantile",
            "runif",
-           "sd",
+           ## "sd",
            "splinefun",
-           "start",
+           ## "start",
            "uniroot",
            "update",
            "window")
@@ -45,19 +45,13 @@ import("methods")
 import("lattice")
 import("latticeExtra")
 
-#import("zoo")
 import("data.table")
 
 export(
     ##small utilities
-    ##hour,
-    ## minute,
-    ## second,
     hms,
     doy,
     dom,
-    ## month,
-    ## year,
     dst,
     d2r,
     r2d,
@@ -88,7 +82,8 @@ export(
     fProd,
     fSombra, fSombra2X, fSombra6, fSombraHoriz, fSombraEst,
     fPump, HQCurve, NmgPVPS,
-    analyzeData, TargetDiagram,
+    #analyzeData,
+    #TargetDiagram,
     ## Correlations
     Ktm, Ktd, Kti,
     FdKtPage,
