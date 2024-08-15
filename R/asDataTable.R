@@ -33,14 +33,14 @@ setMethod('as.data.tableI',
               x <- truncDay(Dates)
               ind.rep <- cumsum(c(1, diff(x)!=0))
               G0I <- g0@G0I
-              solI <- g0@solI
-              solD <- g0@solD[ind.rep]
+              G0D <- g0@G0D[ind.rep]
+              solI <- as.data.tableI(as(g0, 'Sol'), complete = TRUE)
               Ta <- g0@Ta
               if(length(Ta[[1]]!=length(G0I[[1]]))) Ta <- Ta[ind.rep]
               if(complete){
                   data <- data.table(solI,
                                      G0I[, Dates := NULL],
-                                     solD[, Dates := NULL],
+                                     G0D[, Dates := NULL],
                                      Ta[, Dates := NULL])
               } else{    
                   G0I[, Kt := NULL]
@@ -65,17 +65,12 @@ setMethod('as.data.tableI',
               x <- truncDay(Dates)
               ind.rep <- cumsum(c(1, diff(x)!=0))
               GefI <- gef@GefI
-              G0I <- gef@G0I
-              solI <- gef@solI
-              solD <- gef@solD[ind.rep]
-              Ta <- gef@Ta
-              if(length(Ta[[1]]!=length(GefI[[1]]))) Ta <- Ta[ind.rep]
+              GefD <- gef@GefD[ind.rep]
+              G0I <- as.data.tableI(as(gef, 'G0'), complete = TRUE)
               if(complete){
-                  data <- data.table(solI,
-                                     G0I[, Dates := NULL],
-                                     solD[, Dates := NULL],
-                                     Ta[, Dates := NULL],
-                                     GefI[, Dates := NULL])
+                  data <- data.table(G0I,
+                                     GefI[, Dates := NULL],
+                                     GefD[, Dates := NULL])
               } else {
                   data <- GefI[, c('Dates','Gef',
                                    'Bef', 'Def')]
@@ -98,19 +93,11 @@ setMethod('as.data.tableI',
               x <- truncDay(Dates)
               ind.rep <- cumsum(c(1, diff(x)!=0))
               prodI <- prodgcpv@prodI
+              prodD <- prodgcpv@prodD[ind.rep]
               Theta <- prodgcpv@Theta
-              GefI <- prodgcpv@GefI
-              G0I <- prodgcpv@G0I
-              solI <- prodgcpv@solI
-              solD <- prodgcpv@solD[ind.rep]
-              Ta <- prodgcpv@Ta
-              if(length(Ta[[1]]!=length(prodI[[1]]))) Ta <- Ta[ind.rep]
+              GefI <- as.data.tableI(as(prodgcpv, 'Gef'), complete = TRUE)
               if(complete){
-                  data <- data.table(solI,
-                                     G0I[, Dates := NULL],
-                                     solD[, Dates := NULL],
-                                     Ta[, Dates := NULL],
-                                     GefI[, Dates := NULL],
+                  data <- data.table(GefI,
                                      prodI[, Dates := NULL],
                                      Theta[, Dates := NULL])
               } else {
@@ -134,20 +121,13 @@ setMethod('as.data.tableI',
               x <- truncDay(Dates)
               ind.rep <- cumsum(c(1, diff(x)!=0))
               prodI <- prodpvps@prodI
+              prodD <- prodpvps@prodD[ind.rep]
               Theta <- prodpvps@Theta
-              GefI <- prodpvps@GefI
-              G0I <- prodpvps@G0I
-              solI <- prodpvps@solI
-              solD <- prodpvps@solD[ind.rep]
-              Ta <- prodpvps@Ta
-              if(length(Ta[[1]]!=length(prodI[[1]]))) Ta <- Ta[ind.rep]
+              GefI <- as.data.tableI(as(prodpvps, 'Gef'), complete = TRUE)
               if(complete){
-                  data <- data.table(solI,
-                                     G0I[, Dates := NULL],
-                                     solD[, Dates := NULL],
-                                     Ta[, Dates := NULL],
-                                     GefI[, Dates := NULL],
+                  data <- data.table(GefI,
                                      prodI[, Dates := NULL],
+                                     prodD[, Dates := NULL],
                                      Theta[, Dates := NULL])
               } else {
                   data <- prodI[, c('Dates', 'Pac', 'Pdc')]
