@@ -22,7 +22,7 @@ readBDd <- function(file, lat,
                    format = "%d/%m/%Y",header = TRUE,
                    fill = TRUE, dec = '.', sep = ';',
                    dates.col = 'Dates', ta.col = 'Ta',
-                   g0.col = 'G0', keep.cols = FALSE)
+                   g0.col = 'G0', keep.cols = FALSE, ...)
 {
     #stops if the arguments are not characters or numerics
     stopifnot(is.character(dates.col) || is.numeric(dates.col))
@@ -30,8 +30,10 @@ readBDd <- function(file, lat,
     stopifnot(is.character(g0.col) || is.numeric(g0.col))
 
     #read from file and set it in a data.table
-    bd <- fread(file, header = header, fill = fill, dec = dec, sep = sep)
+    bd <- fread(file, header = header, fill = fill, dec = dec, sep = sep, ...)
 
+    if(dates.col == '') names(bd)[1] <- ''
+    
     #check the columns
     if(!(dates.col %in% names(bd))) stop(paste('The column', dates.col, 'is not in the file'))
     if(!(g0.col %in% names(bd))) stop(paste('The column', g0.col, 'is not in the file'))
@@ -87,7 +89,7 @@ readBDi <- function(file, lat,
                     format = "%d/%m/%Y %H:%M:%S",
                     header = TRUE, fill = TRUE, dec = '.',
                     sep = ';', dates.col = 'dates', times.col,
-                    ta.col = 'Ta', g0.col = 'G0', keep.cols = FALSE)
+                    ta.col = 'Ta', g0.col = 'G0', keep.cols = FALSE, ...)
 {
     #stops if the arguments are not characters or numerics
     stopifnot(is.character(dates.col) || is.numeric(dates.col))
@@ -95,8 +97,10 @@ readBDi <- function(file, lat,
     stopifnot(is.character(g0.col) || is.numeric(g0.col))
 
     #read from file and set it in a data.table
-    bd <- fread(file, header = header, fill = fill, dec = dec, sep = sep)
+    bd <- fread(file, header = header, fill = fill, dec = dec, sep = sep, ...)
 
+    if(dates.col == '') names(bd)[1] <- ''
+    
     #check the columns
     if(!(dates.col %in% names(bd))) stop(paste('The column', dates.col, 'is not in the file'))
     if(!(g0.col %in% names(bd))) stop(paste('The column', g0.col, 'is not in the file'))
