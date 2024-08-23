@@ -32,7 +32,10 @@ readBDd <- function(file, lat,
     #read from file and set it in a data.table
     bd <- fread(file, header = header, fill = fill, dec = dec, sep = sep, ...)
 
-    if(dates.col == '') names(bd)[1] <- ''
+    if(dates.col == ''){
+        names(bd)[1] <- 'Dates'
+        dates.col <- 'Dates'
+    }
     
     #check the columns
     if(!(dates.col %in% names(bd))) stop(paste('The column', dates.col, 'is not in the file'))
@@ -99,7 +102,10 @@ readBDi <- function(file, lat,
     #read from file and set it in a data.table
     bd <- fread(file, header = header, fill = fill, dec = dec, sep = sep, ...)
 
-    if(dates.col == '') names(bd)[1] <- ''
+    if(dates.col == ''){
+        names(bd)[1] <- 'Dates'
+        dates.col <- 'Dates'
+    }
     
     #check the columns
     if(!(dates.col %in% names(bd))) stop(paste('The column', dates.col, 'is not in the file'))
