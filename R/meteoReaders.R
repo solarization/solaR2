@@ -165,6 +165,12 @@ readBDi <- function(file, lat,
 
 
 dt2Meteo <- function(file, lat, source = '', type){
+    if(missing(lat)) stop('lat is missing')
+    if(source == ''){
+        name <- deparse(substitute(file))
+        cl <- class(file)
+        source <- paste(cl, name, sep = '-')
+    }
     ## Make sure its a data.table
     bd <- data.table(file)
 
