@@ -33,6 +33,7 @@ fCompD <- function(sol, G0d, corr = 'CPR', f)
                      CPR = FdKtCPR(sol, G0d),
                      Page = FdKtPage(sol, G0d),
                      LJ = FdKtLJ(sol, G0d),
+                     EKDd = FdKtEKDd(sol, G0d),
                      CLIMEDd = FdKtCLIMEDd(sol, G0d),
                      user = f(sol, G0d))
         Kt <- Fd$Kt
