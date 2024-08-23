@@ -42,9 +42,9 @@ fCompD <- function(sol, G0d, corr = 'CPR', f)
     }
     ### the Direct and Difuse data is given
     else {
-        G0 <- getData(G0d)$G0
-        D0d <- getData(G0d)[['D0']]
-        B0d <- getData(G0d)[['B0']]
+        G0 <- getData(G0d)$G0d
+        D0d <- getData(G0d)[['D0d']]
+        B0d <- getData(G0d)[['B0d']]
         Fd <- D0d/G0
         Kt <- G0/Bo0d
     }
