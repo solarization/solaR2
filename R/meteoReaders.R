@@ -338,12 +338,18 @@ Meteod2Meteom <- function(G0d)
 
 zoo2Meteo <- function(file, lat, source = '')
 {
+    if(source == ''){
+        name <- deparse(substitute(file))
+        cl <- class(file)
+        source <- paste(cl, name, sep = '-')
+    }
+    bd <- data.table(file)
     sample <- median(diff(index(file)))
     IsDaily <- as.numeric(sample, units = 'days')>=1
     type <- ifelse(IsDaily, 'bd', 'bdI')
     result <- new(Class = 'Meteo',
                   latm = lat,
-                  data = file,
+                  data = bd,
                   type = type,
                   source = source)
 }
