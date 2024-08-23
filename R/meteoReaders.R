@@ -173,7 +173,7 @@ dt2Meteo <- function(file, lat, source = '', type){
 
     ## type
     if(missing(type)){
-        sample <- median(diff(file$Dates))
+        sample <- median(diff(bd$Dates))
         IsDaily <- as.numeric(sample, units = 'days')
         if(is.na(IsDaily)) IsDaily <- ifelse('G0d' %in% names(bd),
                                              1, 0)
@@ -183,12 +183,6 @@ dt2Meteo <- function(file, lat, source = '', type){
         }
         
     }
-    if(!('Ta' %in% names(bd))){
-        if(all(c('Tempmin', 'TempMax') %in% names(bd)))
-            bd[, Ta := mean(c(Tempmin, TempMax))]
-        else bd[, Ta := 25]
-            }
-
     ## Columns of the data.table
     nms0 <- switch(type,
                    bd = ,
@@ -197,7 +191,7 @@ dt2Meteo <- function(file, lat, source = '', type){
                        if(all(c('D0d', 'B0d') %in% names(bd))){
                            nms0 <- c(nms0, 'D0d', 'B0d')
                        }
-                       nms0 <- c(nms0, 'Ta')
+                       if('Ta' %in% names(bd)) nms0 <- c(nms0, 'Ta')
                        if(all(c('TempMin', 'TempMax') %in% names(bd))){
                            nms0 <- c(nms0, 'TempMin', 'TempMax')
                        }
@@ -208,9 +202,7 @@ dt2Meteo <- function(file, lat, source = '', type){
                        if(all(c('D0', 'B0') %in% names(bd))){
                            nms0 <- c(nms0, 'D0', 'B0')
                        }
-                       if('Ta' %in% names(bd)){
-                           nms0 <- c(nms0, 'Ta')
-                       }
+                       if('Ta' %in% names(bd)) nms0 <- c(nms0, 'Ta')
                        nms0
                    })
     ## Columns order and set key
@@ -222,6 +214,16 @@ dt2Meteo <- function(file, lat, source = '', type){
                   data = bd,
                   type = type,
                   source = source)
+    
+    if(!('Ta' %in% names(bd))){
+        if(all(c('TempMin', 'TempMax') %in% names(bd))){
+            sol <- calcSol(lat = lat, BTi = indexD(result))
+            bd[, Ta := fTemp(sol, result)$Ta]
+        }
+        else bd[, Ta := 25]
+        result@data <- bd
+    }
+    return(result)
 }
 
 #### Liu and Jordan, Collares-Pereira and Rabl proposals ####
