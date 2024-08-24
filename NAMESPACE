@@ -110,7 +110,6 @@ export(
     Meteoi2Meteod,
     Meteod2Meteom,
     zoo2Meteo,
-    collper,
     readSIAR,
     siarGET,
     ##themes for lattice
