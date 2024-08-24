@@ -30,8 +30,9 @@ fCompI <- function(sol, compD, G0I,
     } else { ## Use instantaneous values if provided through G0I
 
         if(class(G0I)[1] != 'Meteo'){
-            dt <- copy(G0I)
-            if(!('Dates' %in% names(G0I))){
+            dt <- copy(data.table(G0I))
+            if(!('Dates' %in% names(dt))){
+                if(length(dt) == 1) names(dt) <- 'G0'
                 dt[, Dates := indexI(sol)]
                 setcolorder(dt, 'Dates')
                 setkey(dt, 'Dates')
