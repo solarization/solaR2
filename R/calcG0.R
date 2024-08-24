@@ -26,7 +26,9 @@ calcG0 <- function(lat,
     else{
     BD <- switch(modeRad,
                  bd = {
-                         if (!is.list(dataRad)) dataRad <- list(file=dataRad)
+                     if (!is.list(dataRad)||is.data.frame(dataRad)){
+                         dataRad <- list(file=dataRad)
+                     }
                          switch(class(dataRad$file)[1],
                                 character={
                                     bd.default=list(file='', lat=lat)
@@ -62,7 +64,9 @@ calcG0 <- function(lat,
                      res <- dt2Meteo(G0d, lat=lat, source='aguiar')
                  }, #End of aguiar
                  bdI = {
-                     if (!is.list(dataRad)) dataRad <- list(file=dataRad)
+                     if (!is.list(dataRad) || is.data.frame(dataRad)){
+                         dataRad <- list(file=dataRad)
+                     }
                      switch(class(dataRad$file)[1],
                             character = {
                                 bdI.default <- list(file='', lat=lat)
