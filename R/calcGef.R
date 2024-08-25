@@ -93,7 +93,7 @@ calcGef<-function(lat,
         ('bt' %in% modeShd)) {            #nor if there is backtracking
         return(result0)
     } else {
-        result <- calcShd(result0, modeTrk, modeShd, struct, distances)
+        result <- calcShd(result0, modeShd, struct, distances)
         return(result)
     }
 }

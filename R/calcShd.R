@@ -1,5 +1,4 @@
 calcShd<-function(radEf,##class='Gef'
-                  modeTrk='fixed',     #c('two','horiz','fixed')
                   modeShd='prom',      #modeShd=c('area','bt','prom')
                   struct=list(), #list(W=23.11, L=9.8, Nrow=2, Ncol=8), 
                   distances=data.frame() #data.table(Lew=40, Lns=30, H=0)){
@@ -13,6 +12,7 @@ calcShd<-function(radEf,##class='Gef'
     prom=("prom"  %in%  modeShd)
     prev <- as.data.tableI(radEf, complete=TRUE)
     ## shadow calculations
+    modeTrk <- radEf@modeTrk
     sol <- data.table(AzS = prev$AzS,
                       AlS = prev$AlS)
     theta <- radEf@Theta

@@ -9,6 +9,7 @@ fSombraEst<-function(angGen, distances, struct)
     AzS <- angGen$AzS
     cosTheta <- angGen$cosTheta
     h <- dist$H #It must be previously normalized
+    if(is.null(h)) h <- 0
     d <- dist$D                   
     ## Calculations
     s=cos(Beta)+cos(Alfa-AzS)*(sin(Beta)+h)/tan(AlS)
