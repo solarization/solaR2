@@ -190,7 +190,7 @@ setMethod('show', 'Shade',
               cat('Productivity without shadows:\n')
               print(as(object, 'ProdGCPV'))##Referencia, sin sombras
               cat('Summary of results:\n')
-              print(summary(as.data.frame(object)))
+              print(summary(as.data.table(object)))
           }
           )
 

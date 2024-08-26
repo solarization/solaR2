@@ -84,7 +84,7 @@ optimShd<-function(lat,
         prom=('prom' %in% modeShd)
         for (i in seq_len(casos)){
             Gef0=as(Prod0, 'Gef')
-            GefShd=calcShd(Gef0, modeTrk=modeTrk, modeShd=modeShd,
+            GefShd=calcShd(Gef0, modeShd=modeShd,
                            struct=struct, distances=Red[i,])
             listArgsShd <- modifyList(listArgs,
                                       list(modeRad='prev', dataRad=GefShd)
