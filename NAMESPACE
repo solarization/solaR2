@@ -62,7 +62,6 @@ export(
     r2h,
     d2h,
     r2sec,
-    t2h,
     lonHH,
     local2Solar,
     #CBIND,
