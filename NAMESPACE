@@ -28,14 +28,16 @@ importFrom("stats",
            ## "start",
            "uniroot",
            "update",
-           "window")
+           "window",
+           "dist")
 
 importFrom("utils",
            "modifyList",
            "read.table",
            "setTxtProgressBar",
            "stack",
-           "txtProgressBar")
+           "txtProgressBar",
+           "write.table")
 
 importFrom("RColorBrewer",
            "brewer.pal")
@@ -70,7 +72,6 @@ export(
     P2E,
     truncDay,
     checkIndexD,
-    DOM,
     ##solar angles
     declination, eccentricity, eot,
     sunrise, bo0d, sunHour, zenith, azimuth,
