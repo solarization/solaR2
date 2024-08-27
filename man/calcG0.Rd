@@ -11,7 +11,7 @@
   \emph{intradaily} global irradiation on the horizontal plane.
   It makes use of the functions \code{\link{calcSol}},
   \code{\link{fCompD}}, \code{\link{fCompI}}, \code{\link{fBTd}}
-  and \code{\link{readBD}} (or equivalent).
+  and \code{\link{readBDd}} (or equivalent).
 
   Besides, if information about maximum and minimum temperatures values are available it obtains a series of temperature values with \code{\link{fTemp}}.
 }
