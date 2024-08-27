@@ -1,11 +1,11 @@
 \name{A8_readBD}
 \Rdversion{1.1}
 \encoding{UTF-8}
-\alias{readBD}
+\alias{readBDd}
 \alias{readBDi}
-\alias{df2Meteo}
-\alias{dfI2Meteo}
+\alias{dt2Meteo}
 \alias{zoo2Meteo}
+
 
 \title{Daily or intradaily values of global horizontal irradiation and ambient
   temperature from a local file or a data.frame.}
@@ -13,42 +13,36 @@
   \emph{daily} or \emph{intradaily} values of global horizontal irradiation and ambient temperature
   from a local file or a data.frame.}
 \usage{
-readBD(file,  lat,
-       format = '\%d/\%m/\%Y',
-       header = TRUE, fill = TRUE, dec = '.', sep = ';',
-       dates.col = 'date',source = file)
+readBDd(file,  lat,
+        format = '\%d/\%m/\%Y',
+        header = TRUE, fill = TRUE, dec = '.', sep = ';',
+        dates.col = 'date', ta.col = 'Ta',
+        g0.col = 'G0', keep.cols = FALSE, ...)
 
 readBDi(file,  lat,
-       format = '\%d/\%m/\%Y \%H:\%M:\%S',
-       header = TRUE, fill = TRUE, dec = '.', sep = ';',
-       time.col = 'time',
-       source = file)
+        format = '\%d/\%m/\%Y \%H:\%M:\%S',
+        header = TRUE, fill = TRUE, dec = '.',
+        sep = ';', dates.col = 'dates', times.col,
+        ta.col = 'Ta', g0.col = 'G0', keep.cols = FALSE, ...)
 
-df2Meteo(file,  lat,
-         format = '\%d/\%m/\%Y',
-         dates.col = 'date',
-         source = '')
-
-dfI2Meteo(file,  lat,
-         format = '\%d/\%m/\%Y \%H:\%M:\%S',
-         time.col = 'time',
-         source = '')
+dt2Meteo(file,  lat, source = '', type)
 
 zoo2Meteo(file, lat, source = '')
 }
 \arguments{
 
-  \item{file}{The name of the file (\code{readBD} and \code{readBDi}), \code{data.frame}
-    (\code{df2Meteo} and \code{dfI2Meteo}) or \code{zoo}
+  \item{file}{The name of the file (\code{readBDd} and \code{readBDi}),
+    \code{data.frame} (or \code{data.table}) (\code{dt2Meteo}) or \code{zoo}
     (\code{zoo2Meteo}) which the data are to be read from.
-    It should contain a column \code{G0} with
-    \emph{daily} (\code{readBD} and \code{df2Meteo}) or
-    \emph{intradaily} (\code{readBDi} and \code{dfI2Meteo})  values of
-    global horizontal irradiation (Wh/m²). It should also include a column
-    named \code{Ta} with values of ambient temperature. However, if the
-    object is only a vector with irradiation values, it will converted to a \code{zoo} with two
-    columns named \code{G0} and \code{Ta} (filled with constant values)
-
+    It should contain a column \code{G0d} with \emph{daily}
+    (\code{readBDd}) or \code{G0} with \emph{intradaily}
+    (\code{readBDi}) values of global horizontal irradiation (Wh/m²). It
+    should also include a column named \code{Ta} with values of ambient
+    temperature. However, if the object is only a vector with
+    irradiation values, it will converted to a \code{data.table} with
+    two columns named \code{G0} and \code{Ta} (filled with constant
+    values)
+    
     If the \code{Meteo} object is to be used with \code{\link{calcG0}}
     (or \code{fCompD}, \code{fCompI}) and the option
     \code{corr = 'none'}, the file/data.frame \bold{must} include three
@@ -60,8 +54,8 @@ zoo2Meteo(file, lat, source = '')
     \code{TempMin} with daily values of maximum and minimum ambient
     temperature, respectively (see \code{\link{fTemp}} for details).}
 
-  \item{header, fill, dec, sep}{See \code{\link{read.table}}}
-
+  \item{header, fill, dec, sep}{See \code{\link{fread}}}
+  
   \item{format}{character string with the format of the dates or time
     index.
     (Default for daily time bases:\code{\%d/\%m/\%Y}).
@@ -72,8 +66,9 @@ zoo2Meteo(file, lat, source = '')
   \item{dates.col}{character string with the name of the column wich
     contains the dates of the time series.}
 
-  \item{time.col}{character string with the name of the column wich
-    contains the time index of the series.}
+  \item{times.col}{character string with the name of the column wich
+    contains the time index of the series in case is in a different
+    column than the dates.}
 
   \item{source}{character string with information about the source of
     the values. (Default: the name of the file).}
@@ -86,7 +81,7 @@ zoo2Meteo(file, lat, source = '')
   Oscar Perpiñán Lamigueiro.
 }
 \seealso{
-  \code{\link{read.table}},
+  \code{\link{fread}},
   \code{\link{readG0dm}}.
 }
 \examples{
