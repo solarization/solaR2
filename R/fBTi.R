@@ -5,8 +5,8 @@ intervalo <- function(day, sample){
     return(intervalo)
 }
 
-fBTi <- function(d, sample = 'hour'){
-    BTi <- lapply(d, intervalo, sample)
+fBTi <- function(BTd, sample = 'hour'){
+    BTi <- lapply(BTd, intervalo, sample)
     BTi <- do.call(c, BTi)
     return(BTi)
 }

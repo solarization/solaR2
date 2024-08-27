@@ -5,8 +5,8 @@ fSolI <- function(solD, sample = 'hour', BTi,
     Bo <- 1367
 
     if(missing(BTi)){
-        d <- solD$Dates
-        BTi <- fBTi(d, sample)
+        BTd <- solD$Dates
+        BTi <- fBTi(BTd, sample)
     }
     sun <- data.table(Dates = as.IDate(BTi),
                       Times = as.ITime(BTi))

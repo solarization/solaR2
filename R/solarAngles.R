@@ -151,7 +151,7 @@ sunHour <- function(d, BTi, sample = '1 hour', EoT = TRUE, method = 'michalsky',
     }
 
     if(missing(BTi)){
-        BTi <- fBTi(d = d, sample = sample)
+        BTi <- fBTi(BTd = d, sample = sample)
     }else {
         if (inherits(BTi, 'data.table')) {
             Times <- as.ITime(BTi$Times)
