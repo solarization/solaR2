@@ -20,7 +20,7 @@
 
 
   \item{G0I}{A \code{Meteo} object from \code{\link{readBDi}},
-    \code{\link{dfI2Meteo}} or \code{\link{zoo2Meteo}}, or a \code{zoo}
+    \code{\link{dt2Meteo}} or \code{\link{zoo2Meteo}}, or a \code{zoo}
     object containing \emph{intradaily} global irradiation (Wh/m²) on a
     horizontal surface.
 
