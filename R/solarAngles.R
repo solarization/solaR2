@@ -101,7 +101,7 @@ eot <- function(d)
 
 #### Solar time ####
 sunrise <- function(d, lat, method = 'michalsky',
-                    decl = declination(d, method))
+                    decl = declination(d, method = method))
 {
     ##Method check
     if(!(method %in% c("michalsky", "cooper", "strous", "spencer"))){
@@ -120,9 +120,9 @@ sunrise <- function(d, lat, method = 'michalsky',
 
 #### Extraterrestrial irradition ####
 bo0d <- function(d, lat, method = 'michalsky',
-                 decl = declination(d, method),
-                 eo = eccentricity(d, method),
-                 ws = sunrise(d, lat, method))
+                 decl = declination(d, method = method),
+                 eo = eccentricity(d, method = method),
+                 ws = sunrise(d, lat, method = method))
 {
     ##Method check
     if(!(method %in% c("michalsky", "cooper", "strous", "spencer"))){
@@ -223,7 +223,7 @@ sunHour <- function(d, BTi, sample = 'hour', EoT = TRUE,
 
 #### zenith angle ####
 zenith <- function(d, lat, BTi, sample = 'hour',  method = 'michalsky',
-                   decl = declination(d, method),
+                   decl = declination(d, method = method),
                    w = sunHour(d, BTi, sample, method = method))
 {
     ##Method check
@@ -246,9 +246,12 @@ zenith <- function(d, lat, BTi, sample = 'hour',  method = 'michalsky',
 
 #### azimuth ####
 azimuth <- function(d, lat, BTi, sample = 'hour', method = 'michalsky',
-                    decl = declination(d, method),
-                    w = sunHour(d, BTi, sample, method),
-                    cosThzS = zenith(d, lat, BTi, sample, method, decl, w))
+                    decl = declination(d, method = method),
+                    w = sunHour(d, BTi, sample, method = method),
+                    cosThzS = zenith(d, lat, BTi, sample,
+                                     method = method,
+                                     decl = decl,
+                                     w = w))
 {
     ##Method check
     if(!(method %in% c("michalsky", "cooper", "strous", "spencer"))){
