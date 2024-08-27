@@ -9,7 +9,7 @@
   A class for meteorological data.
 }
 \section{Objects from the Class}{
-  Objects can be created by the family of \code{\link{readBD}} functions.
+  Objects can be created by the family of \code{\link{readBDd}} functions.
 }
 \section{Slots}{
   \describe{
@@ -48,11 +48,10 @@
 
 
 \seealso{
-  \code{\link{readBD}},
+  \code{\link{readBDd}},
   \code{\link{readBDi}},
   \code{\link{zoo2Meteo}},
-  \code{\link{df2Meteo}},
-    \code{\link{dfI2Meteo}},
+  \code{\link{dt2Meteo}},
   \code{\link{readG0dm}},
 }
 
