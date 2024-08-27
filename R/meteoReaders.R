@@ -19,10 +19,10 @@ readG0dm <- function(G0dm, Ta = 25, lat = 0,
 
 #### file to Meteo (daily) ####
 readBDd <- function(file, lat,
-                   format = "%d/%m/%Y",header = TRUE,
-                   fill = TRUE, dec = '.', sep = ';',
-                   dates.col = 'Dates', ta.col = 'Ta',
-                   g0.col = 'G0', keep.cols = FALSE, ...)
+                    format = "%d/%m/%Y",header = TRUE,
+                    fill = TRUE, dec = '.', sep = ';',
+                    dates.col = 'Dates', ta.col = 'Ta',
+                    g0.col = 'G0', keep.cols = FALSE, ...)
 {
     #stops if the arguments are not characters or numerics
     stopifnot(is.character(dates.col) || is.numeric(dates.col))
