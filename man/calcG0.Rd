@@ -41,13 +41,13 @@ calcG0(lat, modeRad = 'prom', dataRad,
 
     If \code{modeRad = 'bd'} the information of \emph{daily} irradiation is read from a
     file, a \code{data.table} defined by \code{dataRad}, a \code{zoo} or a
-    \code{Meteo} object. (See \code{\link{readBDd}}, \code{\link{dt2Meteod}}
+    \code{Meteo} object. (See \code{\link{readBDd}}, \code{\link{dt2Meteo}}
     and \code{\link{zoo2Meteo}} for details).
 
     If \code{modeRad = 'bdI'} the information of \emph{intradaily} irradiation is read from a
     file, a \code{data.table} defined by \code{dataRad}, a \code{zoo} or a
     \code{Meteo} object. (See \code{\link{readBDi}},
-    \code{\link{dt2Meteoi}} and \code{\link{zoo2Meteo}} for details).
+    \code{\link{dt2Meteo}} and \code{\link{zoo2Meteo}} for details).
   }
 
   \item{dataRad}{\itemize{
@@ -58,17 +58,17 @@ calcG0(lat, modeRad = 'prom', dataRad,
       
       \item{If \code{modeRad = 'bd'} a character (name of the file to be
     read with \code{readBDd}), a \code{data.table} (to be processed with
-    \code{dt2Meteod}), a \code{zoo} (to be processed with
+    \code{dt2Meteo}), a \code{zoo} (to be processed with
     \code{zoo2Meteo}), a \code{Meteo} object, or a \code{list} as
-    defined by \code{\link{readBDd}}, \code{\link{dt2Meteod}} or
+    defined by \code{\link{readBDd}}, \code{\link{dt2Meteo}} or
     \code{\link{zoo2Meteo}}. The resulting object will include a column
     named \code{Ta}, with information about ambient temperature.}
 
         \item{If \code{modeRad = 'bdI'} a character (name of the file to
     be read with \code{readBDi}), a \code{data.table} (to be processed
-    with \code{dt2Meteoi}), a \code{zoo} (to be processed with
+    with \code{dt2Meteo}), a \code{zoo} (to be processed with
     \code{zoo2Meteo}), a \code{Meteo} object, or a \code{list} as
-    defined by \code{\link{readBDi}}, \code{\link{dt2Meteoi}} or
+    defined by \code{\link{readBDi}}, \code{\link{dt2Meteo}} or
     \code{\link{zoo2Meteo}}. The resulting object will include a column
     named \code{Ta}, with information about ambient temperature.}
   }}
@@ -134,8 +134,7 @@ calcG0(lat, modeRad = 'prom', dataRad,
   \code{\link{readG0dm}},
   \code{\link{readBDd}},
   \code{\link{readBDi}},
-  \code{\link{dt2Meteod}},
-  \code{\link{dt2Meteoi}},
+  \code{\link{dt2Meteo}},
   \code{\link{corrFdKt}}.
 }
 \examples{
