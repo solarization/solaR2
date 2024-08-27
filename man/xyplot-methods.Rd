@@ -5,7 +5,7 @@
 \alias{xyplot,formula,Meteo-method}
 \alias{xyplot,formula,Sol-method}
 \alias{xyplot,formula,G0-method}
-\alias{xyplot,formula,zoo-method}
+\alias{xyplot,data.frame,missing-method}
 \alias{xyplot,Meteo,missing-method}
 \alias{xyplot,G0,missing-method}
 \alias{xyplot,ProdPVPS,missing-method}
