@@ -141,7 +141,8 @@ bo0d <- function(d, lat, method = 'michalsky',
 
 
 #### Sun hour angle ####
-sunHour <- function(d, BTi, sample = '1 hour', EoT = TRUE, method = 'michalsky',
+sunHour <- function(d, BTi, sample = 'hour', EoT = TRUE,
+                    method = 'michalsky',
                     eqtime = eot(d))
 {
     ##Method check
@@ -221,7 +222,7 @@ sunHour <- function(d, BTi, sample = '1 hour', EoT = TRUE, method = 'michalsky',
 }
 
 #### zenith angle ####
-zenith <- function(d, lat, BTi, sample = '1 hour',  method = 'michalsky',
+zenith <- function(d, lat, BTi, sample = 'hour',  method = 'michalsky',
                    decl = declination(d, method),
                    w = sunHour(d, BTi, sample, method = method))
 {
@@ -244,9 +245,9 @@ zenith <- function(d, lat, BTi, sample = '1 hour',  method = 'michalsky',
 }
 
 #### azimuth ####
-azimuth <- function(d, lat, BTi, sample = '1 hour', method = 'michalsky',
+azimuth <- function(d, lat, BTi, sample = 'hour', method = 'michalsky',
                     decl = declination(d, method),
-                    w = sunHour(d, BTi, sample, method = method),
+                    w = sunHour(d, BTi, sample, method),
                     cosThzS = zenith(d, lat, BTi, sample, method, decl, w))
 {
     ##Method check
