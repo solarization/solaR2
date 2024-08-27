@@ -85,7 +85,7 @@ export(
     #analyzeData,
     #TargetDiagram,
     ## Correlations
-    Ktm, Ktd, Kti,
+    Kti, Ktd, Ktm,
     FdKtPage,
     FdKtLJ,
     FdKtCPR,
@@ -94,7 +94,6 @@ export(
     FdKtEKDh,
     FdKtCLIMEDh,
     FdKtBRL,
-    persistence,
     ##constructors
     calcSol,
     calcG0,
