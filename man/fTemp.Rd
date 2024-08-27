@@ -14,7 +14,7 @@
   \item{sol}{A \code{\linkS4class{Sol}} object. It may be the result of the
     \code{\link{calcSol}} function.}
   \item{BD}{A \code{\linkS4class{Meteo}} object, as provided by the
-  \code{\link{readBD}} function. It must
+  \code{\link{readBDd}} function. It must
     include information about \code{TempMax} and \code{TempMin}.}
 }
 \details{
@@ -45,7 +45,7 @@
 
 \seealso{
   \code{\link{calcSol}},
-  \code{\link{readBD}}.
+  \code{\link{readBDd}}.
 }
 
 \keyword{utilities}
