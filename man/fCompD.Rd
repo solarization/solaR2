@@ -17,12 +17,14 @@ fCompD(sol, G0d, corr = "CPR",f)
     \code{Bo0d}, which stands for the extra-atmospheric daily
     irradiation incident on a horizontalsurface}
 
-  \item{G0d}{A \code{Meteo} object from \code{\link{readG0dm}}, \code{\link{readBD}}, or a \code{zoo} object containing daily
-    global irradiation (Wh/m²) on a horizontal surface. See below for \code{corr = 'none'}.}
+  \item{G0d}{A \code{Meteo} object from \code{\link{readG0dm}},
+    \code{\link{readBDd}}, or a \code{data.table} object containing daily
+    global irradiation (Wh/m²) on a horizontal surface. See below for
+    \code{corr = 'none'}.}
 
   \item{corr}{A character, the correlation between the the fraction of diffuse irradiation and the
     clearness index to be used.
-
+    
     With this version several options are available, as described in
     \code{\link{corrFdKt}}. For example, the \code{\link{FdKtPage}} is
     selected with \code{corr = 'Page'} and the \code{\link{FdKtCPR}} with
