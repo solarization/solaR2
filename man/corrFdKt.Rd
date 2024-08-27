@@ -1,5 +1,8 @@
 \name{C_corrFdKt}
 \alias{corrFdKt}
+\alias{Ktd}
+\alias{Ktm}
+\alias{Kti}
 \alias{FdKtPage}
 \alias{FdKtLJ}
 \alias{FdKtCPR}
@@ -18,29 +21,43 @@
 }
 \usage{
 ## Monthly means of daily values
-FdKtPage(Ktd)
-FdKtLJ(Ktd)
+Ktm(sol, G0dm)
+FdKtPage(sol, G0dm)
+FdKtLJ(sol, G0dm)
 
 ## Daily values
-FdKtCPR(Ktd)
-FdKtEKDd(Ktd, sol)
-FdKtCLIMEDd(Ktd)
+Ktd(sol, G0d)
+FdKtCPR(sol, G0d)
+FdKtEKDd(sol, G0d)
+FdKtCLIMEDd(sol, G0d)
 
 ## Intradaily values
-FdKtEKDh(kt)
-FdKtCLIMEDh(kt)
-FdKtBRL(kt, sol)
+Kti(sol, G0i)
+FdKtEKDh(sol, G0i)
+FdKtCLIMEDh(sol, G0i)
+FdKtBRL(sol, G0i)
 }
 \arguments{
-  \item{Ktd}{A numeric, the daily clearness index.}
+  \item{sol}{A \code{\linkS4class{Sol}} object, it may be the result of
+    the \code{\link{calcSol}} function.}
 
-  \item{kt}{A numeric, the intradaily clearness index.}
+  \item{G0dm}{A \code{\linkS4class{Meteo}} object with monthly means of
+    radiation. It may be the result of the \code{\link{readG0dm}}
+    function.}
 
-  \item{sol}{A \code{Sol} object provided by \code{\link{calcSol}} or a
-    \code{zoo} object provided by \code{\link{fSolD}} or \code{\link{fSolI}}.}
+  \item{G0d}{A \code{\linkS4class{Meteo}} object with daily values of
+    radiation. It may be the result of the \code{\link{readBDd}} (or
+    equivalent) function.}
+
+  \item{G0i}{A \code{\linkS4class{Meteo}} object with intraidaily values
+    of radiation. It may be the result of the \code{\link{readBDi}} (or
+    equivalent) function.}
 }
 
-\value{A numeric, the diffuse fraction.}
+\value{A data.table, with two columns:
+  \item{Fd}{A numeric, the diffuse fraction.}
+  \item{Kt}{A numeric, the clearness index(provided by the Kt functions).}
+}
 
 
 \references{\itemize{
@@ -70,22 +87,32 @@ G0dm = c(2.766, 3.491, 4.494, 5.912, 6.989, 7.742, 7.919, 7.027, 5.369,
     3.562, 2.814, 2.179)*1000;
 Ta = c(10, 14.1, 15.6, 17.2, 19.3, 21.2, 28.4, 29.9, 24.3, 18.2, 17.2,
     15.2)
-G0d = readG0dm(G0dm = G0dm, Ta = Ta, lat = lat)
-sol = calcSol(lat = lat, BTd = BTd)
-ktm = Ktm(sol = sol, G0d = G0d)
-Monthly = data.table(Ktm = ktm)
-Monthly$Page = FdKtPage(sol = sol, G0d = G0d)$Fd
-Monthly$LJ = FdKtLJ(sol = sol, G0d = G0d)$Fd
 
-xyplot(Page+LJ~Ktm, data = Monthly,
+prom = readG0dm(G0dm = G0dm, Ta = Ta, lat = lat)
+sol = calcSol(lat = lat, BTd = BTd)
+
+Kt = Ktm(sol = sol, G0dm = prom)
+Kt
+
+Page = FdKtPage(sol = sol, G0dm = prom)
+LJ = FdKtLJ(sol = sol, G0dm = prom)
+Monthly = merge(Page, LJ, by = 'Kt',
+                suffixes = c('.Page', '.LJ'))
+Monthly
+
+xyplot(Fd.Page+Fd.LJ~Kt, data = Monthly,
        type = c('l', 'g'), auto.key = list(space = 'right'))
 
-ktd = Ktd(sol = sol, G0d = G0d)
-Daily = data.table(Ktd = ktd)
-Daily$CPR = FdKtCPR(sol = sol, G0d = G0d)$Fd
-Daily$CLIMEDd = FdKtCLIMEDd(sol = sol, G0d = G0d)$Fd
+Kt = Ktd(sol = sol, G0d = prom)
+Kt
 
-xyplot(CPR + CLIMEDd ~ Ktd, data = Daily,
+CPR = FdKtCPR(sol = sol, G0d = prom)
+CLIMEDd = FdKtCLIMEDd(sol = sol, G0d = prom)
+Daily = merge(CPR, CLIMEDd, by = 'Kt',
+              suffixes = c('.CPR', '.CLIMEDd'))
+Daily
+
+xyplot(Fd.CPR + Fd.CLIMEDd ~ Kt, data = Daily,
        type = c('l', 'g'), auto.key = list(space = 'right'))
 
 }
