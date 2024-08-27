@@ -143,9 +143,12 @@ calcG0 <- function(lat,
                       warning('No temperature information available!')
                   }                  
               },
-              aguiar={ 
-                  data.table(Dates = indexI(sol),
-                             Ta = BD@data$Ta)
+              aguiar={
+                  Dates<-indexI(sol)	
+                  x <- as.Date(Dates)
+                  ind.rep <- cumsum(c(1, diff(x) != 0))
+                  data.table(Dates = Dates,
+                             Ta = BD@data$Ta[ind.rep])
               }
               )
     
