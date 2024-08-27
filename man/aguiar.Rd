@@ -2,7 +2,7 @@
 \alias{aguiar}
 \alias{MTM}
 \alias{Ktlim}
-\alias{Ktm}
+\alias{Ktmtm}
 \docType{data}
 \title{Markov Transition Matrices for the Aguiar etal. procedure}
 \description{Markov Transition Matrices and auxiliary data for generating
