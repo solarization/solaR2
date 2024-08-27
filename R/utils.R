@@ -25,12 +25,6 @@ r2min<-function(x){x*12/pi*60}
 
 #### Time ###
 
-#complete time to hours
-t2h <- function(x)
-{
-    hour(x)+minute(x)/60+second(x)/3600
-}
-
 #hours minutes and seconds to hours
 hms <- function(x)
 {
