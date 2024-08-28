@@ -25,7 +25,7 @@ solaR.theme.2 <- function(pch=19, cex=0.7, region=rev(brewer.pal(9, 'YlOrRd')), 
 setGeneric('xyplot')
 
 setMethod('xyplot',
-          signature = c(x = 'data.frame', data = 'missing'),
+          signature = c(x = 'data.table', data = 'missing'),
           definition = function(x, data,
                                 par.settings = solaR.theme.2,
                                 xscale.components=xscale.solar,
