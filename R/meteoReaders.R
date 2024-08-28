@@ -91,7 +91,7 @@ readBDd <- function(file, lat,
 readBDi <- function(file, lat,
                     format = "%d/%m/%Y %H:%M:%S",
                     header = TRUE, fill = TRUE, dec = '.',
-                    sep = ';', dates.col = 'dates', times.col,
+                    sep = ';', dates.col = 'Dates', times.col,
                     ta.col = 'Ta', g0.col = 'G0', keep.cols = FALSE, ...)
 {
     #stops if the arguments are not characters or numerics
