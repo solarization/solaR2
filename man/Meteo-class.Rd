@@ -13,25 +13,25 @@
 }
 \section{Slots}{
   \describe{
-    \item{\code{latData}:}{Latitude (degrees) of the meteorological station or
+    \item{\code{latm}:}{Latitude (degrees) of the meteorological station or
       source of the data.}
-    \item{\code{data}:}{A \code{zoo} object with the time series of
+    \item{\code{data}:}{A \code{data.table} object with the time series of
       daily irradiation (\code{G0}, Wh/m²), the ambient temperature (\code{Ta})
       or the maximum and minimum ambient 
       temperature (\code{TempMax} and \code{TempMin}).}
     \item{\code{source}:}{A character with a short description of the
       source of the data.}
-    \item{\code{type}:}{A character, \code{prom}, \code{bd}, \code{bdI} or
-      \code{mapa}, depending on the constructor.}
-
+    \item{\code{type}:}{A character, \code{prom}, \code{bd} or
+      \code{bdI} depending on the constructor.}
+    
   }
 }
 \section{Methods}{
   \describe{
     \item{getData}{\code{signature(object = "Meteo")}: extracts the
-      \code{data} slot as a \code{zoo} object.}
+      \code{data} slot as a \code{data.table} object.}
     \item{getG0}{\code{signature(object = "Meteo")}: extracts the
-      irradiation time series as a \code{zoo} object.}
+      irradiation as vector.}
     \item{getLat}{\code{signature(object = "Meteo")}: extracts the
       latitude value.}
     \item{indexD}{\code{signature(object = "Meteo")}: extracts the index

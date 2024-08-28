@@ -15,34 +15,26 @@
   \describe{
     \item{\code{lat}:}{numeric, latitude (degrees) as defined in the
       call to \code{\link{calcSol}}.}
-    \item{\code{solD}:}{Object of class \code{"zoo"} created by
+    \item{\code{solD}:}{Object of class \code{"data.table"} created by
       \code{\link{fSolD}}.}
-    \item{\code{solI}:}{Object of class \code{"zoo"} created by
+    \item{\code{solI}:}{Object of class \code{"data,table"} created by
       \code{\link{fSolI}}.}
-    \item{\code{match}:}{numeric, index of \code{solD} related
-      with the index of \code{solI}.}
     \item{\code{method}:}{character, method for the sun geometry calculations.}
     \item{\code{sample}:}{\code{difftime}, increment of the intradaily sequence.}
   }
 }
 \section{Methods}{
   \describe{
-    \item{as.data.frameD}{\code{signature(object = "Sol")}: conversion
-      to a data.frame with daily values.}
-    \item{as.data.frameI}{\code{signature(object = "Sol")}: conversion
-      to a data.frame with intradaily values.}
-    \item{as.zooD}{\code{signature(object = "Sol")}: conversion to a
-      \code{zoo} object with daily values.}
-    \item{as.zooI}{\code{signature(object = "Sol")}: conversion to a
-      \code{zoo} object with intradaily values.}
+    \item{as.data.tableD}{\code{signature(object = "Sol")}: conversion
+      to a data.table with daily values.}
+    \item{as.data.tableI}{\code{signature(object = "Sol")}: conversion
+      to a data.table with intradaily values.}
     \item{getLat}{\code{signature(object = "Sol")}: latitude (degrees)
       as defined in the call to \code{\link{calcSol}}.}
     \item{indexD}{\code{signature(object = "Sol")}: index of the
       \code{solD} slot. }
     \item{indexI}{\code{signature(object = "Sol")}: index of the
       \code{solI} object. }
-    \item{indexRep}{\code{signature(object = "Sol")}: accesor for the
-      \code{match} slot.}
     \item{xyplot}{\code{signature(x = "formula", data = "Sol")}:
       displays the contents of a \code{Sol} object with the
       \code{xyplot} method for formulas.}

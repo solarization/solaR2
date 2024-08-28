@@ -13,17 +13,21 @@
   \code{data.table} object with yearly values.}
 
 \usage{
-\S4method{as.data.tableY}{G0}(object, complete=FALSE)
+\S4method{as.data.tableY}{G0}(object, complete=FALSE, day=FALSE)
 }
 
 \arguments{
 
   \item{object}{A \code{G0} object (or extended.)}
   \item{complete}{A logical.}
+  \item{day}{A logical.}
   }
 \section{Methods}{
 \describe{
-\item{\code{signature(object = "G0")}}{The result is the \code{G0y} slot.}
+\item{\code{signature(object = "G0")}}{The result is the \code{G0y}
+  slot. If \code{day = TRUE} (default is \code{FALSE}), the result
+  includes a column named \code{year}.
+}
 
 \item{\code{signature(object = "Gef")}}{If \code{complete=FALSE}
   (default) the result is the slot \code{Gefy}. If

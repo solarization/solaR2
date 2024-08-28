@@ -32,7 +32,12 @@ calcGef(lat,
 \arguments{
   \item{lat}{numeric, latitude (degrees) of the point of the Earth where calculations are needed. It is positive for locations above the Equator.}
 
-  \item{modeTrk}{character, to be chosen from \code{'fixed'}, \code{'two'} or \code{'horiz'}. When \code{modeTrk = 'fixed'} the surface is fixed (inclination and azimuth angles are constant). The performance of a two-axis tracker is calculated with \code{modeTrk = 'two'}, and \code{modeTrk = 'horiz'} is the option for an horizontal N-S tracker. Its default value is \code{modeTrk = 'fixed'}}
+  \item{modeTrk}{character, to be chosen from \code{'fixed'},
+    \code{'two'} or \code{'horiz'}. When \code{modeTrk = 'fixed'} the
+    surface is fixed (inclination and azimuth angles are constant). The
+    performance of a two-axis tracker is calculated with \code{modeTrk =
+      'two'}, and \code{modeTrk = 'horiz'} is the option for an horizontal
+    N-S tracker. Its default value is \code{modeTrk = 'fixed'}}
 
   \item{modeRad, dataRad}{Information about the source data of the
     global irradiation. See \code{\link{calcG0}} for details.}
@@ -89,11 +94,6 @@ calcGef(lat,
   Systems with R", Journal of Statistical Software, 50(9), 1-32,
   \doi{10.18637/jss.v050.i09}
 }}
-
-% \note{The version 0.22 included a bug such that when horizBright = FALSE (default)
-%   the isotropic diffuse component was set to zero. From version
-%   0.23 the bug has been corrected and the default value of horizBright
-%   is TRUE.}
 
 \author{Oscar Perpiñán Lamigueiro.}
 

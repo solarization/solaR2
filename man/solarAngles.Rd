@@ -22,14 +22,14 @@ eot(d)
 
 ## Solar time
 sunrise(d, lat, method = 'michalsky',
-        decl = declination(d, method))
+        decl = declination(d, method = method))
 
 
 ## Extraterrestrial irradiation
 bo0d(d, lat, method = 'michalsky',
-     decl = declination(d, method),
-     eo = eccentricity(d, method),
-     ws = sunrise(d, lat, method))
+     decl = declination(d, method = method),
+     eo = eccentricity(d, method = method),
+     ws = sunrise(d, lat, method = method))
 
 ## Sun hour angle
 sunHour(d, BTi, sample = 'hour', EoT = TRUE,
@@ -38,14 +38,17 @@ sunHour(d, BTi, sample = 'hour', EoT = TRUE,
 
 ## Cosine of the zenith angle
 zenith(d, lat, BTi, sample = 'hour', method = 'michalsky',
-       decl = declination(d, method),
+       decl = declination(d, method = method),
        w = sunHour(d, BTi, sample, method = method))
 
 ## Azimuth angle
 azimuth(d, lat, BTi, sample = 'hour', method = 'michalsky',
-        decl = declination(d, method),
-        w = sunHour(d, BTi, sample, method),
-        cosThzS = zenith(d, lat, BTi, sample, method, decl, w))
+        decl = declination(d, method = method),
+        w = sunHour(d, BTi, sample, method = method),
+        cosThzS = zenith(d, lat, BTi, sample,
+                         method = method,
+                         decl = decl,
+                         w = w))
 }
 
 \arguments{
@@ -64,6 +67,14 @@ azimuth(d, lat, BTi, sample = 'hour', method = 'michalsky',
 
   \item{BTi}{\code{POSIXct}, intradily time base, it may the result of
     \code{\link{fBTi}}.}
+
+  \item{EoT}{logical, if \code{EoT=TRUE} (default value), the function
+  \code{sunHour} use the Equation of time}
+
+  \item{decl, eo, ws, eqtime, w, cosThzS}{Arguments that compute the
+  variables they reference (default value). It can be replaced with
+  previously calculated values to avoid calculating the same variable
+  twice.}
   
 }
 

@@ -24,7 +24,7 @@ prodGCPV(lat,
          effSys = list(),
          modeShd = '',
          struct = list(),
-         distances = data.frame(),
+         distances = data.table(),
          ...)
 }
 \arguments{
@@ -97,7 +97,10 @@ prodGCPV(lat,
 \details{The calculation of the irradiance on the horizontal plane is
   carried out with the function \code{\link{calcG0}}. The transformation
   to the inclined surface makes use of the \code{\link{fTheta}} and
-  \code{\link{fInclin}} functions inside the \code{\link{calcGef}} function. The shadows are computed with  \code{\link{calcShd}} while the performance of the PV system is simulated with \code{\link{fProd}}.}
+  \code{\link{fInclin}} functions inside the \code{\link{calcGef}}
+  function. The shadows are computed with  \code{\link{calcShd}} while
+  the performance of the PV system is simulated with
+  \code{\link{fProd}}.}
 
 \references{\itemize{
     \item Perpiñán, O, Energía Solar Fotovoltaica, 2015.

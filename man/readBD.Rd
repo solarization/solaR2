@@ -16,13 +16,13 @@
 readBDd(file,  lat,
         format = '\%d/\%m/\%Y',
         header = TRUE, fill = TRUE, dec = '.', sep = ';',
-        dates.col = 'date', ta.col = 'Ta',
+        dates.col = 'Dates', ta.col = 'Ta',
         g0.col = 'G0', keep.cols = FALSE, ...)
 
 readBDi(file,  lat,
         format = '\%d/\%m/\%Y \%H:\%M:\%S',
         header = TRUE, fill = TRUE, dec = '.',
-        sep = ';', dates.col = 'dates', times.col,
+        sep = ';', dates.col = 'Dates', times.col,
         ta.col = 'Ta', g0.col = 'G0', keep.cols = FALSE, ...)
 
 dt2Meteo(file,  lat, source = '', type)
@@ -72,6 +72,20 @@ zoo2Meteo(file, lat, source = '')
 
   \item{source}{character string with information about the source of
     the values. (Default: the name of the file).}
+  
+  \item{ta.col, g0.col}{character, the name of the columns with the
+    information of ambient temperature and radiation in the provided
+    file}
+  
+  \item{keep.cols}{If \code{keep.cols=FALSE}(default value), the
+    \code{Meteo} object does not include the columns that are not
+    important for the rest of operations}
+  
+  \item{...}{Arguments for \code{\link{fread}}}
+
+  \item{type}{character, type of the data in \code{dt2Meteo}. To choose between
+    \code{'prom'}, \code{'bd'} and \code{'bdI'}. If it is not provided,
+    the function \code{dt2Meteo} calculate the type.}
 }
 
 \value{A \code{Meteo} object.}

@@ -13,16 +13,16 @@
 
 \arguments{
   \item{sol}{A \code{Sol} object as provided by \code{\link{calcSol}} or
-    a \code{zoo} object as provided by \code{\link{fSolI}}.}
+    a \code{data.table} object as provided by \code{\link{fSolI}}.}
 
-  \item{compD}{A \code{zoo} object as provided by fCompD. It is not
+  \item{compD}{A \code{data.table} object as provided by fCompD. It is not
     considered if \code{G0I} is provided.}
 
 
   \item{G0I}{A \code{Meteo} object from \code{\link{readBDi}},
-    \code{\link{dt2Meteo}} or \code{\link{zoo2Meteo}}, or a \code{zoo}
-    object containing \emph{intradaily} global irradiation (Wh/m²) on a
-    horizontal surface.
+    \code{\link{dt2Meteo}} or \code{\link{zoo2Meteo}}, or a
+    \code{data.table} object containing \emph{intradaily} global
+    irradiation (Wh/m²) on a horizontal surface.
 
     See below for \code{corr = 'none'}.}
 
@@ -52,7 +52,7 @@
     extra-atmospheric irradiation values.}
 }
 
-\value{A \code{zoo} with these components:
+\value{A \code{data.table} with these components:
 
   \item{kt}{numeric, clearness index.}
   \item{fd}{numeric, diffuse fraction.}

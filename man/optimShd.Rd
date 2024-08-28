@@ -37,7 +37,7 @@ optimShd(lat,
          effSys = list(),
          modeShd = '',
          struct = list(),
-         distances = data.frame(),
+         distances = data.table(),
          res = 2,
          prog = TRUE)
 
@@ -46,7 +46,12 @@ optimShd(lat,
 \arguments{
   \item{lat}{numeric, latitude (degrees) of the point of the Earth where calculations are needed. It is positive for locations above the Equator.}
 
-  \item{modeTrk}{character, to be chosen from \code{'fixed'}, \code{'two'} or \code{'horiz'}. When \code{modeTrk = 'fixed'} the surface is fixed (inclination and azimuth angles are constant). The performance of a two-axis tracker is calculated with \code{modeTrk = 'two'}, and \code{modeTrk = 'horiz'} is the option for an horizontal N-S tracker. Its default value is \code{modeTrk = 'fixed'}}
+  \item{modeTrk}{character, to be chosen from \code{'fixed'},
+  \code{'two'} or \code{'horiz'}. When \code{modeTrk = 'fixed'} the
+  surface is fixed (inclination and azimuth angles are constant). The
+  performance of a two-axis tracker is calculated with \code{modeTrk =
+  'two'}, and \code{modeTrk = 'horiz'} is the option for an horizontal
+N-S tracker. Its default value is \code{modeTrk = 'fixed'}}
 
   \item{modeRad, dataRad}{Information about the source data of the
     global irradiation. See \code{\link{calcG0}} for details. For this

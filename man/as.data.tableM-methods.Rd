@@ -13,17 +13,21 @@
   \code{as.data.table} object with monthly average of daily values.}
 
 \usage{
-\S4method{as.data.tableM}{G0}(object, complete=FALSE)
+\S4method{as.data.tableM}{G0}(object, complete=FALSE, day=FALSE)
 }
 
 \arguments{
 
   \item{object}{A \code{G0} object (or extended.)}
   \item{complete}{A logical.}
+  \item{day}{A logical}
   }
 \section{Methods}{
 \describe{
-\item{\code{signature(object = "G0")}}{The result is the \code{G0dm} slot.}
+\item{\code{signature(object = "G0")}}{The result is the \code{G0dm}
+  slot. If \code{day=TRUE} (default is \code{FALSE}), the result
+  includes two columns names \code{month} and \code{year}.
+}
 
 \item{\code{signature(object = "Gef")}}{If \code{complete=FALSE}
   (default) the result is the slot \code{Gefdm}. If
