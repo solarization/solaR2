@@ -34,8 +34,7 @@ calcSol(lat, BTd, sample = 'hour', BTi,
     It is not considered if \code{BTi} is provided.}
 
   \item{BTi}{Intradaily time base, a \code{POSIXct} object to be used by
-    \code{\link{fSolI}}. It could be the index of the \code{G0I} argument
-    to \code{\link{calcG0}}.}
+    \code{\link{fSolI}}. It may be the result of \code{\link{fBTi}}.}
 
   \item{EoT}{logical, if \code{TRUE} the Equation of Time is
   used. Default is TRUE.}

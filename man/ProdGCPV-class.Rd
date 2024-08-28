@@ -14,7 +14,7 @@
 }
 \section{Slots}{
   \describe{
-    \item{\code{prodI}:}{Object of class \code{"zoo"} created by
+    \item{\code{prodI}:}{Object of class \code{data.table} created by
       \code{\link{fProd}}. It includes these components:
       \describe{
         \item{Tc: }{cell temperature, \eqn{^{\circ}{\rm C}}.}
@@ -24,13 +24,13 @@
         \item{Pac: }{power at the output of the inverter, W}
         \item{EffI: }{efficiency of the inverter}
     }}
-    \item{\code{prodD}:}{A \code{zoo} object with daily values of AC (\code{Eac}) and
+    \item{\code{prodD}:}{A \code{data.table} object with daily values of AC (\code{Eac}) and
       DC (\code{Edc}) energy (Wh), and
       productivity (\code{Yf}, Wh/Wp) of the system.}
-    \item{\code{prodDm}:}{A \code{zoo} object with monthly means of
+    \item{\code{prodDm}:}{A \code{data.table} object with monthly means of
       daily values of AC and DC energy (kWh), and
       productivity of the system.}
-    \item{\code{prody}:}{A \code{zoo} object with yearly sums of AC and
+    \item{\code{prody}:}{A \code{data.table} object with yearly sums of AC and
       DC energy (kWh), and
       productivity of the system.}
 
@@ -51,28 +51,18 @@
 }
 \section{Methods}{
   \describe{
-    \item{as.zooD}{\code{signature(object = "ProdGCPV")}: conversion to a
-      \code{zoo} object with daily values.}
-    \item{as.zooI}{\code{signature(object = "ProdGCPV")}: conversion to a
-      \code{zoo} object with intradaily values.}
-    \item{as.zooM}{\code{signature(object = "ProdGCPV")}: conversion to a
-      \code{zoo} object with monthly values.}
-    \item{as.zooY}{\code{signature(object = "ProdGCPV")}: conversion to a
-      \code{zoo} object with yearly values.}
-    \item{as.data.frameD}{\code{signature(object = "ProdGCPV")}: conversion
-      to a data.frame with daily values.}
-    \item{as.data.frameI}{\code{signature(object = "ProdGCPV")}: conversion
-      to a data.frame with intradaily values.}
-    \item{as.data.frameM}{\code{signature(object = "ProdGCPV")}: conversion
-      to a data.frame with monthly values.}
-    \item{as.data.frameY}{\code{signature(object = "ProdGCPV")}: conversion
-      to a data.frame with yearly values.}
+    \item{as.data.tableD}{\code{signature(object = "ProdGCPV")}: conversion
+      to a data.table with daily values.}
+    \item{as.data.tableI}{\code{signature(object = "ProdGCPV")}: conversion
+      to a data.table with intradaily values.}
+    \item{as.data.tableM}{\code{signature(object = "ProdGCPV")}: conversion
+      to a data.table with monthly values.}
+    \item{as.data.tableY}{\code{signature(object = "ProdGCPV")}: conversion
+      to a data.table with yearly values.}
     \item{indexD}{\code{signature(object = "ProdGCPV")}: index of the
       \code{solD} slot. }
     \item{indexI}{\code{signature(object = "ProdGCPV")}: index of the
       \code{solI} object. }
-    \item{indexRep}{\code{signature(object = "ProdGCPV")}: accesor for the
-      \code{match} slot.}
     \item{getLat}{\code{signature(object = "ProdGCPV")}: latitude of the inherited
       \code{\linkS4class{Sol}} object. }
     \item{xyplot}{\code{signature(x = "ProdGCPV", data = "missing")}: display
@@ -80,10 +70,6 @@
     \item{xyplot}{\code{signature(x = "formula", data = "ProdGCPV")}:
       displays the contents of a \code{ProdGCPV} object with the
       \code{xyplot} method for formulas.}
-    \item{as.zooD}{\code{signature(object = "ProdGCPV")}: conversion to a
-      \code{zoo} object with daily values.}
-    \item{as.zooI}{\code{signature(object = "ProdGCPV")}: conversion to a
-      \code{zoo} object with intradaily values.}
   }
 }
 

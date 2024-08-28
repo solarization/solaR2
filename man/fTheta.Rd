@@ -38,7 +38,7 @@ fTheta(sol, beta, alfa = 0, modeTrk = "fixed", betaLim = 90,
   \item{dist}{Only needed when \code{BT = TRUE}. A \code{data.frame}, with a component named \code{Lew}, being the distance between the horizontal NS trackers along the East-West direction. In future versions an additional component named \code{Lns} will be needed for two-axis trackers with backtracking.}
 }
 
-\value{A \code{zoo} object with these components:
+\value{A \code{data.table} object with these components:
   \item{Beta}{numeric, inclination angle of the surface (radians). When \code{modeTrk = 'fixed'} it is the value of the argument \code{beta} converted from degrees to radians.}
   \item{Alfa}{numeric, azimuth angle of the surface (radians). When \code{modeTrk = 'fixed'} it is the value of the argument \code{alfa} converted from degrees to radians.}
   \item{cosTheta}{numeric, cosine of the incidence angle of the solar irradiance on the surface}

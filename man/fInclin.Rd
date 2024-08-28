@@ -21,7 +21,7 @@ fInclin(compI, angGen, iS = 2, alb = 0.2, horizBright = TRUE, HCPV = FALSE)
 
 \arguments{
   \item{compI}{A \code{G0} object. It may be the result of \code{\link{calcG0}}.}
-  \item{angGen}{A \code{zoo} object, including at least three variables
+  \item{angGen}{A \code{data.table} object, including at least three variables
   named \code{Beta}, \code{Alfa} and \code{cosTheta}. It may be the result of \code{\link{fTheta}}.}
   \item{iS}{integer, degree of dirtiness. Its value must be included in the set (1,2,3,4). \code{iS = 1} corresponds to a clean surface while \code{iS = 4} is the choice for a dirty surface. Its default value is 2}
   \item{alb}{numeric, albedo reflection coefficient. Its default value
@@ -37,7 +37,7 @@ fInclin(compI, angGen, iS = 2, alb = 0.2, horizBright = TRUE, HCPV = FALSE)
   On the other hand, the effective irradiance, the fraction of the incident irradiance that reaches the cells inside a PV module, is calculated with the losses due to the angle of incidence and dirtiness. This behaviour can be simulated with a model proposed by Martin and Ruiz requiring information about the angles of the surface and the level of dirtiness (\code{iS}) .
 
 }
-\value{A \code{zoo} object with these components:
+\value{A \code{data.table} object with these components:
   \item{Bo}{Extra-atmospheric irradiance on the inclined surface (W/m²)}
   \item{Bn}{Direct normal irradiance (W/m²)}
   \item{G, B, D, Di, Dc, R}{Global, direct, diffuse (total, isotropic and anisotropic) and albedo irradiance incident on an inclined surface (W/m²)}

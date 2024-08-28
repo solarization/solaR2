@@ -12,15 +12,8 @@
 \section{Methods}{
   \describe{
 
-    \item{\code{signature(x = "formula", data = "zoo")}: }{
-      The \code{zoo} object is converted into a \code{data.frame} object and
-      additional columns are added (\code{day}, \code{month} and
-      \code{year}, and \code{w} with the solar hour in radians).
-      This \code{data.frame} is the \code{data} argument for a
-      call to \code{levelplot}, using the S3 method for class \code{formula}.}
-
     \item{\code{signature(x = "formula", data = "Meteo")}: }{
-      The \code{Meteo} object is converted into a \code{zoo} object, and
+      The \code{Meteo} object is converted into a \code{data.table} object, and
       the previous method is used.}
 
     \item{\code{signature(x = "formula", data = "Sol")}: }{idem}

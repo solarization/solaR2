@@ -6,7 +6,7 @@
 Solar Radiation and Photovoltaic Systems with R version 2
 }
 \description{
-The \code{solaR} package allows for reproducible research both for
+The \code{solaR2} package allows for reproducible research both for
 photovoltaics (PV) systems performance and solar radiation. It
 includes a set of classes, methods and functions to calculate the sun
 geometry and the solar radiation incident on a photovoltaic generator
@@ -19,30 +19,24 @@ pumping PV systems.
 
 \details{
 
-\code{solaR} is designed using a set of \code{S4} classes whose core
+\code{solaRd} is designed using a set of \code{S4} classes whose core
 is a group of slots with multivariate time series. The classes share a
 variety of methods to access the information and several visualization
 methods. In addition, the package provides a tool for the visual
 statistical analysis of the performance of a large PV plant composed of
 several systems.
 
-Although \code{solaR} is primarily designed for time series associated
+Although \code{solaRd} is primarily designed for time series associated
 to a location defined by its latitude/longitude values and the
 temperature and irradiation conditions, it can be easily combined with
 spatial packages for space-time analysis.
 
-The best place to learn how to use the package is the companion paper
-published by the Journal of Statistical Software:
-
-Perpiñán Lamigueiro, O. (2012). solaR: Solar Radiation and Photovoltaic
-Systems with R. Journal of Statistical Software, 50(9),
-1–32. https://doi.org/10.18637/jss.v050.i09
 
 \bold{Please note that this package needs to set the timezone to
-  \code{UTC}. Every ‘zoo’ object created by the package will have an
+  \code{UTC}. Every ‘data.table’ object created by the package will have an
   index with this time zone as a synonym of mean solar time.}.
 
-You can check it after loading \code{solaR} with:
+You can check it after loading \code{solaR3} with:
 
 \code{Sys.getenv('TZ')}
 
@@ -69,14 +63,10 @@ Sol-class               Class "Sol": Apparent movement of the Sun from
                         the Earth
 aguiar                  Markov Transition Matrices for the Aguiar etal.
                         procedure
-as.data.frameD          Methods for Function as.data.frameD
-as.data.frameI          Methods for Function as.data.frameI
-as.data.frameM          Methods for Function as.data.frameM
-as.data.frameY          Methods for Function as.data.frameY
-as.zooD                 Methods for Function as.zooD
-as.zooI-methods         Methods for Function as.zooI
-as.zooM                 Methods for Function as.zooM
-as.zooY                 Methods for Function as.zooY
+as.data.tableD          Methods for Function as.data.frameD
+as.data.tableI          Methods for Function as.data.frameI
+as.data.tableM          Methods for Function as.data.frameM
+as.data.tableY          Methods for Function as.data.frameY
 calcG0                  Irradiation and irradiance on the horizontal
                         plane.
 calcGef                 Irradiation and irradiance on the generator
@@ -113,7 +103,6 @@ helios                  Daily irradiation and ambient temperature from
 hour                    Utilities for time indexes.
 indexD                  Methods for Function indexD
 indexI                  Methods for Function indexI
-indexRep-methods        Methods for Function indexRep
 levelplot-methods       Methods for function levelplot.
 local2Solar             Local time, mean solar time and UTC time zone.
 mergesolaR              Merge solaR objects
@@ -129,6 +118,7 @@ readBD                  Daily or intradaily values of global horizontal
                         local file or a data.frame.
 readG0dm                Monthly mean values of global horizontal
                         irradiation.
+readSIAR                Meteorological data exported from the SIAR network
 shadeplot               Methods for Function shadeplot
 solaR.theme             solaR theme
 window                  Methods for extracting a time window

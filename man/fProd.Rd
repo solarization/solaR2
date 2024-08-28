@@ -13,8 +13,7 @@
 \usage{fProd(inclin, module, generator, inverter, effSys)}
 
 \arguments{
-  \item{inclin}{A \code{\linkS4class{Gef}} object, a \code{zoo} object or a \code{data.frame}. In
-    case of being \code{zoo} or \code{data.frame} it must include a component named \code{Gef} (effective irradiance, W/m²) and another named \code{Ta} (ambient temperature, \eqn{^{\circ}{\rm C}}).}
+  \item{inclin}{A \code{\linkS4class{Gef}} object, a \code{data.table} object. In case of being \code{data.table} it must include a component named \code{Gef} (effective irradiance, W/m²) and another named \code{Ta} (ambient temperature, \eqn{^{\circ}{\rm C}}).}
 
   \item{module}{list of numeric values with information about the PV module, \describe{
       \item{\code{Vocn}}{open-circuit voltage of the module at Standard
@@ -59,17 +58,14 @@
       \item{\code{Disp}}{ losses due to stops of the system (\%), default value is 0.5}
   }}
 }
-\value{If \code{inclin} is \code{zoo} or \code{Gef} object, the result
-  is a \code{zoo} object with these components (if \code{inclin}
-  is a \code{data.frame} the result is also a \code{data.frame} with these same components):
+\value{If \code{inclin} is \code{data.table} or \code{Gef} object, the result
+  is a \code{data.table} object with these components:
   \item{Tc}{cell temperature, \eqn{^{\circ}{\rm C}}.}
   \item{Voc, Isc, Vmpp, Impp}{open circuit voltage, short circuit current, MPP voltage and current, respectively, in the conditions of irradiance and temperature provided by \code{Inclin}}
   \item{Vdc, Idc}{voltage and current at the input of the inverter. If no voltage limitation occurs (according to the values of \code{inverter$Vmax} and \code{inverter$Vmin}), their values are identical to \code{Vmpp} and \code{Impp}. If the limit values are reached a warning is produced}
   \item{Pdc}{power at the input of the inverter, W}
   \item{Pac}{power at the output of the inverter, W}
   \item{EffI}{efficiency of the inverter}
-
-
 }
 
 \references{\itemize{

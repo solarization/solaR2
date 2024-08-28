@@ -11,7 +11,7 @@
   \describe{
 
     \item{\code{signature(object = "Sol")}}{returns the index of the slot
-      \code{solI} (a \code{zoo} object).
+      \code{solI} (a \code{data.table} object).
     }
 }}
 \keyword{methods}

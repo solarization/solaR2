@@ -9,7 +9,7 @@
 \usage{data(pumpCoef)}
 
 \format{
-  A data frame with 13 columns:
+  A \code{data.table} with 13 columns:
   \describe{
     \item{Qn}{rated flux}
     \item{stages}{number of stages}

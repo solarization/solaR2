@@ -25,8 +25,8 @@ fSombraEst(angGen, distances,struct)
 }
 
 \arguments{
-  \item{angGen}{A \code{zoo} object, including at least variables named
-    \code{Beta}, \code{Alfa}, \code{AzS}, \code{AlS} and \code{cosTheta}.}
+  \item{angGen}{A \code{data.table} object, including at least variables
+  named \code{Beta}, \code{Alfa}, \code{AzS}, \code{AlS} and \code{cosTheta}.}
 
   \item{distances}{\code{data.frame}, with a component named \code{Lew}, being the distance (meters) between horizontal NS and two-axis trackers along the East-West direction, a component named \code{Lns} for two-axis trackers or a component named \code{D} for static surfaces. An additional component named \code{H} can be included with the relative height (meters) between surfaces. When \code{modeTrk = 'two'} (or when \code{fSombra6} is used) this data.frame may have five rows. Each of these rows defines the distances of a tracker in a set of six ones.}
 
@@ -42,7 +42,7 @@ fSombraEst(angGen, distances,struct)
   \code{\link{fSombra6}} calculates the shadows factor in a set of six two-axis trackers. If \code{distances} has only one row, this function constructs a symmetric grid around a tracker located at (0,0,0). These five trackers are located at (-Lew, Lns, H), (0, Lns, H), (Lew, Lns, H), (-Lew, 0, H) and (Lns, 0, H). It is possible to define a irregular grid around (0,0,0) including five rows in \code{distances}. When \code{prom = TRUE} the shadows factor for each of the six trackers is calculated. Then, according to the distribution of trackers in the plant defined by \code{struct$Nrow} and \code{struct$Ncol}, a weighted average of the shadows factors is the result.
   It is important to note that the distances are defined between axis for trackers and between similar points of the structure for fixed surfaces.
 }
-\value{\code{data.frame} including \code{angGen} and a variable named \code{FS}, which is the shadows factor. This factor is the ratio between the area of the generator affected by shadows and the total area. Therefore its value is 1 when the PV generator is completely shadowed.}
+\value{\code{data.table} including \code{angGen} and a variable named \code{FS}, which is the shadows factor. This factor is the ratio between the area of the generator affected by shadows and the total area. Therefore its value is 1 when the PV generator is completely shadowed.}
 
 \references{\itemize{
     \item Perpiñán, O.: Grandes Centrales Fotovoltaicas: producción, seguimiento y ciclo de vida. PhD Thesis, UNED, 2008. \url{http://e-spacio.uned.es/fez/eserv/tesisuned:IngInd-Operpinan/GrandesCentrales.pdf}.

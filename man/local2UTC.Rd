@@ -14,11 +14,6 @@
   the difference of longitudes between the location and the time zone, and
   the daylight saving time.
 
-  The function \code{CBIND} combines several objects (\code{zoo},
-  \code{data.frame} or \code{matrix}) preserving
-  the \code{index} of the first of them or asigning a new one with the
-  \code{index} argument.
-
   The function \code{lonHH} calculates the longitude (radians) of a time zone.
 }
 \usage{

@@ -16,7 +16,7 @@
 }
 \section{Slots}{
   \describe{
-    \item{\code{G0D}:}{Object of class \code{"zoo"} created by
+    \item{\code{G0D}:}{Object of class \code{data.table} created by
       \code{\link{fCompD}}. It includes daily
       values of:
       \describe{
@@ -29,7 +29,7 @@
         \item{B0d: }{numeric, the direct irradiation on a horizontal surface
           (Wh/m²)}}
     }
-    \item{\code{G0I}:}{Object of class \code{"zoo"} created by
+    \item{\code{G0I}:}{Object of class \code{data.table} created by
       \code{\link{fCompI}}. It includes values of:
       \describe{
         \item{kt: }{numeric, clearness index}
@@ -38,10 +38,10 @@
         \item{B0: }{numeric, direct irradiance on a horizontal surface, (W/m²)}
       }
       }
-    \item{\code{G0dm}:}{Object of class \code{"zoo"} with monthly mean
+    \item{\code{G0dm}:}{Object of class \code{data.table} with monthly mean
       values of daily irradiation.}
-    \item{\code{G0y}:}{Object of class \code{"zoo"} with yearly sums of irradiation.}
-    \item{\code{Ta}:}{Object of class \code{"zoo"} with intradaily ambient
+    \item{\code{G0y}:}{Object of class \code{data.table} with yearly sums of irradiation.}
+    \item{\code{Ta}:}{Object of class \code{data.table} with intradaily ambient
       temperature values.}
   }
   Besides, this class contains the slots from the \code{\linkS4class{Sol}} and
@@ -53,28 +53,18 @@
 }
 \section{Methods}{
   \describe{
-    \item{as.zooD}{\code{signature(object = "G0")}: conversion to a
-      \code{zoo} object with daily values.}
-    \item{as.zooI}{\code{signature(object = "G0")}: conversion to a
-      \code{zoo} object with intradaily values.}
-    \item{as.zooM}{\code{signature(object = "G0")}: conversion to a
-      \code{zoo} object with monthly values.}
-    \item{as.zooY}{\code{signature(object = "G0")}: conversion to a
-      \code{zoo} object with yearly values.}
-    \item{as.data.frameD}{\code{signature(object = "G0")}: conversion
-      to a data.frame with daily values.}
-    \item{as.data.frameI}{\code{signature(object = "G0")}: conversion
-      to a data.frame with intradaily values.}
-    \item{as.data.frameM}{\code{signature(object = "G0")}: conversion
-      to a data.frame with monthly values.}
-    \item{as.data.frameY}{\code{signature(object = "G0")}: conversion
+    \item{as.data.tableD}{\code{signature(object = "G0")}: conversion
+      to a data.table with daily values.}
+    \item{as.data.tableI}{\code{signature(object = "G0")}: conversion
+      to a data.table with intradaily values.}
+    \item{as.data.tableM}{\code{signature(object = "G0")}: conversion
+      to a data.table with monthly values.}
+    \item{as.data.tableY}{\code{signature(object = "G0")}: conversion
       to a data.frame with yearly values.}
     \item{indexD}{\code{signature(object = "G0")}: index of the
       \code{solD} slot. }
     \item{indexI}{\code{signature(object = "G0")}: index of the
-      \code{solI} object. }
-    \item{indexRep}{\code{signature(object = "G0")}: accesor for the
-      \code{match} slot.}
+      \code{solI} slot. }
     \item{getLat}{\code{signature(object = "G0")}: latitude of the inherited
       \code{\linkS4class{Sol}} object. }
     \item{xyplot}{\code{signature(x = "G0", data = "missing")}: display

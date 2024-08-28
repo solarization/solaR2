@@ -12,11 +12,11 @@
   \describe{
 
     \item{\code{signature(object = "Meteo")}}{returns the index of the
-      \code{data} slot (a \code{zoo} object.)
+      \code{data} slot (a \code{data.table} object.)
     }
 
     \item{\code{signature(object = "Sol")}}{returns the index of the
-      \code{solD} slot (a \code{zoo} object.)
+      \code{solD} slot (a \code{data.table} object.)
     }
     \item{\code{signature(object = "G0")}}{same as for \code{object='Sol'}}
 }}

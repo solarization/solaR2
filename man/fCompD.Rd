@@ -12,17 +12,18 @@ fCompD(sol, G0d, corr = "CPR",f)
 }
 \arguments{
 
-  \item{sol}{A \code{Sol} object from \code{\link{calcSol}} or a \code{zoo} object
-    from \code{\link{fSolD}}. Both of them include a component named
-    \code{Bo0d}, which stands for the extra-atmospheric daily
-    irradiation incident on a horizontalsurface}
+  \item{sol}{A \code{Sol} object from \code{\link{calcSol}} or a
+    \code{data.table} object from \code{\link{fSolD}}. Both of them
+    include a component named \code{Bo0d}, which stands for the
+    extra-atmospheric daily irradiation incident on a horizontal
+    surface}
 
   \item{G0d}{A \code{Meteo} object from \code{\link{readG0dm}},
     \code{\link{readBDd}}, or a \code{data.table} object containing daily
     global irradiation (Wh/m²) on a horizontal surface. See below for
     \code{corr = 'none'}.}
 
-  \item{corr}{A character, the correlation between the the fraction of diffuse irradiation and the
+  \item{corr}{A character, the correlation between the fraction of diffuse irradiation and the
     clearness index to be used.
     
     With this version several options are available, as described in
@@ -41,7 +42,7 @@ fCompD(sol, G0d, corr = "CPR",f)
     diffuse irradiation and the clearness index. It is only neccessary when \code{corr = 'user'}}
 }
 
-\value{A \code{zoo} object  which includes:
+\value{A \code{data.table} object  which includes:
   \item{Fd}{numeric, the diffuse fraction}
   \item{Ktd}{numeric, the clearness index}
   \item{G0d}{numeric, the global irradiation on a horizontal surface (Wh/m²)}

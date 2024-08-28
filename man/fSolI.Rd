@@ -14,7 +14,7 @@ fSolI(solD, sample = 'hour', BTi, EoT = TRUE, keep.night = TRUE, method = 'micha
 
 \arguments{
 
-  \item{solD}{A \code{zoo} object with the result of
+  \item{solD}{A \code{data.table} object with the result of
   \code{fSolD}}
 
   \item{sample}{Increment of the intradaily sequence. It is a character
@@ -41,19 +41,15 @@ fSolI(solD, sample = 'hour', BTi, EoT = TRUE, keep.night = TRUE, method = 'micha
 }
 
 \value{
-  A \code{zoo} object is returned with these components:
+  A \code{data.table} object is returned with these components:
+  \item{lat}{numeric, latitude (degrees)}
   \item{w}{numeric, solar hour angle (radians)}
   \item{aman}{logical, \code{TRUE} when Sun is above the horizon }
   \item{cosThzS}{numeric, cosine of the solar zenith angle}
   \item{AzS}{numeric, solar acimuth angle (radians)}
   \item{AlS}{numeric, solar elevation angle (radians)}
   \item{Bo0}{numeric, extra-atmospheric irradiance (W/m2)}
-  \item{rd, rg}{numeric, relation between irradiance and irradiation
-    of diffuse and global values, respectively, following the
-    correlations proposed by Collares-Pereira and Rabl}
-
-  The latitude is stored as the attribute \code{lat} of this object.
-}
+ }
 
 \references{\itemize{ \item{Cooper, P.I., Solar Energy, 12, 3
     (1969). "The Absorption of Solar Radiation in Solar Stills"}

@@ -22,17 +22,14 @@ fSolD(lat, BTd, method = 'michalsky')
     'strous'. See references for details.}
 }
 
-\value{A \code{zoo} object with these components:
+\value{A \code{data.table} object with these components:
+  \item{lat}{Latitude (degrees)}
   \item{decl}{Declination angle (radians) for each day of year in \code{dn} or \code{BTd}}
   \item{eo}{Factor of correction due the eccentricity of orbit of the Earth around the Sun.}
   \item{ws}{Sunrise angle (in radians) for each day of year. Due to the convention which considers that the solar hour angle is negative before midday, this angle is negative.}
   \item{Bo0d}{Extra-atmospheric daily irradiation (watt-hour per
     squared meter) incident on a horizontal surface}
   \item{EoT}{Equation of Time.}
-}
-\note{
-  The latitude is stored as the attribute \code{lat} of the result,
-  and thus it is accessible with \code{attr(object, 'lat')}.
 }
 
 \references{\itemize{ \item{Cooper, P.I., Solar Energy, 12, 3

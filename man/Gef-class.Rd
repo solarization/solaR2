@@ -15,7 +15,7 @@
 }
 \section{Slots}{
   \describe{
-    \item{\code{GefI}:}{Object of class \code{"zoo"} created by
+    \item{\code{GefI}:}{Object of class \code{data.table} created by
       \code{\link{fInclin}}. It contains these components:
       \describe{
         \item{Bo: }{Extra-atmospheric irradiance on the inclined surface
@@ -30,16 +30,16 @@
         \item{FTb, FTd, FTr: }{Factor of angular losses for the direct,
           diffuse and albedo components}}}
 
-    \item{\code{GefD}:}{Object of class \code{"zoo"} with daily values
+    \item{\code{GefD}:}{Object of class \code{data.table} with daily values
       of global, diffuse and direct irradiation.}
 
-    \item{\code{Gefdm}:}{Object of class \code{"zoo"} with monthly means
+    \item{\code{Gefdm}:}{Object of class \code{data.table} with monthly means
       of daily global, diffuse and direct irradiation.}
 
-    \item{\code{Gefy}:}{Object of class \code{"zoo"} with yearly sums of
+    \item{\code{Gefy}:}{Object of class \code{data.table} with yearly sums of
       global, diffuse and direct irradiation.}
 
-    \item{\code{Theta}:}{Object of class \code{"zoo"} created by
+    \item{\code{Theta}:}{Object of class \code{data.table} created by
       \code{\link{fTheta}}. It contains these components:
       \describe{
         \item{\code{Beta}: }{numeric, inclination angle of the surface
@@ -68,28 +68,18 @@
 }
 \section{Methods}{
   \describe{
-    \item{as.zooD}{\code{signature(object = "Gef")}: conversion to a
-      \code{zoo} object with daily values.}
-    \item{as.zooI}{\code{signature(object = "Gef")}: conversion to a
-      \code{zoo} object with intradaily values.}
-    \item{as.zooM}{\code{signature(object = "Gef")}: conversion to a
-      \code{zoo} object with monthly values.}
-    \item{as.zooY}{\code{signature(object = "Gef")}: conversion to a
-      \code{zoo} object with yearly values.}
-    \item{as.data.frameD}{\code{signature(object = "Gef")}: conversion
-      to a data.frame with daily values.}
-    \item{as.data.frameI}{\code{signature(object = "Gef")}: conversion
-      to a data.frame with intradaily values.}
-    \item{as.data.frameM}{\code{signature(object = "Gef")}: conversion
-      to a data.frame with monthly values.}
-    \item{as.data.frameY}{\code{signature(object = "Gef")}: conversion
-      to a data.frame with yearly values.}
+    \item{as.data.tableD}{\code{signature(object = "Gef")}: conversion
+      to a data.table with daily values.}
+    \item{as.data.tableI}{\code{signature(object = "Gef")}: conversion
+      to a data.table with intradaily values.}
+    \item{as.data.tableM}{\code{signature(object = "Gef")}: conversion
+      to a data.table with monthly values.}
+    \item{as.data.tableY}{\code{signature(object = "Gef")}: conversion
+      to a data.table with yearly values.}
     \item{indexD}{\code{signature(object = "Gef")}: index of the
       \code{solD} slot. }
     \item{indexI}{\code{signature(object = "Gef")}: index of the
-      \code{solI} object. }
-    \item{indexRep}{\code{signature(object = "Gef")}: accesor for the
-      \code{match} slot.}
+      \code{solI} slot. }
     \item{getLat}{\code{signature(object = "Gef")}: latitude of the inherited
       \code{\linkS4class{Sol}} object. }
     \item{xyplot}{\code{signature(x = "Gef", data = "missing")}: display

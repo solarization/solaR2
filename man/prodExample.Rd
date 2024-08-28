@@ -5,7 +5,7 @@
 \docType{data}
 \title{Productivity of a set of PV systems of a PV plant.}
 
-\description{A \code{zoo} object with the time evolution of the final productivity of a set
+\description{A \code{data.table} object with the time evolution of the final productivity of a set
   of 22 systems of a large PV plant.}
 
 \usage{data(prodEx)}

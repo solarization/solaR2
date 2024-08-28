@@ -25,7 +25,7 @@
   of peak temperature (3 hours after midday), and to midnight.
 }
 
-\value{A \code{zoo} object with the profile of the ambient temperature.}
+\value{A \code{data.table} object with the profile of the ambient temperature.}
 
 \references{\itemize{
     \item Huld, T. , Suri, M., Dunlop, E. D., and Micale F., Estimating
