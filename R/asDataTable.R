@@ -17,9 +17,9 @@ setMethod('as.data.tableI',
               } else{data <- solI}
               if(day){
                   ind <- indexI(sol)
-                  data[, day := doy(ind)]
-                  data[, month := month(ind)]
-                  data[, year := year(ind)]
+                  data$day <- doy(ind)
+                  data$month <- month(ind)
+                  data$year <- year(ind)
               }
               return(data)
           }
@@ -49,9 +49,9 @@ setMethod('as.data.tableI',
               }
               if(day){
                   ind <- indexI(object)
-                  data[, day := doy(ind)]
-                  data[, month := month(ind)]
-                  data[, year := year(ind)]
+                  data$day <- doy(ind)
+                  data$month <- month(ind)
+                  data$year <- year(ind)
               }
               return(data)
           }
@@ -77,9 +77,9 @@ setMethod('as.data.tableI',
               }
               if(day){
                   ind <- indexI(object)
-                  data[, day := doy(ind)]
-                  data[, month := month(ind)]
-                  data[, year := year(ind)]
+                  data$day <- doy(ind)
+                  data$month <- month(ind)
+                  data$year <- year(ind)
               }
               return(data)
           }
@@ -105,9 +105,9 @@ setMethod('as.data.tableI',
               }
               if(day){
                   ind <- indexI(object)
-                  data[, day := doy(ind)]
-                  data[, month := month(ind)]
-                  data[, year := year(ind)]
+                  data$day <- doy(ind)
+                  data$month <- month(ind)
+                  data$year <- year(ind)
               }
               return(data)
           }
@@ -134,9 +134,9 @@ setMethod('as.data.tableI',
               }
               if(day){
                   ind <- indexI(object)
-                  data[, day := doy(ind)]
-                  data[, month := month(ind)]
-                  data[, year := year(ind)]
+                  data$day <- doy(ind)
+                  data$month <- month(ind)
+                  data$year <- year(ind)
               }
               return(data)
           }
@@ -153,10 +153,8 @@ setMethod('as.data.tableD',
               solD <- sol@solD
               data <- solD
               if(day){
-                  ind <- indexD(object)
-                  data[, day := doy(ind)]
-                  data[, month := month(ind)]
-                  data[, year := year(ind)]
+                  ind <- indexD(sol)
+                  
               }
               return(data)
           }
@@ -177,9 +175,9 @@ setMethod('as.data.tableD',
               }
               if(day){
                   ind <- indexD(object)
-                  data[, day := doy(ind)]
-                  data[, month := month(ind)]
-                  data[, year := year(ind)]
+                  data$day <- doy(ind)
+                  data$month <- month(ind)
+                  data$year <- year(ind)
               }
               return(data)
           })
@@ -199,9 +197,9 @@ setMethod('as.data.tableD',
                                        'Defd', 'Befd')]}
               if(day){
                   ind <- indexD(object)
-                  data[, day := doy(ind)]
-                  data[, month := month(ind)]
-                  data[, year := year(ind)]     
+                  data$day <- doy(ind)
+                  data$month <- month(ind)
+                  data$year <- year(ind)
               }
               return(data)
           }
@@ -225,9 +223,9 @@ setMethod('as.data.tableD',
                                          'Edc', 'Yf')]}
               if(day){
                   ind <- indexD(object)
-                  data[, day := doy(ind)]
-                  data[, month := month(ind)]
-                  data[, year := year(ind)]
+                  data$day <- doy(ind)
+                  data$month <- month(ind)
+                  data$year <- year(ind)
               }
               return(data)
           }
@@ -251,9 +249,9 @@ setMethod('as.data.tableD',
                                          'Qd', 'Yf')]}
               if(day){
                   ind <- indexD(object)
-                  data[, day := doy(ind)]
-                  data[, month := month(ind)]
-                  data[, year := year(ind)]
+                  data$day <- doy(ind)
+                  data$month <- month(ind)
+                  data$year <- year(ind)
               }
               return(data)
           }
@@ -271,8 +269,8 @@ setMethod('as.data.tableM',
               data <- G0dm
               if(day){
                   ind <- indexD(object)
-                  data[, month := month(ind)]
-                  data[, year := year(ind)]
+                  data$month <- month(ind)
+                  data$year <- year(ind)
               }
               return(data)
           }
@@ -289,8 +287,8 @@ setMethod('as.data.tableM',
               } else {data <- Gefdm}
               if(day){
                   ind <- indexD(object)
-                  data[, month := month(ind)]
-                  data[, year := year(ind)]
+                  data$month <- month(ind)
+                  data$year <- year(ind)                  
               }
               return(data)
           }
@@ -310,8 +308,8 @@ setMethod('as.data.tableM',
               } else {data <- prodDm}
               if(day){
                   ind <- indexD(object)
-                  data[, month := month(ind)]
-                  data[, year := year(ind)]
+                  data$month <- month(ind)
+                  data$year <- year(ind)                  
               }
               return(data)
           }
@@ -331,8 +329,8 @@ setMethod('as.data.tableM',
               } else {data <- prodDm}
               if(day){
                   ind <- indexD(object)
-                  data[, month := month(ind)]
-                  data[, year := year(ind)]
+                  data$month <- month(ind)
+                  data$year <- year(ind)                  
               }
               return(data)
           }
@@ -348,7 +346,7 @@ setMethod('as.data.tableY',
               g0 <- copy(object)
               G0y <- g0@G0y
               data <- G0y
-              if(day){data[, year := Dates]}
+              if(day){data$year <- data$Dates}
               return(data)
           }
           )
@@ -379,7 +377,7 @@ setMethod('as.data.tableY',
                                      Gefy[, Dates := NULL],
                                      G0y[, Dates := NULL])       
               } else {data <- prody}
-              if(day){data[, year := Dates]}
+              if(day){data$year <- data$Dates}
               return(data)
           }
           )
@@ -396,7 +394,7 @@ setMethod('as.data.tableY',
                                      Gefy[, Dates := NULL],
                                      G0y[, Dates := NULL])       
               } else {data <- prody}
-              if(day){data[, year := Dates]}
+              if(day){data$year <- data$Dates}
               return(data)
           }
           )
