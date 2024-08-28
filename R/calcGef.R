@@ -10,7 +10,7 @@ calcGef<-function(lat,
                   iS=2, alb=0.2, horizBright=TRUE, HCPV=FALSE,
                   modeShd='',    #modeShd=c('area','bt','prom')
                   struct=list(), #list(W=23.11, L=9.8, Nrow=2, Ncol=8), 
-                  distances=data.frame(),#data.table(Lew=40, Lns=30, H=0)){
+                  distances=data.table(),#data.table(Lew=40, Lns=30, H=0)){
                   ...){
     
     stopifnot(is.list(struct), is.data.frame(distances))
