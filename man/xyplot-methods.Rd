@@ -23,7 +23,7 @@
     \item{\code{signature(x = "formula", data = "Meteo")}: }{
       The \code{Meteo} object is converted into a \code{data.table} object with
       \code{getData(x)} and displayed with the method for \code{data.table}.
-      }.
+      
 
     }
     \item{\code{signature(x = "formula", data = "Sol")}: }{
@@ -59,7 +59,7 @@
     \item{\code{signature(x = "formula", data = "Shade")}: }{
       Idem.}
 
-}
+}}
 \author{Oscar Perpiñán Lamigueiro}
 \keyword{methods}
 
