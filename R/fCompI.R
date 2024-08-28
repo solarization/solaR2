@@ -1,5 +1,5 @@
 fCompI <- function(sol, compD, G0I,
-                   corr = 'EKDh', f,
+                   corr = 'none', f,
                    filterG0 = TRUE){
     if(!(corr %in% c('EKDh', 'CLIMEDh', 'BRL', 'user', 'none'))){
         warning('Wrong descriptor of correlation Fd-Ktd. Set EKDh.')
