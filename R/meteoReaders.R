@@ -5,7 +5,13 @@ readG0dm <- function(G0dm, Ta = 25, lat = 0,
                      source = '')
 {
     if(missing(lat)){lat <- 0}
-    Dates <- as.IDate(paste(year, 1:12, promDays, sep = '-'), tz = 'UTC')
+    Dates <- as.IDate(paste(year[1], 1:12, promDays, sep = '-'), tz = 'UTC')
+    if (length(year)>1){
+        for (i in year[-1]){
+            x <- as.IDate(paste(i, 1:12, promDays, sep = '-'), tz = 'UTC')
+            Dates <- c(Dates, x)
+        }
+    }
     G0dm.dt <- data.table(Dates = Dates,
                           G0d = G0dm,
                           Ta = Ta)
