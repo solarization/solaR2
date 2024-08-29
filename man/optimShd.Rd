@@ -164,7 +164,7 @@ surfaces.  }
 \value{A \code{\linkS4class{Shade}} object.}
 
 \references{\itemize{
-    \item Perpiñán, O.: Grandes Centrales Fotovoltaicas: producción, seguimiento y ciclo de vida. PhD Thesis, UNED, 2008. \url{http://e-spacio.uned.es/fez/eserv/tesisuned:IngInd-Operpinan/GrandesCentrales.pdf}.
+    \item Perpiñán, O.: Grandes Centrales Fotovoltaicas: producción, seguimiento y ciclo de vida. PhD Thesis, UNED, 2008. \url{https://www.researchgate.net/publication/39419806_Grandes_Centrales_Fotovoltaicas_Produccion_Seguimiento_y_Ciclo_de_Vida}.
     \item Perpiñán, O, Energía Solar Fotovoltaica, 2015.
     (\url{https://oscarperpinan.github.io/esf/})
     \item Perpiñán, O. (2012), "solaR: Solar Radiation and Photovoltaic
