@@ -23,14 +23,15 @@
 }
 \details{With this version only pumps from the manufacturer Grundfos are included.}
 
-\source{\url{https://product-selection.grundfos.com/?}}
+\source{https://product-selection.grundfos.com/}
+
 
 \references{\itemize{
     \item Perpiñán, O, Energía Solar Fotovoltaica, 2015.
     (\url{https://oscarperpinan.github.io/esf/})
-  \item Perpiñán, O. (2012), "solaR: Solar Radiation and Photovoltaic
-  Systems with R", Journal of Statistical Software, 50(9), 1-32,
-  \doi{10.18637/jss.v050.i09}
+    \item Perpiñán, O. (2012), "solaR: Solar Radiation and Photovoltaic
+    Systems with R", Journal of Statistical Software, 50(9), 1-32,
+    \doi{10.18637/jss.v050.i09}
 }}
 
 \keyword{datasets}
