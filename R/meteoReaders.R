@@ -1,3 +1,12 @@
+utils::globalVariables(c('.', 'Dates', 'Bo0d', 'Bo0m', 'G0d',
+                         'Bo0', 'Ta', '..cols', 'est_SIAR',
+                         'Fecha_Instalacion', 'Fecha_Baja',
+                         'Latitud', 'Longitud', 'peso', 'Estacion',
+                         'Codigo', 'req_url_query', 'req_url_path',
+                         'request', 'req_perform', 'resp_body_json',
+                         'HoraMin', 'Fecha', 'Radiacion', 'TempMin',
+                         'TempMax', 'TempMedia', 'Year', 'Mes', 'index'))
+
 #### monthly means of irradiation ####
 readG0dm <- function(G0dm, Ta = 25, lat = 0,
                      year = as.POSIXlt(Sys.Date())$year + 1900,

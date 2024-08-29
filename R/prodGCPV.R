@@ -1,3 +1,5 @@
+utils::globalVariables(c('Yf', 'Eac'))
+
 prodGCPV<-function(lat,
                    modeTrk='fixed', 
                    modeRad='prom',

@@ -1,3 +1,5 @@
+utils::globalVariables(c('Vmpp', 'Impp', 'Pdc', 'EffI'))
+
 setGeneric('losses', function(object){standardGeneric('losses')})
 
 setMethod('losses',

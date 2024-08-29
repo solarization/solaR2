@@ -1,3 +1,5 @@
+utils::globalVariables('Qd')
+
 prodPVPS<-function(lat, 
                    modeTrk='fixed', 
                    modeRad='prom', 

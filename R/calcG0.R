@@ -1,3 +1,5 @@
+utils::globalVariables('DayOfMonth')
+
 calcG0 <- function(lat,
                    modeRad='prom',
                    dataRad,

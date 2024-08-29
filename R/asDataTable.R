@@ -1,3 +1,5 @@
+utils::globalVariables(c('Fd', 'Kt'))
+
 ### as.data.tableI ###
 ## Extracts a data.table with intradaily data ##
 setGeneric('as.data.tableI',

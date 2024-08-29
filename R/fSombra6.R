@@ -1,3 +1,5 @@
+utils::globalVariables(c('Lew', 'Lns', 'H'))
+
 fSombra6<-function(angGen, distances, struct, prom=TRUE)
 {
     stopifnot(is.list(struct),

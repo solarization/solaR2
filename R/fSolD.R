@@ -1,3 +1,5 @@
+utils::globalVariables(c('decl', 'eo', 'EoT', 'ws'))
+
 fSolD <- function(lat, BTd, method = 'michalsky'){
     if (abs(lat) > 90){
         lat <- sign(lat) * 90

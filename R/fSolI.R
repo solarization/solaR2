@@ -1,3 +1,6 @@
+utils::globalVariables(c('eqtime', 'w', 'night', 'cosThzS',
+                         'AlS', 'AzS', 'Times'))
+
 fSolI <- function(solD, sample = 'hour', BTi,
                   EoT = TRUE, keep.night = TRUE, method = 'michalsky')
 {

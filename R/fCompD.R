@@ -1,3 +1,5 @@
+utils::globalVariables('lat')
+
 fCompD <- function(sol, G0d, corr = 'CPR', f)
 {
     if(!(corr %in% c('CPR', 'Page', 'LJ', 'EKDd', 'CLIMEDd', 'user', 'none'))){
