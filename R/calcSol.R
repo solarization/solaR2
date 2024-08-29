@@ -11,7 +11,7 @@ calcSol <- function(lat, BTd,
                   EoT = EoT, method = method)
     
     if(!missing(BTi)){
-        sample <- solI$Dates[2]-solI$Dates[1]
+        sample <- median(diff(solI$Dates))
         sample <- format(sample)
     }
     
