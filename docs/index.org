@@ -1,6 +1,6 @@
-#+TITLE: solaR: Solar Radiation and Photovoltaic Systems with R
-#+DESCRIPTION: solaR
-#+AUTHOR: Oscar Perpiñán Lamigueiro
+#+TITLE: solaR2: Solar Radiation and Photovoltaic Systems with R 2
+#+DESCRIPTION: solaR2
+#+AUTHOR: Francisco Delgado López
 #+HTML_HEAD:    <link rel="stylesheet" type="text/css" href="styles.css" />
 #+OPTIONS:   num:nil toc:nil ^:nil
 

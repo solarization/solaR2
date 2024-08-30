@@ -1,2 +1,2 @@
-solar
+solaR2
 =====
