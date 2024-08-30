@@ -3,16 +3,15 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-10-18 lun 23:47 -->
+<!-- 2024-08-30 vi. 18:15 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>solaR: Solar Radiation and Photovoltaic Systems with R</title>
-<meta name="generator" content="Org mode" />
 <meta name="author" content="Oscar Perpiñán Lamigueiro" />
-<meta name="description" content="solaR"
- />
-<style type="text/css">
- <!--/*--><![CDATA[/*><!--*/
+<meta name="description" content="solaR" />
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
   .subtitle { text-align: center;
@@ -33,8 +32,9 @@
   #postamble p, #preamble p { font-size: 90%; margin: .2em; }
   p.verse { margin-left: 3%; }
   pre {
-    border: 1px solid #ccc;
-    box-shadow: 3px 3px 3px #eee;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
     padding: 8pt;
     font-family: monospace;
     overflow: auto;
@@ -43,21 +43,21 @@
   pre.src {
     position: relative;
     overflow: auto;
-    padding-top: 1.2em;
   }
   pre.src:before {
     display: none;
     position: absolute;
-    background-color: white;
-    top: -10px;
-    right: 10px;
+    top: -8px;
+    right: 12px;
     padding: 3px;
-    border: 1px solid black;
+    color: #555;
+    background-color: #f2f2f299;
   }
   pre.src:hover:before { display: inline; margin-top: 14px;}
   /* Languages per Org manual */
   pre.src-asymptote:before { content: 'Asymptote'; }
   pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
   pre.src-C:before { content: 'C'; }
   /* pre.src-C++ doesn't work in CSS */
   pre.src-clojure:before { content: 'Clojure'; }
@@ -192,97 +192,46 @@
     { font-size: 10px; font-weight: bold; white-space: nowrap; }
   .org-info-js_search-highlight
     { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { width: 90%; }
-  /*]]>*/-->
+  .org-svg { }
 </style>
 <link rel="stylesheet" type="text/css" href="styles.css" />
-<script type="text/javascript">
-// @license magnet:?xt=urn:btih:1f739d935676111cfff4b4693e3816e664797050&amp;dn=gpl-3.0.txt GPL-v3-or-Later
-<!--/*--><![CDATA[/*><!--*/
-     function CodeHighlightOn(elem, id)
-     {
-       var target = document.getElementById(id);
-       if(null != target) {
-         elem.classList.add("code-highlighted");
-         target.classList.add("code-highlighted");
-       }
-     }
-     function CodeHighlightOff(elem, id)
-     {
-       var target = document.getElementById(id);
-       if(null != target) {
-         elem.classList.remove("code-highlighted");
-         target.classList.remove("code-highlighted");
-       }
-     }
-    /*]]>*///-->
-// @license-end
-</script>
 </head>
 <body>
-<div id="content">
+<div id="content" class="content">
 <h1 class="title">solaR: Solar Radiation and Photovoltaic Systems with R</h1>
 
-<div id="outline-container-orgf7252f6" class="outline-2">
-<h2 id="orgf7252f6">Introduction</h2>
-<div class="outline-text-2" id="text-orgf7252f6">
+<div id="outline-container-org9b64b77" class="outline-2">
+<h2 id="org9b64b77">Introduction</h2>
+<div class="outline-text-2" id="text-org9b64b77">
 <p>
-The <code>solaR</code> package allows for reproducible research both for
-photovoltaics (PV) systems performance and solar radiation. It
-includes a set of classes, methods and functions to calculate the
-sun geometry and the solar radiation incident on a photovoltaic
-generator and to simulate the performance of several applications
-of the photovoltaic energy. This package performs the whole
-calculation procedure from both daily and intradaily global
-horizontal irradiation to the final productivity of grid-connected
-PV systems and water pumping PV systems.
+The <code>solaR2</code> package allows for reproducible research both for photovoltaics (PV) systems performance and solar radiation. It includes a set of classes, methods, and functions to calculate the sun geometry and the solar radiation incident on a photovoltaic generator, as well as to simulate the performance of various photovoltaic energy applications. This package performs the entire calculation procedure from both daily and intradaily global horizontal irradiation to the final productivity of grid-connected PV systems and water pumping PV systems.
 </p>
 
 <p>
-It is designed using a set of S4 classes whose core is a group of
-slots with multivariate time series. The classes share a variety
-of methods to access the information and several visualization
-methods. In addition, the package provides a tool for the visual
-statistical analysis of the performance of a large PV plant
-composed of several systems.
+It is designed using a set of S4 classes that handle multivariate time series efficiently and are optimized for high-performance data manipulation. The classes share a variety of methods to access the information and several visualization methods. Additionally, the package provides tools for the visual statistical analysis of the performance of large PV plants composed of multiple systems.
 </p>
 
 <p>
-Although <code>solaR</code> is primarily designed for time series associated to
-a location defined by its latitude/longitude values and the
-temperature and irradiation conditions, it can be easily combined
-with spatial packages for space-time analysis.  
+Although <code>solaR2</code> is primarily designed for time series associated with a location defined by its latitude/longitude values and temperature and irradiation conditions, it can be easily combined with spatial packages for space-time analysis.
 </p>
 </div>
 </div>
 
-<div id="outline-container-org2229808" class="outline-2">
-<h2 id="org2229808">Software</h2>
-<div class="outline-text-2" id="text-org2229808">
+<div id="outline-container-org0e39a69" class="outline-2">
+<h2 id="org0e39a69">Software</h2>
+<div class="outline-text-2" id="text-org0e39a69">
 <p>
-The stable version of <code>solaR</code> is hosted at <a href="https://cran.r-project.org/package=solaR">CRAN</a>. 
-The development version is available at <a href="https://github.com/oscarperpinan/solar/">GitHub</a>.
+The stable version of <code>solaR2</code> is hosted at <a href="https://cran.r-project.org/package=solaR">CRAN</a>. 
+The development version is available at <a href="https://github.com/solarization/solaR2">GitHub</a>.
 </p>
 </div>
 </div>
 
-<div id="outline-container-orga4767d7" class="outline-2">
-<h2 id="orga4767d7">Documentation</h2>
-<div class="outline-text-2" id="text-orga4767d7">
+<div id="outline-container-orga70780c" class="outline-2">
+<h2 id="orga70780c">Citation</h2>
+<div class="outline-text-2" id="text-orga70780c">
 <p>
-The best place to learn how to use the package is the companion <a href="https://doi.org/10.18637/jss.v050.i09">paper</a>
-published by the Journal of Statistical Software. <a href="https://oscarperpinan.github.io/esf/">This book</a> (in
-Spanish) contains detailed information about solar radiation and
-photovoltaic systems. In <a href="https://oscarperpinany.github.io/">my articles</a> I frequently use <code>solaR</code>.
-</p>
-</div>
-</div>
-
-<div id="outline-container-org85c82af" class="outline-2">
-<h2 id="org85c82af">Citation</h2>
-<div class="outline-text-2" id="text-org85c82af">
-<p>
-If you use <code>solaR</code>, please cite it in any publication reporting
+If you use <code>solaR2</code>, please cite it in any publication reporting
 results obtained with this software:
 </p>
 
@@ -293,40 +242,33 @@ Journal of Statistical Software, 50(9), 1–32.
 https://doi.org/10.18637/jss.v050.i09
 </pre>
 </div>
+<div class="org-src-container">
+<pre class="src src-verbatim">Delgado López, Francisco y Perpiñán Lamigueiro, Oscar (2024).
+solaR2: Radiation and Photovoltaic Systems with R version 2.
+R package version 0.10.
+Disponible en: https://github.com/solarization/solaR2
+</pre>
+</div>
 
 <p>
 A BibTeX entry for LaTeX users is
 </p>
 <div class="org-src-container">
-<pre class="src src-verbatim">  @Article{,
-    title = {{solaR}: Solar Radiation and Photovoltaic Systems with {R}},
-    author = {Oscar Perpi{\~n}{\'a}n},
-    journal = {Journal of Statistical Software},
-    year = {2012},
-    volume = {50},
-    number = {9},
-    pages = {1--32},
-    doi = {10.18637/jss.v050.i09}
-  }
+<pre class="src src-verbatim">@Manual{solaR2,
+  title     = {solaR2: Radiation and Photovoltaic Systems with R version 2},
+  author    = {Francisco Delgado and Oscar Perpiñán Lamigueiro},
+  year      = {2024},
+  url       = {https://github.com/solarization/solaR2},
+  note      = {R package version 0.10},
+}
 </pre>
 </div>
-</div>
-</div>
-
-<div id="outline-container-org89ad740" class="outline-2">
-<h2 id="org89ad740">References</h2>
-<div class="outline-text-2" id="text-org89ad740">
-<p>
-<code>solaR</code> has been cited in <a href="https://scholar.google.com/scholar?oi=bibs&amp;hl=es&amp;cites=3271105799150114365">several papers</a>.
-</p>
-
-<hr />
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Oscar Perpiñán Lamigueiro</p>
-<p class="date">Created: 2021-10-18 lun 23:47</p>
+<p class="date">Created: 2024-08-30 vi. 18:15</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
