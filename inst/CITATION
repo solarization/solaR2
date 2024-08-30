@@ -11,6 +11,6 @@ bibentry(bibtype="Manual",
          url ="https://solarization.github.io/solaR2/",
          note = vers,
          textVersion = paste0("Francisco Delgado Lopez and Oscar Perpinan Lamigueiro (",
-                              year, "), rasterVis. ", vers, "."))
+                              year, "), solaR2. ", vers, "."))
 
 
