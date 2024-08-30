@@ -26,16 +26,16 @@ results obtained with this software:
 Delgado López, Francisco y Perpiñán Lamigueiro, Oscar (2024).
 solaR2: Radiation and Photovoltaic Systems with R version 2.
 R package version 0.10.
-Disponible en: https://github.com/solarization/solaR2
+Disponible en: https://solarization.github.io/solaR2/
 #+end_src
 
 A BibTeX entry for LaTeX users is
 #+begin_src verbatim
 @Manual{solaR2,
   title     = {solaR2: Radiation and Photovoltaic Systems with R version 2},
-  author    = {Francisco Delgado and Oscar Perpiñán Lamigueiro},
+  author    = {Francisco Delgado L{\'o}pez and Oscar Perpi{\~n}{\'a}n Lamigueiro},
   year      = {2024},
-  url       = {https://github.com/solarization/solaR2},
+  url       = {https://solarization.github.io/solaR2/},
   note      = {R package version 0.10},
 }
 #+end_src
