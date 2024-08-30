@@ -23,12 +23,6 @@ If you use =solaR2=, please cite it in any publication reporting
 results obtained with this software:
 
 #+begin_src verbatim
-Perpiñán Lamigueiro, O. (2012).
-solaR: Solar Radiation and Photovoltaic Systems with R.
-Journal of Statistical Software, 50(9), 1–32.
-https://doi.org/10.18637/jss.v050.i09
-#+end_src
-#+begin_src verbatim
 Delgado López, Francisco y Perpiñán Lamigueiro, Oscar (2024).
 solaR2: Radiation and Photovoltaic Systems with R version 2.
 R package version 0.10.
