@@ -15,7 +15,8 @@ setMethod('losses',
               eff <- with(dat, mean(1-Gefd/Gd))
             }
             result <- data.table(Shadows = shd, AoI = eff)
-            result
+            result <- melt(result, measure.vars = names(result),
+                           variable.name = 'id')
           }
           )
 
@@ -29,10 +30,13 @@ setMethod('losses',
               Nm=1/sample2Hours(object@sample)
               datI <- as.data.tableI(object, complete=TRUE)
               if (object@type=='prom'){
-                  datI[, DayOfMonth := DOM(datI)]
-                  YfDC0 <- datI[, sum(Vmpp*Impp/Pg*DayOfMonth, na.rm = TRUE),
-                                by = month(Dates)][[2]]
-                  YfDC0 <- sum(YfDC0, na.rm = TRUE)
+                  ## datI[, DayOfMonth := DOM(datI)]
+                  DayOfMonth <- DOM(datI)
+                  ## YfDC0 <- datI[, sum(Vmpp*Impp/Pg*DayOfMonth, na.rm = TRUE),
+                  ##               by = month(Dates)][[2]]
+                  YfDC0 <- datI[, sum(Vmpp*Impp, na.rm = TRUE),
+                                by = Dates][[2]]
+                  YfDC0 <- sum(YfDC0/Pg*DayOfMonth, na.rm = TRUE)
                   YfAC0 <- datI[, sum(Pdc*EffI/Pg*DayOfMonth, na.rm = TRUE),
                                 by = month(Dates)][[2]]
                   YfAC0 <- sum(YfAC0, na.rm = TRUE)
@@ -53,7 +57,9 @@ setMethod('losses',
                                     DC = DC,
                                     Inverter = inv,
                                     AC = AC)
-              result <- data.table(result0, result1)
+              result1 <- melt(result1, measure.vars = names(result1),
+                              variable.name = 'id')
+              result <- rbind(result0, result1)
               result
           }
           )
@@ -81,8 +87,9 @@ setMethod('compareLosses', 'ProdGCPV',
             }
             cdata <- mapply(FUN=foo, dots, nms, SIMPLIFY=FALSE)
             z <- do.call(rbind, cdata)
-            z <- melt(z, id.vars = 'name')
-            p <- dotplot(variable~value*100, groups=name, data=z,
+            z$id <- ordered(z$id, levels=c('Shadows', 'AoI', 'Generator',
+                                           'DC', 'Inverter', 'AC'))
+            p <- dotplot(id~value*100, groups=name, data=z,
                          par.settings=solaR.theme, type='b',
                          auto.key=list(corner=c(0.95,0.2), cex=0.7), xlab='Losses (%)')
             print(p)
