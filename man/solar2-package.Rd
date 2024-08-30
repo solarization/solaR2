@@ -128,7 +128,6 @@ xyplot-methods          Methods for function xyplot in Package 'solaR'
 }
 
 \author{
-Oscar Perpiñán Lamigueiro
-Francisco Delgado López
+Oscar Perpiñán Lamigueiro and Francisco Delgado López
 }
 
