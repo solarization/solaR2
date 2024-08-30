@@ -36,7 +36,7 @@ spatial packages for space-time analysis.
   \code{UTC}. Every ‘data.table’ object created by the package will have an
   index with this time zone as a synonym of mean solar time.}.
 
-You can check it after loading \code{solaR3} with:
+You can check it after loading \code{solaR2} with:
 
 \code{Sys.getenv('TZ')}
 
@@ -129,6 +129,6 @@ xyplot-methods          Methods for function xyplot in Package 'solaR'
 
 \author{
 Oscar Perpiñán Lamigueiro
-
-Maintainer: Oscar Perpiñán Lamigueiro <oscar.perpinan@gmail.com>
+Francisco Delgado López
 }
+
