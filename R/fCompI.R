@@ -43,10 +43,18 @@ fCompI <- function(sol, compD, G0I,
         }
     
         if (corr!='none'){
-            G0 <- getG0(G0I)
             ## Filter values: surface irradiation must be lower than
             ## extraterrestial; 
-            if (filterG0) {is.na(G0) <- (G0 > Bo0)}
+            if (filterG0) {
+                G0 <- getG0(G0I)
+                ## is.na(G0) <- (G0 > Bo0)
+                G0 <- ifelse(G0 > Bo0, 0, G0)
+                G0I <- dt2Meteo(data.table(Dates = indexD(G0I),
+                                           G0 = G0),
+                                lat = G0I@latm,
+                                source = G0I@source,
+                                type = G0I@type)
+            }
 
             ## Fd-Kt correlation
             Fd <- switch(corr,
