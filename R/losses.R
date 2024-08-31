@@ -1,4 +1,4 @@
-utils::globalVariables(c('Vmpp', 'Impp', 'Pdc', 'EffI'))
+utils::globalVariables(c('Vmpp', 'Impp', 'Pdc', 'EffI', 'V1'))
 
 setGeneric('losses', function(object){standardGeneric('losses')})
 
@@ -27,25 +27,25 @@ setMethod('losses',
               module0=object@module
               module0$CoefVT=0 ##No losses with temperature
               Pg=object@generator$Pg
-              Nm=1/sample2Hours(object@sample)
               datI <- as.data.tableI(object, complete=TRUE)
               if (object@type=='prom'){
-                  ## datI[, DayOfMonth := DOM(datI)]
-                  DayOfMonth <- DOM(datI)
-                  ## YfDC0 <- datI[, sum(Vmpp*Impp/Pg*DayOfMonth, na.rm = TRUE),
-                  ##               by = month(Dates)][[2]]
-                  YfDC0 <- datI[, sum(Vmpp*Impp, na.rm = TRUE),
-                                by = Dates][[2]]
-                  YfDC0 <- sum(YfDC0/Pg*DayOfMonth, na.rm = TRUE)
-                  YfAC0 <- datI[, sum(Pdc*EffI/Pg*DayOfMonth, na.rm = TRUE),
-                                by = month(Dates)][[2]]
-                  YfAC0 <- sum(YfAC0, na.rm = TRUE)
+                  YfDC0 <- datI[, P2E(Vmpp*Impp, object@sample),
+                                by = .(month(Dates), year(Dates))]
+                  YfDC0 <- YfDC0[, V1 := V1/Pg*DOM(YfDC0)]
+                  YfDC0 <- sum(YfDC0$V1)
+                  YfAC0 <- datI[, P2E(Pdc*EffI, object@sample),
+                                by = .(month(Dates), year(Dates))]
+                  YfAC0 <- YfAC0[, V1 := V1/Pg*DOM(YfAC0)]
+                  YfAC0 <- sum(YfAC0$V1)
               } else {
-                  datI[, DayOfMonth := DOM(datI)]
-                  YfDC0 <- datI[, sum(Vmpp*Impp/Pg*DayOfMonth, na.rm = TRUE),
-                                by = year(Dates)][[2]]
-                  YfAC0 <- datI[, sum(Pdc*EffI/Pg*DayOfMonth, na.rm = TRUE),
-                                by = year(Dates)][[2]]     
+                  YfDC0 <- datI[, P2E(Vmpp*Impp, object@sample),
+                                by = year(Dates)]
+                  YfDC0 <- YfDC0[, V1 := V1/Pg]
+                  YfDC0 <- sum(YfDC0$V1)
+                  YfAC0 <- datI[, P2E(Pdc*EffI, object@sample),
+                                by = year(Dates)]
+                  YfAC0 <- YfAC0[, V1 := V1/Pg]
+                  YfAC0 <- sum(YfAC0$V1)
               }
               gen <- mean(1-YfDC0/datY$Gefd)
               YfDC <- datY$Edc/Pg*1000
