@@ -38,7 +38,7 @@ setMethod('as.data.tableI',
               G0D <- g0@G0D[ind.rep]
               solI <- as.data.tableI(as(g0, 'Sol'), complete = TRUE)
               Ta <- g0@Ta
-              if(length(Ta[[1]]!=length(G0I[[1]]))) Ta <- Ta[ind.rep]
+              if(nrow(Ta) != nrow(G0I)) Ta <- Ta[ind.rep]
               if(complete){
                   data <- data.table(solI,
                                      G0I[, Dates := NULL],
