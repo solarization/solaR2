@@ -161,56 +161,18 @@ ComparePac <- data.table(Dates = indexI(prod2x),
 
 AngSol <- as.data.tableI(as(prodFixed, 'Sol'))
 
-ComparePac <- merge(AngSol, ComparePac)
+ComparePac <- merge(AngSol, ComparePac, by = 'Dates')
 
-ComparePac[, month := month(Dates)]
+ComparePac[, Month := as.factor(month(Dates))]
 
-xyplot(two + horiz + fixed ~ AzS|month, data = ComparePac,
+xyplot(two + horiz + fixed ~ AzS|Month, data = ComparePac,
        type = 'l',
        auto.key = list(space = 'right',
                      lines = TRUE,
                      points = FALSE),
        ylab = 'Pac')
 
-\dontrun{
-###Use of modeRad = 'aguiar' and modeRad = 'prev'
-prodAguiarFixed <- prodGCPV(lat = lat,
-                            modeRad = 'aguiar',
-                            dataRad = G0dm,
-                            keep.night = FALSE)
 
-##We want to compare systems with different effective irradiance
-##so we have to convert prodAguiarFixed to a 'G0' object.
-G0Aguiar <- as(prodAguiarFixed, 'G0')
-
-prodAguiar2x <- prodGCPV(lat = lat,
-                         modeTrk = 'two',
-                         modeRad = 'prev',
-                         dataRad = G0Aguiar)
-
-prodAguiarHoriz <- prodGCPV(lat = lat,
-                            modeTrk = 'horiz',
-                            modeRad = 'prev',
-                            dataRad = G0Aguiar)
-
-##Comparison of yearly values
-compare(prodAguiarFixed,
-        prodAguiar2x,
-        prodAguiarHoriz)
-
-compareLosses(prodAguiarFixed,
-              prodAguiar2x,
-              prodAguiarHoriz)
-
-##Compare of daily productivities of each tracking system
-compareYf <- mergesolaR(prodAguiarFixed,
-                        prodAguiar2x,
-                        prodAguiarHoriz)
-xyplot(compareYf, superpose = TRUE,
-       ylab = 'kWh/kWp',
-       main = 'Daily productivity',
-       auto.key = list(space = 'right'))
-}
 
 ###Shadows
 #Two-axis trackers
@@ -268,10 +230,12 @@ compareLosses(prodFixed, prod2x, prodHoriz, prod2xShd,
 
 compareYf2 <- mergesolaR(prodFixed, prod2x, prodHoriz, prod2xShd,
                          prodHorizShd, prodHorizBT)
-compareYf2 <- melt(compareYf2, id.vars = 'Dates')
-xyplot(value~Dates|variable, compareYf2, superpose = TRUE,
-       ylab = 'kWh/kWp', main = 'Daily productivity',
+
+xyplot(prodFixed + prod2x +prodHoriz + prod2xShd + prodHorizShd + prodHorizBT ~ Dates,
+       data = compareYf2, type = 'l', ylab = 'kWh/kWp',
+       main = 'Daily productivity',
        auto.key = list(space = 'right'))
+
 }
 
 \keyword{utilities}
