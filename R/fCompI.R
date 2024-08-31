@@ -47,8 +47,7 @@ fCompI <- function(sol, compD, G0I,
             ## extraterrestial; 
             if (filterG0) {
                 G0 <- getG0(G0I)
-                ## is.na(G0) <- (G0 > Bo0)
-                G0 <- ifelse(G0 > Bo0, 0, G0)
+                is.na(G0) <- (G0 > Bo0)
                 G0I <- dt2Meteo(data.table(Dates = indexD(G0I),
                                            G0 = G0),
                                 lat = G0I@latm,

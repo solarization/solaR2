@@ -311,9 +311,9 @@ Meteoi2Meteod <- function(G0i)
     source <- G0i@source
 
     dt0 <- getData(G0i)
-    dt <- dt0[, lapply(.SD, sum), 
-             .SDcols = names(dt0)[!names(dt0) %in% c('Dates', 'Ta')],
-             by = .(Dates = as.IDate(Dates))]
+    dt <- dt0[, lapply(.SD, sum, na.rm = TRUE),
+              .SDcols = 'G0',
+              by = .(Dates = as.IDate(Dates))]
     if('Ta' %in% names(dt0)){
         Ta <- dt0[, .(Ta = mean(Ta),
                       TempMin = min(Ta),

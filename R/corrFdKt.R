@@ -103,49 +103,46 @@ FdKtCLIMEDh <- function(sol, G0i){
 FdKtBRL <- function(sol, G0i){
     Kt <- Kti(sol, G0i)
     sample <- sol@sample
-
+    ind <- indexI(sol)
+    
     solI <- as.data.tableI(sol, complete = TRUE)
     w <- solI$w
     night <- solI$night
     AlS <- solI$AlS
+    Bo0 <- solI$Bo0
 
-    G0d <- Meteoi2Meteod(G0i)
-    ktd <- Ktd(sol, G0d)
+    G0d <- data.table(ind,
+                      G0 = getG0(G0i),
+                      Bo0 = Bo0)
+    G0d[, G0d := P2E(G0, sample), by = truncDay(ind)]
+    G0d[, Bo0d := P2E(Bo0, sample), by = truncDay(ind)]
+    ktd <- G0d[, ifelse(night, 0, G0d/Bo0d)]
     
     ##persistence    
-    pers <- persistence(sol, ktd)
+    pers <- persistence(sol, Kt)
 
-    ##indexRep for ktd and pers
-    Dates <- indexI(sol)
-    x <- as.Date(Dates)
-    ind.rep <- cumsum(c(1, diff(x) != 0))
-    ktd <- ktd[ind.rep]
-    pers <- pers[ind.rep]
-
+    
     ##fd calculation
     Fd=(1+exp(-5.38+6.63*Kt+0.006*r2h(w)-0.007*r2d(AlS)+1.75*ktd+1.31*pers))^(-1)
     
     return(data.table(Fd, Kt))
 }
 
-persistence <- function(sol, Ktd){
-    kt <- data.table(indexD(sol), Ktd)
+persistence <- function(sol, kt){
+    kt <- data.table(ind = indexI(sol), kt)
     ktNA <- na.omit(kt)
     iDay <- truncDay(ktNA[[1]])
 
     x <- rle(as.numeric(iDay))$lengths
     xLast <- cumsum(x)
+    xFirst <- xLast-x+1
 
-    lag1 <- shift(ktNA$Ktd, -1, fill = NA)
-    for (i in xLast){
-        if ((i-1) != 0){lag1[i] <- ktNA$Ktd[i-1]}
-    }
-
-    lag2 <- shift(ktNA$Ktd, 1, fill = NA)
-    for (i in xLast){
-        if ((i+1) <= length(ktNA$Ktd)){lag2[i] <- ktNA$Ktd[i+1]}
-    }
-    pers <- data.table(lag1, lag2)
-    pers[, mean := 1/2 * (lag1+lag2)]
-    pers[, mean]
+    ktNA[, lag1 := shift(kt, n = -1, type = 'lag', fill = NA)]
+    ktNA[xLast, lag1 := ktNA[xLast-1, kt]]
+    
+    ktNA[, lag2 := shift(kt, n = 1, type = 'lag', fill = NA)]
+    ktNA[xFirst, lag2 := ktNA[xFirst + 1, kt]]
+    
+    pers <- merge(kt, ktNA, by = 'ind', all = TRUE)
+    return(pers[, 1/2*(lag1+lag2)])
 }
