@@ -1,3 +1,5 @@
+utils::globalVariables(c('G0', 'lag1', 'lag2'))
+
 #### monthly Kt ####
 Ktm <- function(sol, G0dm){
     solf <- sol@solD[, .(Dates, Bo0d)]
@@ -130,7 +132,7 @@ FdKtBRL <- function(sol, G0i){
 
 persistence <- function(sol, kt){
     kt <- data.table(ind = indexI(sol), kt)
-    ktNA <- na.omit(kt)
+    ktNA <- na.omit(copy(kt))
     iDay <- truncDay(ktNA[[1]])
 
     x <- rle(as.numeric(iDay))$lengths
