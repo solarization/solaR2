@@ -114,7 +114,7 @@ setMethod('[',
               } else {
                   Gefyw <- Gefdw[, lapply(.SD/1000, sum, na.rm = TRUE),
                                  .SDcols = nms,
-                                 by = .(Dates = year)]
+                                 by = .(Dates = year(Dates))]
               }
               Gefdmw[, Dates := paste(month.abb[month], year, sep = '. ')]
               Gefdmw[, c('month', 'year') := NULL]
@@ -160,9 +160,9 @@ setMethod('[',
                                     by = .(Dates = year)]
                   prodDmw[, DayOfMonth := NULL]
               } else {
-                prodyw <- prodDw[, lapply(.SD/1000, sum, na.rm = TRUE),
-                                 .SDcols = c('Eac', 'Edc', 'Yf'),
-                                 by = .(Dates = year)]
+                  prodyw <- prodDw[, lapply(.SD/1000, sum, na.rm = TRUE),
+                                   .SDcols = c('Eac', 'Edc', 'Yf'),
+                                   by = .(Dates = year(Dates))]
             }
               prodDmw[, Dates := paste(month.abb[month], year, sep = '. ')]
               prodDmw[, c('month', 'year') := NULL]
@@ -206,7 +206,7 @@ setMethod('[',
                 prodyw <- prodDw[, .(Eac = sum(Eac, na.rm = TRUE)/1000,
                                      Qd = sum(Qd, na.rm = TRUE),
                                      Yf = sum(Yf, na.rm = TRUE)),
-                                 by = .(Dates = year)]
+                                 by = .(Dates = year(Dates))]
             }
             prodDmw[, Dates := paste(month.abb[month], year, sep = '. ')]
             prodDmw[, c('month', 'year') := NULL]
