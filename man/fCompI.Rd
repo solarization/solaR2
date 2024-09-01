@@ -22,7 +22,7 @@
   \item{G0I}{A \code{Meteo} object from \code{\link{readBDi}},
     \code{\link{dt2Meteo}} or \code{\link{zoo2Meteo}}, or a
     \code{data.table} object containing \emph{intradaily} global
-    irradiation (Wh/m²) on a horizontal surface.
+    irradiance (W/m²) on a horizontal surface.
 
     See below for \code{corr = 'none'}.}
 
