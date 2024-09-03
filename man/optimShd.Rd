@@ -29,7 +29,7 @@ optimShd(lat,
          sample = 'hour',
          keep.night = TRUE,
          sunGeometry = 'michalsky',
-         betaLim = 90, beta = abs(lat)-10, alfa = 0,
+         betaLim = 90, beta = abs(lat)-10, alpha = 0,
          iS = 2, alb = 0.2, HCPV = FALSE,
          module = list(),
          generator = list(),
@@ -68,7 +68,7 @@ N-S tracker. Its default value is \code{modeTrk = 'fixed'}}
   \item{sunGeometry}{\code{character}, method for the sun geometry
     calculations. See \code{\link{calcSol}}, \code{\link{fSolD}} and \code{\link{fSolI}}.}
 
-  \item{betaLim, beta, alfa, iS, alb, HCPV}{See \code{\link{calcGef}} for details.}
+  \item{betaLim, beta, alpha, iS, alb, HCPV}{See \code{\link{calcGef}} for details.}
 
   \item{module}{list of numeric values with information about the PV module, \describe{
       \item{\code{Vocn}}{open-circuit voltage of the module at Standard

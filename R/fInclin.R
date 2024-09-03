@@ -4,7 +4,7 @@ fInclin <- function(compI, angGen, iS = 2, alb = 0.2, horizBright = TRUE, HCPV =
     ##Arguments
     stopifnot(iS %in% 1:4)
     Beta <- angGen$Beta
-    Alfa <- angGen$Alfa
+    Alpha <- angGen$Alpha
     cosTheta <- angGen$cosTheta
   
     comp <- as.data.tableI(compI, complete=TRUE)

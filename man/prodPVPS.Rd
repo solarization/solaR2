@@ -18,7 +18,7 @@ prodPVPS(lat,
          keep.night = TRUE,
          sunGeometry = 'michalsky',
          corr, f,
-         betaLim = 90, beta = abs(lat)-10, alfa = 0,
+         betaLim = 90, beta = abs(lat)-10, alpha = 0,
          iS = 2, alb = 0.2, horizBright = TRUE, HCPV = FALSE,
          pump , H,
          Pg, converter= list(),
@@ -44,7 +44,7 @@ prodPVPS(lat,
 
     \item{corr, f}{See \code{\link{calcG0}} for details.}
 
-  \item{betaLim, beta, alfa, iS, alb, horizBright, HCPV}{See \code{\link{calcGef}} for details.}
+  \item{betaLim, beta, alpha, iS, alb, horizBright, HCPV}{See \code{\link{calcGef}} for details.}
 
   \item{pump}{A \code{list} extracted from \code{\link{pumpCoef}}}
   \item{H}{Total manometric head (m)}

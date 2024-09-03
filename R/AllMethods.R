@@ -132,7 +132,7 @@ setMethod('show',
               cat('Mode of tracking: ', object@modeTrk,'\n')
               if (object@modeTrk=='fixed'){
                   cat('    Inclination: ', object@angGen$beta, '\n')
-                  cat('    Orientation: ', object@angGen$alfa, '\n')
+                  cat('    Orientation: ', object@angGen$alpha, '\n')
               } else {
                   cat('    Inclination limit:', object@angGen$betaLim, '\n')
               }

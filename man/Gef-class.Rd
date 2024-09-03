@@ -45,9 +45,9 @@
         \item{\code{Beta}: }{numeric, inclination angle of the surface
           (radians). When \code{modeTrk='fixed'} it is the value of the
           argument \code{beta} converted from degreesto radians.}
-        \item{\code{Alfa}: }{numeric, azimuth angle of the surface
+        \item{\code{Alpha}: }{numeric, azimuth angle of the surface
           (radians). When \code{modeTrk='fixed'} it is the value of the
-          argument \code{alfa} converted from degrees to radians.}
+          argument \code{alpha} converted from degrees to radians.}
         \item{\code{cosTheta}: }{numeric, cosine of the incidence angle of the solar
           irradiance on the surface}
     }}
@@ -55,7 +55,7 @@
     \item{\code{alb}:}{numeric, albedo reflection coefficient.}
     \item{\code{modeTrk}:}{character, mode of tracking.}
     \item{\code{modeShd}:}{character, mode of shadows.}
-    \item{\code{angGen}:}{A list with the values of \code{alfa},
+    \item{\code{angGen}:}{A list with the values of \code{alpha},
       \code{beta} and \code{betaLim}.}
     \item{\code{struct}:}{A list with the dimensions of the structure. }
     \item{\code{distances}:}{A data.frame with the distances between structures.}

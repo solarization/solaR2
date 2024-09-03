@@ -26,7 +26,7 @@ fSombraEst(angGen, distances,struct)
 
 \arguments{
   \item{angGen}{A \code{data.table} object, including at least variables
-  named \code{Beta}, \code{Alfa}, \code{AzS}, \code{AlS} and \code{cosTheta}.}
+  named \code{Beta}, \code{Alpha}, \code{AzS}, \code{AlS} and \code{cosTheta}.}
 
   \item{distances}{\code{data.frame}, with a component named \code{Lew}, being the distance (meters) between horizontal NS and two-axis trackers along the East-West direction, a component named \code{Lns} for two-axis trackers or a component named \code{D} for static surfaces. An additional component named \code{H} can be included with the relative height (meters) between surfaces. When \code{modeTrk = 'two'} (or when \code{fSombra6} is used) this data.frame may have five rows. Each of these rows defines the distances of a tracker in a set of six ones.}
 

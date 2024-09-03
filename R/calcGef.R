@@ -6,7 +6,7 @@ calcGef<-function(lat,
                   keep.night=TRUE,
                   sunGeometry='michalsky',
                   corr, f,
-                  betaLim=90, beta=abs(lat)-10, alfa=0,
+                  betaLim=90, beta=abs(lat)-10, alpha=0,
                   iS=2, alb=0.2, horizBright=TRUE, HCPV=FALSE,
                   modeShd='',    #modeShd=c('area','bt','prom')
                   struct=list(), #list(W=23.11, L=9.8, Nrow=2, Ncol=8), 
@@ -31,7 +31,7 @@ calcGef<-function(lat,
     
 ### Inclined and effective radiation
     BT=("bt" %in% modeShd) 
-    angGen <- fTheta(radHoriz, beta, alfa, modeTrk, betaLim, BT, struct, distances)
+    angGen <- fTheta(radHoriz, beta, alpha, modeTrk, betaLim, BT, struct, distances)
     inclin <- fInclin(radHoriz, angGen, iS, alb, horizBright, HCPV)
     
 ### Daily, monthly and yearly values
@@ -84,7 +84,7 @@ calcGef<-function(lat,
                 alb=alb,
                 modeTrk=modeTrk,
                 modeShd=modeShd,
-                angGen=list(alfa=alfa, beta=beta, betaLim=betaLim),
+                angGen=list(alpha = alpha, beta=beta, betaLim=betaLim),
                 struct=struct,
                 distances=distances
                 )

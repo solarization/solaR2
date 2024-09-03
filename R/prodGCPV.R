@@ -8,7 +8,7 @@ prodGCPV<-function(lat,
                    keep.night=TRUE,
                    sunGeometry='michalsky',
                    corr, f,
-                   betaLim=90, beta=abs(lat)-10, alfa=0,
+                   betaLim=90, beta=abs(lat)-10, alpha=0,
                    iS=2, alb=0.2, horizBright=TRUE, HCPV=FALSE,
                    module=list(), 
                    generator=list(),
@@ -32,40 +32,40 @@ prodGCPV<-function(lat,
     
     if (modeRad!='prev'){ #We do not use a previous calculation
         
-    radEf<-calcGef(lat=lat, modeTrk=modeTrk, modeRad=modeRad,
-                   dataRad=dataRad,
-                   sample=sample, keep.night=keep.night,
-                   sunGeometry=sunGeometry,
-                   corr=corr, f=f,
-                   betaLim=betaLim, beta=beta, alfa=alfa,
-                   iS=iS, alb=alb, horizBright=horizBright, HCPV=HCPV,
-                   modeShd=modeShd, struct=struct, distances=distances, ...)
+    radEf<-calcGef(lat=lat, modeTrk = modeTrk, modeRad = modeRad,
+                   dataRad = dataRad,
+                   sample = sample, keep.night = keep.night,
+                   sunGeometry = sunGeometry,
+                   corr = corr, f = f,
+                   betaLim = betaLim, beta = beta, alpha = alpha,
+                   iS = iS, alb = alb, horizBright = horizBright, HCPV = HCPV,
+                   modeShd = modeShd, struct = struct, distances = distances, ...)
         
   } else { #We use a previous calcG0, calcGef or prodGCPV calculation.
       
       stopifnot(class(dataRad) %in% c('G0', 'Gef', 'ProdGCPV'))
       radEf <- switch(class(dataRad),
-                      G0=calcGef(lat=lat,
-                                 modeTrk=modeTrk, modeRad='prev',
-                                 dataRad=dataRad,
-                                 betaLim=betaLim, beta=beta, alfa=alfa,
-                                 iS=iS, alb=alb, horizBright=horizBright, HCPV=HCPV,
-                                 modeShd=modeShd, struct=struct, distances=distances, ...),
-                      Gef=dataRad,
-                      ProdGCPV=as(dataRad, 'Gef')
+                      G0 = calcGef(lat = lat,
+                                   modeTrk = modeTrk, modeRad = 'prev',
+                                   dataRad = dataRad,
+                                   betaLim = betaLim, beta = beta, alpha = alpha,
+                                   iS = iS, alb = alb, horizBright = horizBright, HCPV = HCPV,
+                                   modeShd = modeShd, struct = struct, distances = distances, ...),
+                      Gef = dataRad,
+                      ProdGCPV = as(dataRad, 'Gef')
                       )
   }
     
     
     ##Production
-    prodI<-fProd(radEf,module,generator,inverter,effSys)
-    module=attr(prodI, 'module')
-    generator=attr(prodI, 'generator')
-    inverter=attr(prodI, 'inverter')
-    effSys=attr(prodI, 'effSys')
+    prodI <- fProd(radEf,module,generator,inverter,effSys)
+    module = attr(prodI, 'module')
+    generator = attr(prodI, 'generator')
+    inverter = attr(prodI, 'inverter')
+    effSys = attr(prodI, 'effSys')
   
     ##Calculation of daily, monthly and annual values
-    Pg=generator$Pg #Wp
+    Pg = generator$Pg #Wp
     
     by <- radEf@sample
     nms1 <- c('Pac', 'Pdc')

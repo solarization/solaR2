@@ -1,4 +1,4 @@
-fTheta<-function(sol, beta, alfa=0, modeTrk='fixed', betaLim=90, 
+fTheta<-function(sol, beta, alpha = 0, modeTrk='fixed', betaLim=90, 
                  BT=FALSE, struct, dist)
 {
     stopifnot(modeTrk %in% c('two','horiz','fixed'))
@@ -37,11 +37,11 @@ fTheta<-function(sol, beta, alfa=0, modeTrk='fixed', betaLim=90,
                  )
     is.na(Beta) <- night
 
-    Alfa<-switch(modeTrk,
+    Alpha<-switch(modeTrk,
                  two = AzS,
-                 fixed = rep(d2r(alfa), length(w)),
+                 fixed = rep(d2r(alpha), length(w)),
                  horiz=pi/2*sign(AzS))
-    is.na(Alfa) <- night
+    is.na(Alpha) <- night
     
     cosTheta<-switch(modeTrk,
                      two=cos(Beta-(pi/2-AlS)),
@@ -55,10 +55,10 @@ fTheta<-function(sol, beta, alfa=0, modeTrk='fixed', betaLim=90,
                      },
                      fixed={
                          t1=sin(decl)*sin(lat)*cos(Beta)      
-                         t2=-signLat*sin(decl)*cos(lat)*sin(Beta)*cos(Alfa) 
+                         t2=-signLat*sin(decl)*cos(lat)*sin(Beta)*cos(Alpha) 
                          t3=cos(decl)*cos(w)*cos(lat)*cos(Beta)   
-                         t4=signLat*cos(decl)*cos(w)*sin(lat)*sin(Beta)*cos(Alfa) 
-                         t5=cos(decl)*sin(w)*sin(Alfa)*sin(Beta)   
+                         t4=signLat*cos(decl)*cos(w)*sin(lat)*sin(Beta)*cos(Alpha) 
+                         t5=cos(decl)*sin(w)*sin(Alpha)*sin(Beta)   
                          cosTheta=t1+t2+t3+t4+t5
                          rm(t1,t2,t3,t4,t5)
                          cosTheta
@@ -68,6 +68,6 @@ fTheta<-function(sol, beta, alfa=0, modeTrk='fixed', betaLim=90,
     cosTheta=cosTheta*(cosTheta>0) #when cosTheta<0, Theta is greater than 90º, and therefore the Sun is behind the panel.
     
     result <- data.table(Dates = indexI(sol),
-                         Beta, Alfa, cosTheta)
+                         Beta, Alpha, cosTheta)
     return(result)
 }

@@ -22,7 +22,7 @@ fInclin(compI, angGen, iS = 2, alb = 0.2, horizBright = TRUE, HCPV = FALSE)
 \arguments{
   \item{compI}{A \code{G0} object. It may be the result of \code{\link{calcG0}}.}
   \item{angGen}{A \code{data.table} object, including at least three variables
-  named \code{Beta}, \code{Alfa} and \code{cosTheta}. It may be the result of \code{\link{fTheta}}.}
+  named \code{Beta}, \code{Alpha} and \code{cosTheta}. It may be the result of \code{\link{fTheta}}.}
   \item{iS}{integer, degree of dirtiness. Its value must be included in the set (1,2,3,4). \code{iS = 1} corresponds to a clean surface while \code{iS = 4} is the choice for a dirty surface. Its default value is 2}
   \item{alb}{numeric, albedo reflection coefficient. Its default value
     is 0.2}

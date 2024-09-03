@@ -3,7 +3,7 @@ fSombraEst<-function(angGen, distances, struct)
     stopifnot(is.list(struct),is.data.frame(distances))
     ## I prepare starting data
     dist <- with(struct, distances/L)
-    Alfa <- angGen$Alfa
+    Alpha <- angGen$Alpha
     Beta <- angGen$Beta
     AlS <- angGen$AlS
     AzS <- angGen$AzS
@@ -12,7 +12,7 @@ fSombraEst<-function(angGen, distances, struct)
     if(is.null(h)) h <- 0
     d <- dist$D                   
     ## Calculations
-    s=cos(Beta)+cos(Alfa-AzS)*(sin(Beta)+h)/tan(AlS)
+    s=cos(Beta)+cos(Alpha-AzS)*(sin(Beta)+h)/tan(AlS)
     FC=sin(AlS)/sin(Beta+AlS)
     SombraCond=(s-d>0)
     FS=(s-d)*SombraCond*FC*(cosTheta>0)
