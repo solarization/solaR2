@@ -21,7 +21,7 @@
       \item{\code{Iscn}}{short circuit current of the module at Standard
       Test Conditions (default value 4.7 amperes.)}
       \item{\code{Vmn}}{maximum power point voltage of the module at
-      Standard Test Conditions (default value 46.08 amperes.)}
+      Standard Test Conditions (default value 46.08 volts.)}
       \item{\code{Imn}}{Maximum power current of the module at Standard
       Test Conditions (default value 4.35 amperes.)}
       \item{\code{Ncs}}{number of cells in series inside the module
