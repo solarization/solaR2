@@ -35,7 +35,7 @@ optimShd<-function(lat,
                    distances=data.table(Lew=NA, Lns=NA, D=NA))
   
     
-    ##I think network on which I will do the calculations
+    ##Create network on which I will do the calculations
     Red=switch(modeTrk,
                horiz=with(distances,
                           data.table(Lew=seq(Lew[1],Lew[2],by=res),
