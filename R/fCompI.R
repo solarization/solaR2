@@ -42,7 +42,7 @@ fCompI <- function(sol, compD, G0I,
             G0I <- dt2Meteo(dt, latg)
         }
     
-        if (corr!='none'){
+        if (corr != 'none'){
             ## Filter values: surface irradiation must be lower than
             ## extraterrestial; 
             if (filterG0) {

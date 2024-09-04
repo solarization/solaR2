@@ -5,7 +5,7 @@
 
 if(getRversion() >= "2.15.1") globalVariables(c('name', 'x', 'y', 'group.value', '..vars'))
 
-setGeneric('compare', signature='...', function(...){standardGeneric('compare')})
+setGeneric('compare', signature = '...', function(...){standardGeneric('compare')})
 
 compareFunction <- function(..., vars){
     dots <- list(...)
@@ -17,43 +17,43 @@ compareFunction <- function(..., vars){
     }
     foo <- function(object, label){
         yY <- colMeans(as.data.tableY(object, complete = TRUE)[, ..vars])
-        yY <- cbind(stack(yY), name=label)
+        yY <- cbind(stack(yY), name = label)
         yY
     }
-    cdata <- mapply(FUN=foo, dots, nms, SIMPLIFY=FALSE)
+    cdata <- mapply(FUN = foo, dots, nms, SIMPLIFY = FALSE)
     z <- do.call(rbind, cdata)
-    z$ind <- ordered(z$ind, levels=vars)
-    p <- dotplot(ind~values, groups=name, data=z, type='b',
-                 par.settings=solaR.theme)
+    z$ind <- ordered(z$ind, levels = vars)
+    p <- dotplot(ind~values, groups = name, data = z, type = 'b',
+                 par.settings = solaR.theme)
     print(p+glayer(panel.text(x[length(x)], y[length(x)],
-                              label=group.value, cex=0.7, pos=3, srt=45)))
+                              label = group.value, cex = 0.7, pos = 3, srt = 45)))
     return(z)
 }
 
 
 setMethod('compare',
-          signature='G0',
-          definition=function(...){
+          signature = 'G0',
+          definition = function(...){
             vars <- c('D0d', 'B0d', 'G0d')
-            res <- compareFunction(..., vars=vars)
+            res <- compareFunction(..., vars = vars)
             return(res)
           }
           )
 
 setMethod('compare',
-          signature='Gef',
-          definition=function(...){
+          signature = 'Gef',
+          definition = function(...){
             vars <- c('Defd', 'Befd', 'Gefd')
-            res <- compareFunction(..., vars=vars)
+            res <- compareFunction(..., vars = vars)
             return(res)
           }
           )
 
 setMethod('compare',
-          signature='ProdGCPV',
-          definition=function(...){
+          signature = 'ProdGCPV',
+          definition = function(...){
             vars <- c('G0d', 'Gefd', 'Yf')
-            res <- compareFunction(..., vars=vars)
+            res <- compareFunction(..., vars = vars)
             return(res)
           }
           )

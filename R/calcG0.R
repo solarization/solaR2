@@ -1,11 +1,11 @@
 utils::globalVariables('DayOfMonth')
 
 calcG0 <- function(lat,
-                   modeRad='prom',
+                   modeRad = 'prom',
                    dataRad,
-                   sample='hour',
-                   keep.night=TRUE,
-                   sunGeometry='michalsky',
+                   sample = 'hour',
+                   keep.night = TRUE,
+                   sunGeometry = 'michalsky',
                    corr, f, ...)
 {
     
@@ -33,15 +33,15 @@ calcG0 <- function(lat,
                      }
                          switch(class(dataRad$file)[1],
                                 character = {
-                                    bd.default=list(file = '', lat = lat)
-                                    bd=modifyList(bd.default, dataRad)
+                                    bd.default = list(file = '', lat = lat)
+                                    bd = modifyList(bd.default, dataRad)
                                     res <- do.call('readBDd', bd)
                                     res
                                 },
                                 data.table = ,
                                 data.frame = {
                                     bd.default = list(file = '', lat = lat)
-                                    bd=modifyList(bd.default, dataRad)
+                                    bd = modifyList(bd.default, dataRad)
                                     res <- do.call('dt2Meteo', bd)
                                     res
                                 },
@@ -98,8 +98,8 @@ calcG0 <- function(lat,
 ### Angulos solares y componentes de irradiancia
     if (modeRad == 'bdI') {
         sol <- calcSol(lat, sample = sample,
-                       BTi = indexD(BD), keep.night=keep.night, method=sunGeometry)
-        compI <- fCompI(sol=sol, G0I=BD, corr=corr, f=f, ...)
+                       BTi = indexD(BD), keep.night = keep.night, method = sunGeometry)
+        compI <- fCompI(sol = sol, G0I = BD, corr = corr, f = f, ...)
         compD <- compI[, lapply(.SD, P2E, sol@sample),
                        .SDcols = c('G0', 'D0', 'B0'),
                        by = truncDay(Dates)]
@@ -107,11 +107,11 @@ calcG0 <- function(lat,
         names(compD)[-1] <- paste(names(compD)[-1], 'd', sep = '')
         compD$Fd <- compD$D0d/compD$G0d
         compD$Kt <- compD$G0d/as.data.tableD(sol)$Bo0d
-    } else { ##modeRad!='bdI'
+    } else { ##modeRad! = 'bdI'
         sol <- calcSol(lat, indexD(BD), sample = sample,
                        keep.night = keep.night, method = sunGeometry)
-        compD<-fCompD(sol=sol, G0d=BD, corr=corr, f, ...)
-        compI<-fCompI(sol=sol, compD=compD, ...)
+        compD<-fCompD(sol = sol, G0d = BD, corr = corr, f, ...)
+        compI<-fCompI(sol = sol, compD = compD, ...)
     }
     
 ###Temperature
@@ -129,7 +129,7 @@ calcG0 <- function(lat,
                         }
                     }
                 },
-                bdI={
+                bdI = {
                     if ("Ta" %in% names(getData(BD))) {
                         data.table(Dates = indexI(sol),
                                    Ta = getData(BD)$Ta)
@@ -145,7 +145,7 @@ calcG0 <- function(lat,
                         warning('No temperature information available!')
                     }                  
                 },
-                aguiar={
+                aguiar = {
                     Dates<-indexI(sol)	
                     x <- as.Date(Dates)
                     ind.rep <- cumsum(c(1, diff(x) != 0))
@@ -176,14 +176,14 @@ calcG0 <- function(lat,
     setcolorder(G0dm, 'Dates')
     
 ###Result
-    result <- new(Class='G0',
+    result <- new(Class = 'G0',
                   BD,        #G0 contains "Meteo"
                   sol,       #G0 contains 'Sol'
-                  G0D=compD, #results of fCompD
-                  G0dm=G0dm, #monthly means
-                  G0y=G0y,   #yearly values
-                  G0I=compI, #results of fCompD
-                  Ta=Ta      #ambient temperature
+                  G0D = compD, #results of fCompD
+                  G0dm = G0dm, #monthly means
+                  G0y = G0y,   #yearly values
+                  G0I = compI, #results of fCompD
+                  Ta = Ta      #ambient temperature
                   )
     return(result)
 }

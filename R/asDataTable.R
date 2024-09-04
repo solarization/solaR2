@@ -3,15 +3,15 @@ utils::globalVariables(c('Fd', 'Kt'))
 ### as.data.tableI ###
 ## Extracts a data.table with intradaily data ##
 setGeneric('as.data.tableI',
-           function(object, complete=FALSE, day=FALSE){standardGeneric('as.data.tableI')})
+           function(object, complete = FALSE, day = FALSE){standardGeneric('as.data.tableI')})
 
 setMethod('as.data.tableI',
-          signature=(object='Sol'),
-          definition=function(object, complete=FALSE, day=FALSE){
+          signature = (object = 'Sol'),
+          definition = function(object, complete = FALSE, day = FALSE){
               sol <- copy(object)
               Dates <- indexI(sol)
               x <- truncDay(Dates)
-              ind.rep <- cumsum(c(1, diff(x)!=0))
+              ind.rep <- cumsum(c(1, diff(x)! = 0))
               solI <- sol@solI
               solD <- sol@solD[ind.rep]
               if(complete){
@@ -28,12 +28,12 @@ setMethod('as.data.tableI',
           )
 
 setMethod('as.data.tableI',
-          signature = (object='G0'),
-          definition = function(object, complete=FALSE, day=FALSE){
+          signature = (object = 'G0'),
+          definition = function(object, complete = FALSE, day = FALSE){
               g0 <- copy(object)
               Dates <- indexI(g0)
               x <- truncDay(Dates)
-              ind.rep <- cumsum(c(1, diff(x)!=0))
+              ind.rep <- cumsum(c(1, diff(x)! = 0))
               G0I <- g0@G0I
               G0D <- g0@G0D[ind.rep]
               solI <- as.data.tableI(as(g0, 'Sol'), complete = TRUE)
@@ -60,8 +60,8 @@ setMethod('as.data.tableI',
           )
 
 setMethod('as.data.tableI',
-          signature = (object='Gef'),
-          definition = function(object, complete=FALSE, day=FALSE){
+          signature = (object = 'Gef'),
+          definition = function(object, complete = FALSE, day = FALSE){
               gef <- copy(object)
               Dates <- indexI(gef)
               x <- truncDay(Dates)
@@ -88,8 +88,8 @@ setMethod('as.data.tableI',
           )
 
 setMethod('as.data.tableI',
-          signature = (object='ProdGCPV'),
-          definition = function(object, complete=FALSE, day=FALSE){
+          signature = (object = 'ProdGCPV'),
+          definition = function(object, complete = FALSE, day = FALSE){
               prodgcpv <- copy(object)
               Dates <- indexI(prodgcpv)
               x <- truncDay(Dates)
@@ -116,8 +116,8 @@ setMethod('as.data.tableI',
           )
 
 setMethod('as.data.tableI',
-          signature = (object='ProdPVPS'),
-          definition = function(object, complete=FALSE, day=FALSE){
+          signature = (object = 'ProdPVPS'),
+          definition = function(object, complete = FALSE, day = FALSE){
               prodpvps <- copy(object)
               Dates <- indexI(prodpvps)
               x <- truncDay(Dates)
@@ -146,11 +146,11 @@ setMethod('as.data.tableI',
 
 ### as.data.tableD ###
 ## Extracts a data.table with daily values ##
-setGeneric('as.data.tableD', function(object, complete=FALSE, day=FALSE){standardGeneric('as.data.tableD')})
+setGeneric('as.data.tableD', function(object, complete = FALSE, day = FALSE){standardGeneric('as.data.tableD')})
 
 setMethod('as.data.tableD',
-          signature=(object='Sol'),
-          definition=function(object, complete=FALSE, day=FALSE){
+          signature = (object = 'Sol'),
+          definition = function(object, complete = FALSE, day = FALSE){
               sol <- copy(object)
               solD <- sol@solD
               data <- solD
@@ -163,8 +163,8 @@ setMethod('as.data.tableD',
           )
 
 setMethod('as.data.tableD',
-          signature = (object='G0'),
-          definition = function(object, complete=FALSE, day=FALSE){
+          signature = (object = 'G0'),
+          definition = function(object, complete = FALSE, day = FALSE){
               g0 <- copy(object)
               G0D <- g0@G0D
               solD <- g0@solD
@@ -185,8 +185,8 @@ setMethod('as.data.tableD',
           })
 
 setMethod('as.data.tableD',
-          signature = (object='Gef'),
-          definition = function(object, complete=FALSE, day=FALSE){
+          signature = (object = 'Gef'),
+          definition = function(object, complete = FALSE, day = FALSE){
               gef <- copy(object)
               GefD <- gef@GefD
               G0D <- gef@G0D
@@ -208,8 +208,8 @@ setMethod('as.data.tableD',
           )
 
 setMethod('as.data.tableD',
-          signature = (object='ProdGCPV'),
-          definition = function(object, complete=FALSE, day=FALSE){
+          signature = (object = 'ProdGCPV'),
+          definition = function(object, complete = FALSE, day = FALSE){
               prodgcpv <- copy(object)
               prodD <- prodgcpv@prodD
               GefD <- prodgcpv@GefD
@@ -234,8 +234,8 @@ setMethod('as.data.tableD',
           )
 
 setMethod('as.data.tableD',
-          signature = (object='ProdPVPS'),
-          definition = function(object, complete=FALSE, day=FALSE){
+          signature = (object = 'ProdPVPS'),
+          definition = function(object, complete = FALSE, day = FALSE){
               prodpvps <- copy(object)
               prodD <- prodpvps@prodD
               GefD <- prodpvps@GefD
@@ -261,11 +261,11 @@ setMethod('as.data.tableD',
 
 ### as.data.tableM ###
 ## Extracts a data.table with monthly means ##
-setGeneric('as.data.tableM', function(object, complete = FALSE, day=FALSE){standardGeneric('as.data.tableM')})
+setGeneric('as.data.tableM', function(object, complete = FALSE, day = FALSE){standardGeneric('as.data.tableM')})
 
 setMethod('as.data.tableM',
-          signature=(object='G0'),
-          definition=function(object, complete=FALSE, day=FALSE){
+          signature = (object = 'G0'),
+          definition = function(object, complete = FALSE, day = FALSE){
               g0 <- copy(object)
               G0dm <- g0@G0dm
               data <- G0dm
@@ -279,8 +279,8 @@ setMethod('as.data.tableM',
           )
 
 setMethod('as.data.tableM',
-          signature=(object='Gef'),
-          definition = function(object, complete=FALSE, day=FALSE){
+          signature = (object = 'Gef'),
+          definition = function(object, complete = FALSE, day = FALSE){
               gef <- copy(object)
               Gefdm <- gef@Gefdm
               G0dm <- gef@G0dm
@@ -297,8 +297,8 @@ setMethod('as.data.tableM',
           )
 
 setMethod('as.data.tableM',
-          signature = (object='ProdGCPV'),
-          definition = function(object, complete=FALSE, day=FALSE){
+          signature = (object = 'ProdGCPV'),
+          definition = function(object, complete = FALSE, day = FALSE){
               prodgcpv <- copy(object)
               prodDm <- prodgcpv@prodDm
               Gefdm <- prodgcpv@Gefdm
@@ -318,8 +318,8 @@ setMethod('as.data.tableM',
           )
 
 setMethod('as.data.tableM',
-          signature = (object='ProdPVPS'),
-          definition = function(object, complete=FALSE, day=FALSE){
+          signature = (object = 'ProdPVPS'),
+          definition = function(object, complete = FALSE, day = FALSE){
               prodpvps <- copy(object)
               prodDm <- prodpvps@prodDm
               Gefdm <- prodpvps@Gefdm
@@ -340,11 +340,11 @@ setMethod('as.data.tableM',
 
 ### as.data.frameY ###
 ## Extracts a data.table with yearly values ##
-setGeneric('as.data.tableY', function(object, complete=FALSE, day=FALSE){standardGeneric('as.data.tableY')})
+setGeneric('as.data.tableY', function(object, complete = FALSE, day = FALSE){standardGeneric('as.data.tableY')})
 
 setMethod('as.data.tableY',
-          signature=(object='G0'),
-          definition=function(object, complete=FALSE, day=FALSE){
+          signature = (object = 'G0'),
+          definition = function(object, complete = FALSE, day = FALSE){
               g0 <- copy(object)
               G0y <- g0@G0y
               data <- G0y
@@ -354,8 +354,8 @@ setMethod('as.data.tableY',
           )
 
 setMethod('as.data.tableY',
-          signature = (object='Gef'),
-          definition = function(object, complete=FALSE, day=FALSE){
+          signature = (object = 'Gef'),
+          definition = function(object, complete = FALSE, day = FALSE){
               gef <- copy(object)
               Gefy <- gef@Gefy
               G0y <- gef@G0y
@@ -368,8 +368,8 @@ setMethod('as.data.tableY',
           )
 
 setMethod('as.data.tableY',
-          signature = (object='ProdGCPV'),
-          definition = function(object, complete=FALSE, day=FALSE){
+          signature = (object = 'ProdGCPV'),
+          definition = function(object, complete = FALSE, day = FALSE){
               prodgcpv <- copy(object)
               prody <- prodgcpv@prody
               Gefy <- prodgcpv@Gefy
@@ -385,15 +385,15 @@ setMethod('as.data.tableY',
           )
 
 setMethod('as.data.tableY',
-          signature = (object='ProdPVPS'),
-          definition = function(object, complete=FALSE, day=FALSE){
+          signature = (object = 'ProdPVPS'),
+          definition = function(object, complete = FALSE, day = FALSE){
               prodpvps <- copy(object)
               prody <- prodpvps@prody
               Gefy <- prodpvps@Gefy
               G0y <- prodpvps@G0y
               if(complete){
                   data <- data.table(prody,
-                                     Gefy[, Dates := NULL],
+                                     Gefy[, Dates :=  NULL],
                                      G0y[, Dates := NULL])       
               } else {data <- prody}
               if(day){data$year <- data$Dates}

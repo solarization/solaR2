@@ -1,7 +1,7 @@
-calcShd<-function(radEf,##class='Gef'
-                  modeShd='prom',      #modeShd=c('area','bt','prom')
-                  struct=list(), #list(W=23.11, L=9.8, Nrow=2, Ncol=8), 
-                  distances=data.table() #data.table(Lew=40, Lns=30, H=0)){
+calcShd<-function(radEf,##class = 'Gef'
+                  modeShd = 'prom',      #modeShd = c('area','bt','prom')
+                  struct = list(), #list(W = 23.11, L = 9.8, Nrow = 2, Ncol = 8), 
+                  distances = data.table() #data.table(Lew = 40, Lns = 30, H = 0)){
                   )
 {
     stopifnot(is.list(struct), is.data.frame(distances))
@@ -9,8 +9,8 @@ calcShd<-function(radEf,##class='Gef'
     ##For now I only use modeShd = 'area'
     ##With different modeShd (to be defined) I will be able to calculate Gef in a different way
     ##See macagnan thesis
-    prom=("prom"  %in%  modeShd)
-    prev <- as.data.tableI(radEf, complete=TRUE)
+    prom = ("prom"  %in%  modeShd)
+    prev <- as.data.tableI(radEf, complete = TRUE)
     ## shadow calculations
     modeTrk <- radEf@modeTrk
     sol <- data.table(AzS = prev$AzS,
@@ -33,7 +33,7 @@ calcShd<-function(radEf,##class='Gef'
     ##Change names
     nms <- c('Gef', 'Def', 'Dcef', 'Bef')
     nmsIndex <- which(names(gef0) %in% nms)
-    names(gef0)[nmsIndex]<- paste(names(gef0)[nmsIndex], '0', sep='')
+    names(gef0)[nmsIndex]<- paste(names(gef0)[nmsIndex], '0', sep = '')
     GefShd <- gef0
     GefShd[, c(nms, 'FS') := .(Gef, Def, Dcef, Bef, FS)]
 
@@ -76,11 +76,11 @@ calcShd<-function(radEf,##class='Gef'
     ## Object of class Gef
     ## modifying the 'modeShd', 'GefI', 'GefD', 'Gefdm', and 'Gefy' slots
     ## from the original radEf object
-    radEf@modeShd=modeShd
-    radEf@GefI=GefShd
-    radEf@GefD=GefD
-    radEf@Gefdm=Gefdm
-    radEf@Gefy=Gefy
+    radEf@modeShd = modeShd
+    radEf@GefI = GefShd
+    radEf@GefD = GefD
+    radEf@Gefdm = Gefdm
+    radEf@Gefy = Gefy
     return(radEf)
 }
   

@@ -80,7 +80,7 @@ setMethod('show', 'Meteo',
           function(object){
             cat('Object of class ', class(object),'\n\n')
             cat('Source of meteorological information: ')
-            cat(paste(object@type, object@source, sep='-'),'\n')
+            cat(paste(object@type, object@source, sep = '-'),'\n')
             cat('Latitude of source: ',
                 paste(round(getLat(object,'deg'), 1), 'degrees\n\n'))
             cat('Meteorological Data:\n')
@@ -109,7 +109,7 @@ setMethod('show',
           definition = function(object){
               cat('Object of class ', class(object),'\n\n')
               cat('Source of meteorological information: ')
-              cat(paste(object@type, object@source, sep='-'),'\n\n')
+              cat(paste(object@type, object@source, sep = '-'),'\n\n')
               cat('Latitude of source: ',
                   paste(round(getLat(as(object, 'Meteo'),'deg'), 1),
                         'degrees\n'))
@@ -130,7 +130,7 @@ setMethod('show',
               callNextMethod()
               cat('-----------------\n')
               cat('Mode of tracking: ', object@modeTrk,'\n')
-              if (object@modeTrk=='fixed'){
+              if (object@modeTrk == 'fixed'){
                   cat('    Inclination: ', object@angGen$beta, '\n')
                   cat('    Orientation: ', object@angGen$alpha, '\n')
               } else {
@@ -176,7 +176,7 @@ setMethod('show', 'Shade',
           function(object){
               cat('Object of class ', class(object),'\n\n')
               cat('Source of meteorological information: ')
-              cat(paste(object@type, object@source, sep='-'),'\n\n')
+              cat(paste(object@type, object@source, sep = '-'),'\n\n')
               cat('Latitude of source: ',
                   paste(round(getLat(as(object, 'Meteo'),'deg'), 1),
                         'degrees\n'))
@@ -198,7 +198,7 @@ setMethod('show', 'Shade',
 setMethod('as.data.table', 'Shade',
           function(x, ...){
               res <- cbind(x@distances,
-                           data.table(FS=x@FS, GRR=x@GRR, Yf=x@Yf)
+                           data.table(FS = x@FS, GRR = x@GRR, Yf = x@Yf)
                            )
             return(res)
           }

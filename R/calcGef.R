@@ -1,36 +1,36 @@
 calcGef<-function(lat,
-                  modeTrk='fixed',      #c('two','horiz','fixed')
-                  modeRad='prom', 
+                  modeTrk = 'fixed',      #c('two','horiz','fixed')
+                  modeRad = 'prom', 
                   dataRad,
-                  sample='hour',
-                  keep.night=TRUE,
-                  sunGeometry='michalsky',
+                  sample = 'hour',
+                  keep.night = TRUE,
+                  sunGeometry = 'michalsky',
                   corr, f,
-                  betaLim=90, beta=abs(lat)-10, alpha=0,
-                  iS=2, alb=0.2, horizBright=TRUE, HCPV=FALSE,
-                  modeShd='',    #modeShd=c('area','bt','prom')
-                  struct=list(), #list(W=23.11, L=9.8, Nrow=2, Ncol=8), 
-                  distances=data.table(),#data.table(Lew=40, Lns=30, H=0)){
+                  betaLim = 90, beta = abs(lat)-10, alpha = 0,
+                  iS = 2, alb = 0.2, horizBright = TRUE, HCPV = FALSE,
+                  modeShd = '',    #modeShd = c('area','bt','prom')
+                  struct = list(), #list(W = 23.11, L = 9.8, Nrow = 2, Ncol = 8), 
+                  distances = data.table(),#data.table(Lew = 40, Lns = 30, H = 0)){
                   ...){
     
     stopifnot(is.list(struct), is.data.frame(distances))
     
     if (('bt' %in% modeShd) & (modeTrk!='horiz')) {
-        modeShd[which(modeShd=='bt')]='area'
-        warning('backtracking is only implemented for modeTrk=horiz')}
+        modeShd[which(modeShd=='bt')] = 'area'
+        warning('backtracking is only implemented for modeTrk = horiz')}
     
     if (modeRad!='prev'){ #not use a prev calculation
-        radHoriz <- calcG0(lat=lat, modeRad=modeRad,
-                           dataRad=dataRad,
-                           sample=sample, keep.night=keep.night,
-                           sunGeometry=sunGeometry,
-                           corr=corr, f=f, ...)
+        radHoriz <- calcG0(lat = lat, modeRad = modeRad,
+                           dataRad = dataRad,
+                           sample = sample, keep.night = keep.night,
+                           sunGeometry = sunGeometry,
+                           corr = corr, f = f, ...)
     } else {                          #use a prev calculation
         radHoriz <- as(dataRad, 'G0') 
     } 
     
 ### Inclined and effective radiation
-    BT=("bt" %in% modeShd) 
+    BT = ("bt" %in% modeShd) 
     angGen <- fTheta(radHoriz, beta, alpha, modeTrk, betaLim, BT, struct, distances)
     inclin <- fInclin(radHoriz, angGen, iS, alb, horizBright, HCPV)
     
@@ -73,20 +73,20 @@ calcGef<-function(lat,
     setcolorder(Gefdm, 'Dates')
     
 ###Resultado antes de sombras
-    result0=new('Gef',
+    result0 = new('Gef',
                 radHoriz,                           #Gef contains 'G0'
-                Theta=angGen,
-                GefD=GefD,
-                Gefdm=Gefdm,
-                Gefy=Gefy,
-                GefI=inclin,
-                iS=iS,
-                alb=alb,
-                modeTrk=modeTrk,
-                modeShd=modeShd,
-                angGen=list(alpha = alpha, beta=beta, betaLim=betaLim),
-                struct=struct,
-                distances=distances
+                Theta = angGen,
+                GefD = GefD,
+                Gefdm = Gefdm,
+                Gefy = Gefy,
+                GefI = inclin,
+                iS = iS,
+                alb = alb,
+                modeTrk = modeTrk,
+                modeShd = modeShd,
+                angGen = list(alpha = alpha, beta = beta, betaLim = betaLim),
+                struct = struct,
+                distances = distances
                 )
 ###Shadows
     if (isTRUE(modeShd == "") ||        #If modeShd=='' there is no shadow calculation

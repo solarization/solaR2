@@ -12,13 +12,13 @@ fSombraEst<-function(angGen, distances, struct)
     if(is.null(h)) h <- 0
     d <- dist$D                   
     ## Calculations
-    s=cos(Beta)+cos(Alpha-AzS)*(sin(Beta)+h)/tan(AlS)
-    FC=sin(AlS)/sin(Beta+AlS)
-    SombraCond=(s-d>0)
-    FS=(s-d)*SombraCond*FC*(cosTheta>0)
+    s <- cos(Beta)+cos(Alpha-AzS)*(sin(Beta)+h)/tan(AlS)
+    FC <- sin(AlS)/sin(Beta+AlS)
+    SombraCond <- (s-d>0)
+    FS <- (s-d)*SombraCond*FC*(cosTheta>0)
     ## Result
-    FS=FS*(FS>0)
-    FS[FS>1]<-1
+    FS <- FS*(FS>0)
+    FS[FS>1] <- 1
     return(FS)
 }
 

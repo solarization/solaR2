@@ -1,5 +1,5 @@
 fInclin <- function(compI, angGen, iS = 2, alb = 0.2, horizBright = TRUE, HCPV = FALSE){
-    ##compI es class='G0'
+    ##compI es class = 'G0'
     
     ##Arguments
     stopifnot(iS %in% 1:4)
@@ -7,7 +7,7 @@ fInclin <- function(compI, angGen, iS = 2, alb = 0.2, horizBright = TRUE, HCPV =
     Alpha <- angGen$Alpha
     cosTheta <- angGen$cosTheta
   
-    comp <- as.data.tableI(compI, complete=TRUE)
+    comp <- as.data.tableI(compI, complete = TRUE)
     night <- comp$night
     B0 <- comp$B0
     Bo0 <- comp$Bo0
@@ -42,7 +42,7 @@ fInclin <- function(compI, angGen, iS = 2, alb = 0.2, horizBright = TRUE, HCPV =
     ##Sum of components
     G <- B + D + R
     Ref <- R * Suc[iS,1] * (1-FTr) * (!HCPV)
-    Ref[is.nan(FTr)] <- 0 #When cos(Beta)=1, FTr=NaN. Cancel Ref.
+    Ref[is.nan(FTr)] <- 0 #When cos(Beta) = 1, FTr = NaN. Cancel Ref.
     Dief <- Di * Suc[iS,1] * (1 - FTd) * (!HCPV)
     Dcef <- Dc * Suc[iS,1] * (1 - FTb) * (!HCPV)
     Def <- Dief + Dcef

@@ -119,10 +119,10 @@ iv <- function(vocn, iscn, vmn, imn,
 }
 
 fProd <- function(inclin, 
-                  module=list(), 
-                  generator=list(), 
-                  inverter=list(),
-                  effSys=list()
+                  module = list(), 
+                  generator = list(), 
+                  inverter = list(),
+                  effSys = list()
                   )
 {
     
@@ -246,7 +246,7 @@ fProd <- function(inclin,
                          EffI)
     if (class(inclin)[1] %in% 'Gef'){
         result <- resProd[, .SD,
-                          by=.(Dates = indInclin)]
+                          by = .(Dates = indInclin)]
         attr(result, 'generator') <- generator
         attr(result, 'module') <- module
         attr(result, 'inverter') <- inverter
