@@ -133,7 +133,9 @@ prodPVPS<-function(lat,
         
     }
 
-    prodDm[, Dates := paste(month.abb[month], year, sep = '. ')]
+    promDays = c(17, 14, 15, 15, 15, 10, 18, 18, 18, 19, 18, 13)
+    prodDm[, Dates := as.Date(paste(year, month,
+                                    promDays[month], sep = '-'))]
     prodDm[, c('month', 'year') := NULL]
     setcolorder(prodDm, 'Dates')
     

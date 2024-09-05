@@ -68,7 +68,9 @@ calcGef<-function(lat,
                      by = .(Dates = year(indexD(radHoriz)))]
     }
 
-    Gefdm[, Dates := paste(month.abb[month], year, sep = '. ')]
+    promDays = c(17, 14, 15, 15, 15, 10, 18, 18, 18, 19, 18, 13)
+    Gefdm[, Dates := as.Date(paste(year, month,
+                                   promDays[month], sep = '-'))]
     Gefdm[, c('month', 'year') := NULL]
     setcolorder(Gefdm, 'Dates')
     

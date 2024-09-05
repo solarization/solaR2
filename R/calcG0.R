@@ -171,7 +171,9 @@ calcG0 <- function(lat,
                      .SDcols = nms,
                      by = .(Dates = year(Dates))]
     }
-    G0dm[, Dates := paste(month.abb[month], year, sep = '. ')]
+    promDays = c(17, 14, 15, 15, 15, 10, 18, 18, 18, 19, 18, 13)
+    G0dm[, Dates := as.Date(paste(year, month,
+                                  promDays[month], sep = '-'))]
     G0dm[, c('month', 'year') := NULL]
     setcolorder(G0dm, 'Dates')
     

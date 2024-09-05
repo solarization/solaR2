@@ -69,18 +69,20 @@ calcShd<-function(radEf,##class = 'Gef'
                      by = .(Dates = year(Dates))]
     }
 
-    Gefdm[, Dates := paste(month.abb[month], year, sep = '. ')]
+    promDays = c(17, 14, 15, 15, 15, 10, 18, 18, 18, 19, 18, 13)
+    Gefdm[, Dates := as.Date(paste(year, month,
+                                   promDays[month], sep = '-'))]
     Gefdm[, c('month', 'year') := NULL]
     setcolorder(Gefdm, c('Dates', names(Gefdm)[-length(Gefdm)]))
 
     ## Object of class Gef
     ## modifying the 'modeShd', 'GefI', 'GefD', 'Gefdm', and 'Gefy' slots
     ## from the original radEf object
-    radEf@modeShd = modeShd
-    radEf@GefI = GefShd
-    radEf@GefD = GefD
-    radEf@Gefdm = Gefdm
-    radEf@Gefy = Gefy
+    radEf@modeShd <- modeShd
+    radEf@GefI <- GefShd
+    radEf@GefD <- GefD
+    radEf@Gefdm <- Gefdm
+    radEf@Gefy <- Gefy
     return(radEf)
 }
   

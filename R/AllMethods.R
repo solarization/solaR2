@@ -116,7 +116,13 @@ setMethod('show',
               cat('Latitude for calculations: ',
                   paste(round(getLat(as(object, 'Sol'), 'deg'),1), 'degrees\n\n'))
               cat('Monthly avarages:\n')
-              print(as.data.tableM(object))
+              G0dm <- copy(as.data.tableM(object))
+              G0dm[, month := month(Dates)]
+              G0dm[, year := year(Dates)]
+              G0dm[, Dates := paste(month.abb[month], year, sep = '. ')]
+              G0dm[, month := NULL]
+              G0dm[, year := NULL]
+              print(G0dm)
               cat('\nYearly values:\n')
               print(as.data.tableY(object))
           })
