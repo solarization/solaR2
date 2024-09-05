@@ -1,18 +1,18 @@
 utils::globalVariables('Qd')
 
 prodPVPS<-function(lat, 
-                   modeTrk='fixed', 
-                   modeRad='prom', 
+                   modeTrk = 'fixed', 
+                   modeRad = 'prom', 
                    dataRad,
-                   sample='hour',
-                   keep.night=TRUE,
-                   sunGeometry='michalsky',
+                   sample = 'hour',
+                   keep.night = TRUE,
+                   sunGeometry = 'michalsky',
                    corr, f,
-                   betaLim=90, beta=abs(lat)-10, alpha = 0,
-                   iS=2, alb=0.2, horizBright=TRUE, HCPV=FALSE,
+                   betaLim = 90, beta = abs(lat)-10, alpha  =  0,
+                   iS = 2, alb = 0.2, horizBright = TRUE, HCPV = FALSE,
                    pump , H, 
-                   Pg, converter= list(), #Pnom=Pg, Ki=c(0.01,0.025,0.05)),
-                   effSys=list(),
+                   Pg, converter =  list(), 
+                   effSys = list(),
                    ...){
     
     stopifnot(is.list(converter),
@@ -20,77 +20,77 @@ prodPVPS<-function(lat,
     
     if (modeRad!='prev'){ #We do not use a previous calculation
         
-        radEf<-calcGef(lat=lat, modeTrk=modeTrk, modeRad=modeRad,
-                       dataRad=dataRad,
-                       sample=sample, keep.night=keep.night,
-                       sunGeometry=sunGeometry,
-                       corr=corr, f=f,
-                       betaLim=betaLim, beta=beta, alpha = alpha,
-                       iS=iS, alb=alb, horizBright=horizBright, HCPV=HCPV,
-                   modeShd='', ...)
+        radEf <- calcGef(lat = lat, modeTrk = modeTrk, modeRad = modeRad,
+                         dataRad = dataRad,
+                         sample = sample, keep.night = keep.night,
+                         sunGeometry = sunGeometry,
+                         corr = corr, f = f,
+                         betaLim = betaLim, beta = beta, alpha = alpha,
+                         iS = iS, alb = alb, horizBright = horizBright, HCPV = HCPV,
+                         modeShd = '', ...)
         
     } else { #We use a previous calculation of calcG0, calcGef or prodPVPS
         stopifnot(class(dataRad) %in% c('G0', 'Gef', 'ProdPVPS'))
         radEf <- switch(class(dataRad),
-                        G0=calcGef(lat=lat, 
-                                   modeTrk=modeTrk, modeRad='prev',
-                      dataRad=dataRad,
-                      betaLim=betaLim, beta=beta, alpha = alpha,
-                      iS=iS, alb=alb, horizBright=horizBright, HCPV=HCPV,
-                      modeShd='', ...),
-                      Gef=dataRad,
-                      ProdPVPS=as(dataRad, 'Gef')
-                      )
+                        G0 = calcGef(lat = lat, 
+                                     modeTrk = modeTrk, modeRad = 'prev',
+                                     dataRad = dataRad,
+                                     betaLim = betaLim, beta = beta, alpha = alpha,
+                                     iS = iS, alb = alb, horizBright = horizBright,
+                                     HCPV = HCPV, modeShd = '', ...),
+                        Gef = dataRad,
+                        ProdPVPS = as(dataRad, 'Gef')
+                        )
     }
     
 ###Electric production
-    converter.default=list(Ki = c(0.01,0.025,0.05), Pnom=Pg)
-    converter=modifyList(converter.default, converter)
+    converter.default <- list(Ki = c(0.01,0.025,0.05), Pnom = Pg)
+    converter <- modifyList(converter.default, converter)
     
-    effSys.default=list(ModQual=3,ModDisp=2,OhmDC=1.5,OhmAC=1.5,MPP=1,TrafoMT=1,Disp=0.5)
-    effSys=modifyList(effSys.default, effSys)
+    effSys.default <- list(ModQual = 3,ModDisp = 2,OhmDC = 1.5,OhmAC = 1.5,MPP = 1,TrafoMT = 1,Disp = 0.5)
+    effSys <- modifyList(effSys.default, effSys)
     
-    TONC=47
-    Ct=(TONC-20)/800
-    lambda=0.0045
-    Gef=radEf@GefI$Gef
-    night=radEf@solI$night
-    Ta=radEf@Ta$Ta
+    TONC <- 47
+    Ct <- (TONC-20)/800
+    lambda <- 0.0045
+    Gef <- radEf@GefI$Gef
+    night <- radEf@solI$night
+    Ta <- radEf@Ta$Ta
     
-    Tc=Ta+Ct*Gef
-    Pdc=Pg*Gef/1000*(1-lambda*(Tc-25))
-    Pdc[is.na(Pdc)]=0 #Necessary for the functions provided by fPump
-    PdcN=with(effSys,
-              Pdc/converter$Pnom*(1-ModQual/100)*(1-ModDisp/100)*(1-OhmDC/100)
-              )
-    PacN=with(converter,{
-        A=Ki[3]
-        B=Ki[2]+1
-        C=Ki[1]-(PdcN)
+    Tc <- Ta+Ct*Gef
+    Pdc <- Pg*Gef/1000*(1-lambda*(Tc-25))
+    Pdc[is.na(Pdc)] <- 0 #Necessary for the functions provided by fPump
+    PdcN <- with(effSys,
+                 Pdc/converter$Pnom*(1-ModQual/100)*(1-ModDisp/100)*(1-OhmDC/100)
+                 )
+    PacN <- with(converter,{
+        A <- Ki[3]
+        B <- Ki[2]+1
+        C <- Ki[1]-(PdcN)
         ##AC power normalized to the inverter
-        result=(-B+sqrt(B^2-4*A*C))/(2*A)
+        result <- (-B+sqrt(B^2-4*A*C))/(2*A)
     })
     PacN[PacN<0]<-0
     
-    Pac=with(converter,
-             PacN*Pnom*(1-effSys$OhmAC/100))
-    Pdc=PdcN*converter$Pnom*(Pac>0)
-	
+    Pac <- with(converter,
+                PacN*Pnom*(1-effSys$OhmAC/100))
+    Pdc <- PdcN*converter$Pnom*(Pac>0)
+    
     
 ###Pump
-    fun<-fPump(pump=pump, H=H)
+    fun<-fPump(pump = pump, H = H)
     ##I limit power to the pump operating range.
-    rango=with(fun,Pac>=lim[1] & Pac<=lim[2]) 
+    rango <- with(fun,Pac>=lim[1] & Pac<=lim[2]) 
     Pac[!rango]<-0
     Pdc[!rango]<-0
-    prodI=data.table(Pac=Pac,Pdc=Pdc,Q=0,Pb=0,Ph=0,f=0)	
-    prodI=within(prodI,{
+    prodI <- data.table(Pac = Pac,Pdc = Pdc,Q = 0,Pb = 0,Ph = 0,f = 0)	
+    prodI <- within(prodI,{
         Q[rango]<-fun$fQ(Pac[rango])
         Pb[rango]<-fun$fPb(Pac[rango])
         Ph[rango]<-fun$fPh(Pac[rango])
         f[rango]<-fun$fFreq(Pac[rango])
-        etam=Pb/Pac
-        etab=Ph/Pb
+        etam <- Pb/Pac
+        etab <- Ph/Pb
     })
     
     prodI[night,]<-NA
@@ -139,15 +139,15 @@ prodPVPS<-function(lat,
     
     result <- new('ProdPVPS',
                   radEf,                  #contains 'Gef'
-                  prodD=prodD,
-                  prodDm=prodDm,
-                  prody=prody,
-                  prodI=prodI,
-                  pump=pump,
-                  H=H,
-                  Pg=Pg,
-                  converter=converter,
-                  effSys=effSys
-                )
+                  prodD = prodD,
+                  prodDm = prodDm,
+                  prody = prody,
+                  prodI = prodI,
+                  pump = pump,
+                  H = H,
+                  Pg = Pg,
+                  converter = converter,
+                  effSys = effSys
+                  )
 }
-	
+

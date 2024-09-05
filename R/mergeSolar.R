@@ -1,4 +1,4 @@
-setGeneric('mergesolaR', signature='...', function(...){standardGeneric('mergesolaR')})
+setGeneric('mergesolaR', signature = '...', function(...){standardGeneric('mergesolaR')})
 
 fooMeteo <- function(object, var){yY <- getData(object)[, .SD,
                                                         by = Dates,
@@ -17,7 +17,7 @@ mergeFunction <- function(..., foo, var){
     } else { 
         nms <- as.character(nms0[-1])
     }
-    cdata <- sapply(dots, FUN=foo, var, simplify=FALSE)
+    cdata <- sapply(dots, FUN = foo, var, simplify = FALSE)
     z <- cdata[[1]]
     for (i in 2:length(cdata)){
         z <- merge(z, cdata[[i]], by = 'Dates', suffixes = c("", paste0('.', i)))
@@ -27,41 +27,41 @@ mergeFunction <- function(..., foo, var){
 }
 
 setMethod('mergesolaR',
-          signature='Meteo',
-          definition=function(...){
-            res <- mergeFunction(..., foo=fooMeteo, var='G0')
+          signature = 'Meteo',
+          definition = function(...){
+            res <- mergeFunction(..., foo = fooMeteo, var = 'G0')
             res
           }
           )
 
 setMethod('mergesolaR',
-          signature='G0',
-          definition=function(...){
-            res <- mergeFunction(..., foo=fooG0, var='G0d')
+          signature = 'G0',
+          definition = function(...){
+            res <- mergeFunction(..., foo = fooG0, var = 'G0d')
             res
           }
           )
 
 setMethod('mergesolaR',
-          signature='Gef',
-          definition=function(...){
-            res <- mergeFunction(..., foo=fooG0, var='Gefd')
+          signature = 'Gef',
+          definition = function(...){
+            res <- mergeFunction(..., foo = fooG0, var = 'Gefd')
             res
           }
           )
 
 setMethod('mergesolaR',
-          signature='ProdGCPV',
-          definition=function(...){
-            res <- mergeFunction(..., foo=fooG0, var='Yf')
+          signature = 'ProdGCPV',
+          definition = function(...){
+            res <- mergeFunction(..., foo = fooG0, var = 'Yf')
             res
           }
           )
 
 setMethod('mergesolaR',
-          signature='ProdPVPS',
-          definition=function(...){
-            res <- mergeFunction(..., foo=fooG0, var='Yf')
+          signature = 'ProdPVPS',
+          definition = function(...){
+            res <- mergeFunction(..., foo = fooG0, var = 'Yf')
             res
           }
           )

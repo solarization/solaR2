@@ -1,27 +1,27 @@
 #### Angles ####
 #degrees to radians
-d2r<-function(x){x*pi/180}
+d2r <- function(x){x*pi/180}
 
 #radians to degrees
-r2d<-function(x){x*180/pi}
+r2d <- function(x){x*180/pi}
 
 #hours to radians
-h2r<-function(x){x*pi/12}
+h2r <- function(x){x*pi/12}
 
 #hours to degrees
-h2d<-function(x){x*180/12}
+h2d <- function(x){x*180/12}
 
 #radians to hours
-r2h<-function(x){x*12/pi}
+r2h <- function(x){x*12/pi}
 
 #degrees to hours
-d2h<-function(x){x*12/180}
+d2h <- function(x){x*12/180}
 
 #radians to seconds
-r2sec<-function(x){x*12/pi*3600}
+r2sec <- function(x){x*12/pi*3600}
 
 #radians to minutes
-r2min<-function(x){x*12/pi*60}
+r2min <- function(x){x*12/pi*60}
 
 #### Time ###
 
@@ -145,20 +145,20 @@ lonHH<-function(tz)
 
 local2Solar <- function(x, lon=NULL){	
   tz=attr(x, 'tzone')
-  if (tz=='' || is.null(tz)) {tz='UTC'}
+  if (tz == '' || is.null(tz)) {tz='UTC'}
   ##Daylight savings time
-  AO=3600*dst(x)
-  AOneg=(AO<0)
+  AO <- 3600*dst(x)
+  AOneg <- (AO<0)
   if (any(AOneg)) {
-    AO[AOneg]=0
+    AO[AOneg] <- 0
     warning('Some Daylight Savings Time unknown. Set to zero.')
   }
   ##Difference between local longitude and time zone longitude LH
-  LH=lonHH(tz)
+  LH <- lonHH(tz)
   if (is.null(lon)) 
-    {deltaL=0
+    {deltaL <- 0
    } else
-  {deltaL=d2r(lon)-LH
+  {deltaL <- d2r(lon)-LH
  }
   ##Local time corrected to UTC
   tt <- format(x, tz=tz)
