@@ -11,7 +11,7 @@ setMethod('as.data.tableI',
               sol <- copy(object)
               Dates <- indexI(sol)
               x <- truncDay(Dates)
-              ind.rep <- cumsum(c(1, diff(x)! = 0))
+              ind.rep <- cumsum(c(1, diff(x) != 0))
               solI <- sol@solI
               solD <- sol@solD[ind.rep]
               if(complete){
@@ -33,7 +33,7 @@ setMethod('as.data.tableI',
               g0 <- copy(object)
               Dates <- indexI(g0)
               x <- truncDay(Dates)
-              ind.rep <- cumsum(c(1, diff(x)! = 0))
+              ind.rep <- cumsum(c(1, diff(x) != 0))
               G0I <- g0@G0I
               G0D <- g0@G0D[ind.rep]
               solI <- as.data.tableI(as(g0, 'Sol'), complete = TRUE)
@@ -65,7 +65,7 @@ setMethod('as.data.tableI',
               gef <- copy(object)
               Dates <- indexI(gef)
               x <- truncDay(Dates)
-              ind.rep <- cumsum(c(1, diff(x)!=0))
+              ind.rep <- cumsum(c(1, diff(x) != 0))
               GefI <- gef@GefI
               GefD <- gef@GefD[ind.rep]
               G0I <- as.data.tableI(as(gef, 'G0'), complete = TRUE)
@@ -93,7 +93,7 @@ setMethod('as.data.tableI',
               prodgcpv <- copy(object)
               Dates <- indexI(prodgcpv)
               x <- truncDay(Dates)
-              ind.rep <- cumsum(c(1, diff(x)!=0))
+              ind.rep <- cumsum(c(1, diff(x) != 0))
               prodI <- prodgcpv@prodI
               prodD <- prodgcpv@prodD[ind.rep]
               Theta <- prodgcpv@Theta
@@ -121,7 +121,7 @@ setMethod('as.data.tableI',
               prodpvps <- copy(object)
               Dates <- indexI(prodpvps)
               x <- truncDay(Dates)
-              ind.rep <- cumsum(c(1, diff(x)!=0))
+              ind.rep <- cumsum(c(1, diff(x) != 0))
               prodI <- prodpvps@prodI
               prodD <- prodpvps@prodD[ind.rep]
               Theta <- prodpvps@Theta
