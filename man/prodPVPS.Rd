@@ -91,5 +91,4 @@ prodPVPS(lat,
 
 \seealso{\code{\link{NmgPVPS}}, \code{\link{fPump}}, \code{\link{pumpCoef}}}
 
-\keyword{utilities}
 \keyword{constructors}

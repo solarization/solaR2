@@ -175,6 +175,5 @@ print(g03)
 xyplot(Fd ~ Kt, data = g03, pch = 19, alpha = 0.3)
 }
 
-\keyword{utilities}
 \keyword{constructors}
 

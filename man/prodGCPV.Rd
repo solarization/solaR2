@@ -238,5 +238,4 @@ xyplot(prodFixed + prod2x +prodHoriz + prod2xShd + prodHorizShd + prodHorizBT ~ 
 
 }
 
-\keyword{utilities}
 \keyword{constructors}

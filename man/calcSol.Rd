@@ -84,6 +84,5 @@ solCooper = calcSol(lat, BTd[100], method = 'cooper')
 print(as.data.tableD(solCooper))
 }
 
-\keyword{utilities}
 \keyword{constructors}
 

@@ -235,5 +235,4 @@ Shd12Fixed <- optimShd(lat = lat, dataRad = prom,
 shadeplot(Shd12Fixed)
 }
 
-\keyword{utilities}
 \keyword{constructors}

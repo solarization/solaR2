@@ -41,5 +41,5 @@ print(BD)
 getData(BD)
 xyplot(BD)
 }
-\keyword{utilities}
+
 \keyword{constructors}

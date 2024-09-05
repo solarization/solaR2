@@ -108,5 +108,5 @@ getData(bd)
 
 xyplot(bd)
 }
-\keyword{utilities}
+
 \keyword{constructors}

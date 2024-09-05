@@ -91,4 +91,4 @@ calcShd(radEf,
   \code{\link{fInclin}}, \code{\link{calcShd}}.  }
 
 
-\keyword{utilities} \keyword{constructors}
+\keyword{constructors}

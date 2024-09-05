@@ -138,5 +138,4 @@ gefShd <- calcGef(lat = lat, modeRad = 'prom',
 print(gefShd)
 }
 
-\keyword{utilities}
 \keyword{constructors}

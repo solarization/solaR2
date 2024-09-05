@@ -57,3 +57,5 @@ SIAR = readSIAR(Lon = -3.603, Lat = 40.033,
 SIAR
 
 }
+
+\keyword{constructors}
