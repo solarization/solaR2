@@ -5,7 +5,7 @@ Version: 0.10
 Encoding: UTF-8
 Authors@R: c(person("Oscar", "Perpiñán-Lamigueiro", email="oscar.perpinan@upm.es", role=c("cre", "aut"), comment = c(ORCID = "0000-0002-4134-7196")), person("Francisco", "Delgado-López", email="f.delgadol@alumnos.upm.es", role="aut"))
 Description: Calculation methods of solar radiation and performance of photovoltaic systems from daily and intradaily irradiation data sources.
-URL: https://oscarperpinan.github.io/solar/
+URL: https://solarization.github.io/solaR2/
 BugReports: https://github.com/oscarperpinan/solar/issues
 License: GPL-3
 LazyData: yes
