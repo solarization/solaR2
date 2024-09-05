@@ -17,36 +17,36 @@
 
   \item{module}{list of numeric values with information about the PV module, \describe{
       \item{\code{Vocn}}{open-circuit voltage of the module at Standard
-      Test Conditions (default value 57.6 volts.)}
+      Test Conditions (default value 51.91 volts.)}
       \item{\code{Iscn}}{short circuit current of the module at Standard
-      Test Conditions (default value 4.7 amperes.)}
+      Test Conditions (default value 14.07 amperes.)}
       \item{\code{Vmn}}{maximum power point voltage of the module at
-      Standard Test Conditions (default value 46.08 volts.)}
+      Standard Test Conditions (default value 43.76 volts.)}
       \item{\code{Imn}}{Maximum power current of the module at Standard
-      Test Conditions (default value 4.35 amperes.)}
+      Test Conditions (default value 13.03 amperes.)}
       \item{\code{Ncs}}{number of cells in series inside the module
-      (default value 96)}
-      \item{\code{Ncp}}{number of cells in parallel inside the module (default value 1)}
+      (default value 24)}
+      \item{\code{Ncp}}{number of cells in parallel inside the module (default value 6)}
       \item{\code{CoefVT}}{coefficient of decrement of voltage of each
-      cell with the temperature (default value 0.0023 volts per celsius degree)}
+      cell with the temperature (default value 0.1194 volts per celsius degree)}
       \item{\code{TONC}}{nominal operational  cell temperature, celsius
-      degree (default value 47).}
+      degree (default value 20).}
   }}
   \item{generator}{list of numeric values with information about the generator, \describe{
-      \item{\code{Nms}}{number of modules in series (default value 12)}
-      \item{\code{Nmp}}{number of modules in parallel (default value 11)}
+      \item{\code{Nms}}{number of modules in series (default value 22)}
+      \item{\code{Nmp}}{number of modules in parallel (default value 130)}
   }}
   \item{inverter}{list of numeric values with information about the DC/AC inverter, \describe{
       \item{\code{Ki}}{vector of three values, coefficients of the
       efficiency curve of the inverter (default c(0.01, 0.025, 0.05)),
       or a matrix of nine values (3x3) if there is dependence with the
       voltage (see references).}
-      \item{\code{Pinv}}{nominal inverter power (W) (default value 25000
+      \item{\code{Pinv}}{nominal inverter power (W) (default value 1500
       watts.)}
       \item{\code{Vmin, Vmax}}{ minimum and maximum voltages of the MPP
-      range of the inverter (default values 420 and 750 volts)}
+      range of the inverter (default values 822 and 1300 volts)}
       \item{\code{Gumb}}{ minimum irradiance for the inverter to start
-      (W/m²) (default value 20 W/m²)}
+      (W/m²) (default value 200 W/m²)}
   }}
   \item{effSys}{list of numeric values with information about the system losses, \describe{
       \item{\code{ModQual}}{average tolerance of the set of modules (\%), default value is 3}

@@ -5,8 +5,25 @@ Ta <- c(10, 14.1, 15.6, 17.2, 19.3, 21.2, 28.4, 29.9, 24.3, 18.2,
 17.2, 15.2)
 prom <- list(G0dm = G0dm, Ta = Ta, year = 2023)
 
+module <- list(Vocn = 57.6,
+               Iscn = 4.7,
+               Vmn = 46.08,
+               Imn = 4.35,
+               Ncs = 96,
+               Ncp = 1,
+               CoefVT = 0.0023,
+               TONC = 47)
+generator <- list(Nms = 12, Nmp = 11)
+inverter <- list(Pinv = 25000,
+                  Vmin = 420,
+                  Vmax = 750,
+                  Gumb = 20)
+
 prod <- prodGCPV(lat = lat, dataRad = prom,
-                      keep.night = FALSE)
+                 keep.night = FALSE,
+                 module = module,
+                 inverter = inverter,
+                 generator = generator)
 prodI <- as.data.tableI(prod)
 prodD <- as.data.tableD(prod)
 prodM <- as.data.tableM(prod)
@@ -31,8 +48,11 @@ test_that('Performance of a fixed grid connected PV system', {
 })
 
 prod2x <- prodGCPV(lat = lat, dataRad = prom,
-modeTrk = 'two',
-keep.night = FALSE)
+                   modeTrk = 'two',
+                   keep.night = FALSE,
+                   module = module,
+                   generator = generator,
+                   inverter = inverter)
 prodI <- as.data.tableI(prod2x)
 prodD <- as.data.tableD(prod2x)
 prodM <- as.data.tableM(prod2x)
@@ -57,8 +77,11 @@ test_that('Performance of a two tracked grid connected PV system', {
 })
 
 prodHoriz <- prodGCPV(lat = lat,dataRad = prom,
-modeTrk = 'horiz',
-keep.night = FALSE)
+                      modeTrk = 'horiz',
+                      keep.night = FALSE,
+                      module = module,
+                      generator = generator,
+                      inverter = inverter)
 prodI <- as.data.tableI(prodHoriz)
 prodD <- as.data.tableD(prodHoriz)
 prodM <- as.data.tableM(prodHoriz)

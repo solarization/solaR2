@@ -143,21 +143,21 @@ fProd <- function(inclin,
     }
 
     ## Module, generator, and inverter parameters
-    module.default <- list(Vocn = 57.6,
-                           Iscn = 4.7,
-                           Vmn = 46.08,
-                           Imn = 4.35,
-                           Ncs = 96,
-                           Ncp = 1,
-                           CoefVT = 0.0023,
-                           TONC = 47)
+    module.default <- list(Vocn = 51.91,
+                           Iscn = 14.07,
+                           Vmn = 43.76,
+                           Imn = 13.03,
+                           Ncs = 24,
+                           Ncp = 6,
+                           CoefVT = 0.1194,
+                           TONC = 20)
     module <- modifyList(module.default, module)
     ## Make these parameters visible because they will be used often.
     Ncs <- module$Ncs
     Ncp <- module$Ncp
     
-    generator.default <- list(Nms = 12,
-                              Nmp = 11)
+    generator.default <- list(Nms = 22,
+                              Nmp = 130)
     generator <- modifyList(generator.default, generator)
     generator$Pg <- (module$Vmn * generator$Nms) *
         (module$Imn * generator$Nmp)
@@ -165,10 +165,10 @@ fProd <- function(inclin,
     Nmp <- generator$Nmp
 
     inverter.default <- list(Ki = c(0.01,0.025,0.05),
-                             Pinv = 25000,
-                             Vmin = 420,
-                             Vmax = 750,
-                             Gumb = 20)
+                             Pinv = 1500,
+                             Vmin = 822,
+                             Vmax = 1300,
+                             Gumb = 200)
     inverter <- modifyList(inverter.default, inverter)
     Pinv <- inverter$Pinv
     
