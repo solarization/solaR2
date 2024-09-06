@@ -28,9 +28,9 @@
       (default value 24)}
       \item{\code{Ncp}}{number of cells in parallel inside the module (default value 6)}
       \item{\code{CoefVT}}{coefficient of decrement of voltage of each
-      cell with the temperature (default value 0.1194 volts per celsius degree)}
+      cell with the temperature (default value 0.0049 volts per celsius degree)}
       \item{\code{TONC}}{nominal operational  cell temperature, celsius
-      degree (default value 20).}
+      degree (default value 45).}
   }}
   \item{generator}{list of numeric values with information about the generator, \describe{
       \item{\code{Nms}}{number of modules in series (default value 22)}
@@ -38,15 +38,15 @@
   }}
   \item{inverter}{list of numeric values with information about the DC/AC inverter, \describe{
       \item{\code{Ki}}{vector of three values, coefficients of the
-      efficiency curve of the inverter (default c(0.01, 0.025, 0.05)),
+      efficiency curve of the inverter (default c(0.002, -0.002, 0.015)),
       or a matrix of nine values (3x3) if there is dependence with the
       voltage (see references).}
-      \item{\code{Pinv}}{nominal inverter power (W) (default value 1500
+    \item{\code{Pinv}}{nominal inverter power (W) (default value 1.5e6
       watts.)}
       \item{\code{Vmin, Vmax}}{ minimum and maximum voltages of the MPP
       range of the inverter (default values 822 and 1300 volts)}
       \item{\code{Gumb}}{ minimum irradiance for the inverter to start
-      (W/m²) (default value 200 W/m²)}
+      (W/m²) (default value 20 W/m²)}
   }}
   \item{effSys}{list of numeric values with information about the system losses, \describe{
       \item{\code{ModQual}}{average tolerance of the set of modules (\%), default value is 3}

@@ -14,10 +14,11 @@ module <- list(Vocn = 57.6,
                CoefVT = 0.0023,
                TONC = 47)
 generator <- list(Nms = 12, Nmp = 11)
-inverter <- list(Pinv = 25000,
-                  Vmin = 420,
-                  Vmax = 750,
-                  Gumb = 20)
+inverter <- list(Ki = c(0.01, 0.025, 0.05),
+                 Pinv = 25000,
+                 Vmin = 420,
+                 Vmax = 750,
+                 Gumb = 20)
 
 prod <- prodGCPV(lat = lat, dataRad = prom,
                  keep.night = FALSE,
