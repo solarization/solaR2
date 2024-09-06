@@ -38,7 +38,7 @@
   }}
   \item{inverter}{list of numeric values with information about the DC/AC inverter, \describe{
       \item{\code{Ki}}{vector of three values, coefficients of the
-      efficiency curve of the inverter (default c(0.002, -0.002, 0.015)),
+      efficiency curve of the inverter (default c(0.002, 0.005, 0.008)),
       or a matrix of nine values (3x3) if there is dependence with the
       voltage (see references).}
     \item{\code{Pinv}}{nominal inverter power (W) (default value 1.5e6

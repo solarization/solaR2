@@ -164,7 +164,7 @@ fProd <- function(inclin,
     Nms <- generator$Nms
     Nmp <- generator$Nmp
 
-    inverter.default <- list(Ki = c(0.002, -0.002, 0.015),
+    inverter.default <- list(Ki = c(0.002, 0.005, 0.008),
                              Pinv = 1.5e6,
                              Vmin = 822,
                              Vmax = 1300,
