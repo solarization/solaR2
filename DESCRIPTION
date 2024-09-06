@@ -3,7 +3,7 @@ Type: Package
 Title: Radiation and Photovoltaic Systems
 Version: 0.10
 Encoding: UTF-8
-Authors@R: c(person("Oscar", "Perpiñán-Lamigueiro", email="oscar.perpinan@upm.es", role=c("cre", "aut"), comment = c(ORCID = "0000-0002-4134-7196")), person("Francisco", "Delgado-López", email="f.delgadol@alumnos.upm.es", role="aut"))
+Authors@R: c(person("Oscar", "Perpiñán-Lamigueiro", email="oscar.perpinan@upm.es", role="aut", comment = c(ORCID = "0000-0002-4134-7196")), person("Francisco", "Delgado-López", email="f.delgadol@alumnos.upm.es", role=c("aut", "cre")))
 Description: Calculation methods of solar radiation and performance of photovoltaic systems from daily and intradaily irradiation data sources.
 URL: https://solarization.github.io/solaR2/
 BugReports: https://github.com/solarization/solaR2/issues
