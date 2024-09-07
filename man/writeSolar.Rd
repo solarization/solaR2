@@ -66,7 +66,7 @@
 
 \seealso{
   \code{\link{write.table}},
-  \code{fread},
+  \code{\link[data.table]{fread}},
   \code{\link{as.data.tableI}},
   \code{\link{as.data.tableD}},
   \code{\link{as.data.tableM}},

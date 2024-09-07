@@ -54,7 +54,7 @@ zoo2Meteo(file, lat, source = '')
     \code{TempMin} with daily values of maximum and minimum ambient
     temperature, respectively (see \code{\link{fTemp}} for details).}
 
-  \item{header, fill, dec, sep}{See \code{fread}}
+  \item{header, fill, dec, sep}{See \code{\link[data.table]{fread}}}
   
   \item{format}{character string with the format of the dates or time
     index.
@@ -81,7 +81,7 @@ zoo2Meteo(file, lat, source = '')
     \code{Meteo} object does not include the columns that are not
     important for the rest of operations}
   
-  \item{...}{Arguments for \code{fread}}
+  \item{...}{Arguments for \code{\link[data.table]{fread}}}
 
   \item{type}{character, type of the data in \code{dt2Meteo}. To choose between
     \code{'prom'}, \code{'bd'} and \code{'bdI'}. If it is not provided,
@@ -95,7 +95,7 @@ zoo2Meteo(file, lat, source = '')
   Oscar Perpiñán Lamigueiro.
 }
 \seealso{
-  \code{fread},
+  \code{\link[data.table]{fread}},
   \code{\link{readG0dm}}.
 }
 \examples{
