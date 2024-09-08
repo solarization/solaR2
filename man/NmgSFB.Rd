@@ -49,7 +49,8 @@ NmgPVPS(pump, Pg, H, Gd, Ta = 30,
   }
 }
 \author{
-  Oscar Perpiñán Lamigueiro.
+  Oscar Perpiñán Lamigueiro,
+  Francisco Delgado López.
 }
 
 \seealso{\code{\link{fPump}}, \code{\link{prodPVPS}}, \code{\link{pumpCoef}}}

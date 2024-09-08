@@ -52,5 +52,6 @@ sample2Hours('30 m')
 by1 <- char2diff('10 min')
 sample2Hours(by1)
 }
-\author{Oscar Perpiñán Lamigueiro}
+\author{Oscar Perpiñán Lamigueiro,
+  Francisco Delgado López.}
 \keyword{utilities}

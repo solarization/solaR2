@@ -15,4 +15,5 @@
       conventional plot for horizontal tracking and fixed systems.}
 }}
 \keyword{methods}
-\author{Oscar Perpiñán Lamigueiro}
+\author{Oscar Perpiñán Lamigueiro,
+  Francisco Delgado López.}

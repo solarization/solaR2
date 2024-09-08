@@ -40,7 +40,8 @@ compare(GefFixed, Prod2x, ProdHoriz)
 
 }
 
-\author{Oscar Perpiñán Lamigueiro}
+\author{Oscar Perpiñán Lamigueiro,
+  Francisco Delgado López.}
 
 \seealso{
   \code{\link{dotplot}}

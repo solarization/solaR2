@@ -84,7 +84,8 @@
 }}
 
 \author{
-  Oscar Perpiñán Lamigueiro.
+  Oscar Perpiñán Lamigueiro,
+  Francisco Delgado López.
 }
 
 

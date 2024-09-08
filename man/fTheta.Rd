@@ -62,7 +62,8 @@ fTheta(sol, beta, alpha = 0, modeTrk = "fixed", betaLim = 90,
   \doi{10.18637/jss.v050.i09}
 }}
 \author{
-  Oscar Perpiñán Lamigueiro.
+  Oscar Perpiñán Lamigueiro,
+  Francisco Delgado López.
 }
 
 

@@ -173,7 +173,8 @@ surfaces.  }
   }
 }
 
-\author{Oscar Perpiñán Lamigueiro}
+\author{Oscar Perpiñán Lamigueiro,
+  Francisco Delgado López.}
 
 \seealso{
   \code{\link{prodGCPV}},

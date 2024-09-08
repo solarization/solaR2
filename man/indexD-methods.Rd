@@ -21,5 +21,6 @@
     \item{\code{signature(object = "G0")}}{same as for \code{object='Sol'}}
 }}
 \keyword{methods}
-\author{Oscar Perpiñán Lamigueiro}
+\author{Oscar Perpiñán Lamigueiro,
+  Francisco Delgado López.}
 

@@ -73,7 +73,8 @@ fSolI(solD, sample = 'hour', BTi, EoT = TRUE, keep.night = TRUE, method = 'micha
 }
 
 \author{
-  Oscar Perpiñán Lamigueiro.
+  Oscar Perpiñán Lamigueiro,
+  Francisco Delgado López.
 }
 \seealso{
   \code{\link{fSolD}}

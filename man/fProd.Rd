@@ -84,7 +84,8 @@
   \doi{10.18637/jss.v050.i09}
 }}
 \author{
-  Oscar Perpiñán Lamigueiro
+  Oscar Perpiñán Lamigueiro,
+  Francisco Delgado López.
 }
 
 \seealso{

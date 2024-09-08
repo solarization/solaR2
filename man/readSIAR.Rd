@@ -37,7 +37,8 @@ readSIAR(Lon = 0, Lat = 0,
 \value{A \code{Meteo} object}
 
 \author{
-  Francisco Delgado López
+  Francisco Delgado López,
+  Oscar Perpiñán Lamigueiro.
 }
 
 \seealso{

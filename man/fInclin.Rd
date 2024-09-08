@@ -56,7 +56,8 @@ fInclin(compI, angGen, iS = 2, alb = 0.2, horizBright = TRUE, HCPV = FALSE)
   \doi{10.18637/jss.v050.i09}
 }}
 \author{
-  Oscar Perpiñán Lamigueiro.
+  Oscar Perpiñán Lamigueiro,
+  Francisco Delgado López.
 }
 
 \seealso{

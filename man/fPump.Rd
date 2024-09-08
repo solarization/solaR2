@@ -30,7 +30,8 @@ fPump(pump, H)
   \doi{10.18637/jss.v050.i09}
 }}
 \author{
-  Oscar Perpiñán Lamigueiro.
+  Oscar Perpiñán Lamigueiro,
+  Francisco Delgado López.
 }
 
 \seealso{\code{\link{NmgPVPS}}, \code{\link{prodPVPS}}, \code{\link{pumpCoef}}, \code{splinefun}.}

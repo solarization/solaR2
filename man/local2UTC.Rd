@@ -42,7 +42,8 @@ lonHH(tz)
 
   The function \code{lonHH} gives a numeric value.}
 
-\author{Oscar Perpiñán Lamigueiro.}
+\author{Oscar Perpiñán Lamigueiro,
+  Francisco Delgado López.}
 
 \references{\itemize{
     \item Perpiñán, O, Energía Solar Fotovoltaica, 2015.

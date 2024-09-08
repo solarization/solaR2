@@ -92,6 +92,9 @@ azimuth(d, lat, BTi, sample = 'hour', method = 'michalsky',
     Systems with R", Journal of Statistical Software, 50(9), 1-32,
     \doi{10.18637/jss.v050.i09} } }
 
+\author{Francisco Delgado López,
+Oscar Perpiñán Lamigueiro.}
+
 \seealso{
   \code{\link{fSolD}},
   \code{\link{fSolI}},

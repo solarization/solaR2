@@ -87,7 +87,8 @@ prodPVPS(lat,
   Systems with R", Journal of Statistical Software, 50(9), 1-32,
   \doi{10.18637/jss.v050.i09}
 }}
-\author{Oscar Perpiñán Lamigueiro.}
+\author{Oscar Perpiñán Lamigueiro,
+  Francisco Delgado López.}
 
 \seealso{\code{\link{NmgPVPS}}, \code{\link{fPump}}, \code{\link{pumpCoef}}}
 

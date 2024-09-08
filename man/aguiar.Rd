@@ -20,3 +20,6 @@
 }
 
 \keyword{datasets}
+
+\author{Oscar Perpiñán Lamiguiero,
+  Francisco Delgado López.}

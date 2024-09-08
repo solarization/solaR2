@@ -92,7 +92,8 @@ zoo2Meteo(file, lat, source = '')
 
 
 \author{
-  Oscar Perpiñán Lamigueiro.
+  Oscar Perpiñán Lamigueiro,
+  Francisco Delgado López.
 }
 \seealso{
   \code{\link[data.table]{fread}},

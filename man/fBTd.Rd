@@ -27,7 +27,8 @@ fBTd(mode = "prom",
 \details{This function is commonly used inside \code{fSolD}.}
 \value{This function returns a \code{POSIXct} object.}
 
-\author{Oscar Perpiñán Lamigueiro}
+\author{Oscar Perpiñán Lamigueiro,
+  Francisco Delgado López.}
 
 
 \references{\itemize{

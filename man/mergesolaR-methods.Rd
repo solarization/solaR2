@@ -41,3 +41,6 @@ ProdHoriz <- prodGCPV(lat = lat,dataRad = prom, modeTrk = 'horiz', keep.night = 
 prod <- mergesolaR(ProdFixed, Prod2x, ProdHoriz)
 head(prod)
 }
+
+\author{Oscar Perpiñán Lamigueiro,
+  Francisco Delgado López.}

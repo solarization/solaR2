@@ -125,7 +125,8 @@ calcG0(lat, modeRad = 'prom', dataRad,
   Markov transition matrices", Solar Energy, Volume 40, Issue 3, 1988, Pages 269–279}
   }
 
-\author{Oscar Perpiñán Lamigueiro.}
+  \author{Oscar Perpiñán Lamigueiro,
+    Francisco Delgado López.}
 
 \seealso{
   \code{\link{calcSol}},

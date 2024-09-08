@@ -116,5 +116,5 @@ xyplot(Fd.CPR + Fd.CLIMEDd ~ Kt, data = Daily,
        type = c('l', 'g'), auto.key = list(space = 'right'))
 
 }
-\author{Oscar Perpiñán Lamigueiro; The BRL model was suggested by Kevin Ummel.}
+\author{Oscar Perpiñán Lamigueiro, Francisco Delgado López; The BRL model was suggested by Kevin Ummel.}
 \keyword{utilities}

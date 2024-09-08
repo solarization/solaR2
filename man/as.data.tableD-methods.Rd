@@ -80,6 +80,7 @@ prodD = as.data.tableD(prodfixed, complete = TRUE, day = TRUE)
 prodD
 }
 
-\author{Oscar Perpiñán Lamigueiro}
+\author{Oscar Perpiñán Lamigueiro,
+  Francisco Delgado López.}
 
 \keyword{methods}

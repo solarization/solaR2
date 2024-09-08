@@ -111,7 +111,8 @@ prodGCPV(lat,
     \doi{10.18637/jss.v050.i09}
 }}
 
-\author{Oscar Perpiñán Lamigueiro}
+\author{Oscar Perpiñán Lamigueiro,
+  Francisco Delgado López.}
 
 
 \seealso{

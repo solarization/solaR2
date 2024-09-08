@@ -39,7 +39,8 @@ r2sec(x)
   }
 }
 
-\author{Oscar Perpiñán Lamigueiro.}
+\author{Oscar Perpiñán Lamigueiro,
+  Francisco Delgado López.}
 
 \keyword{utilities}
 

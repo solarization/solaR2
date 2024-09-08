@@ -19,7 +19,8 @@ fBTi(BTd, sample = 'hour')
 \details{This function is commonly used inside \code{fSolI}.}
 \value{This function returns a \code{POSIXct} object.}
 
-\author{Oscar Perpiñán Lamigueiro}
+\author{Oscar Perpiñán Lamigueiro,
+  Francisco Delgado López.}
 
 \examples{
 #Average days

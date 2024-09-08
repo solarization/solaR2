@@ -27,7 +27,8 @@ readG0dm(G0dm, Ta = 25, lat = 0,
 
 
 \author{
-  Oscar Perpiñán Lamigueiro.
+  Oscar Perpiñán Lamigueiro,
+  Francisco Delgado López.
 }
 \seealso{
   \code{\link{readBDd}}

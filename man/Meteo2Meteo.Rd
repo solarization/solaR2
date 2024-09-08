@@ -23,6 +23,9 @@ Meteod2Meteom(G0d)
 
 \value{A \code{Meteo} object}
 
+\author{Oscar Perpiñán Lamigueiro,
+  Francisco Delgado López.}
+
 \seealso{
   \code{\link{readBDd}},
   \code{\link{readG0dm}},
@@ -48,3 +51,4 @@ G0m = Meteod2Meteom(G0d)
 G0m
 
 }
+

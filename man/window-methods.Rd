@@ -54,4 +54,5 @@ solWindow <- sol[start, end]
 range(indexD(solWindow))
 }
 \keyword{methods}
-\author{Oscar Perpiñán Lamigueiro}
+\author{Oscar Perpiñán Lamigueiro,
+  Francisco Delgado López.}

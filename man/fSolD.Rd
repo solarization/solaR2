@@ -49,7 +49,8 @@ fSolD(lat, BTd, method = 'michalsky')
 
 
 \author{
-  Oscar Perpiñán Lamigueiro.
+  Oscar Perpiñán Lamigueiro,
+  Francisco Delgado López.
 }
 \examples{
 BTd <- fBTd(mode = 'serie')

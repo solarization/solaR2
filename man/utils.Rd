@@ -38,7 +38,8 @@ truncDay(x)
 
 
 \author{
-  Oscar Perpiñán Lamigueiro.
+  Oscar Perpiñán Lamigueiro,
+  Francisco Delgado López.
 }
 \seealso{\code{as.POSIXct}
 }
