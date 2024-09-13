@@ -78,6 +78,11 @@ azimuth(d, lat, BTi, sample = 'hour', method = 'michalsky',
   
 }
 
+\value{
+  A vector with the calculated elements. Its size varies depending on
+  whether the calculations are daily or intradaily. 
+}
+
 \references{\itemize{ \item{Cooper, P.I., Solar Energy, 12, 3
     (1969). "The Absorption of Solar Radiation in Solar Stills"}
     \item{Spencer, Search 2 (5), 172,

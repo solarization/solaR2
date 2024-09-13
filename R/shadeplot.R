@@ -32,7 +32,9 @@ setMethod('shadeplot', signature(x = 'Shade'),
                       paleta <- rev(brewer.pal(n, 'YlOrRd'))
                   } else {
                       paleta <- rev(heat.colors(n))}
-                  par(mar = c(4.1,4.1,2.1,2.1)) 
+                  oldpar <- par(no.readonly = TRUE)
+                  on.exit(par(oldpar))
+                  par(mar = c(4.1,4.1,2.1,2.1))
                   filled.contour(x = Lew,y = Lns,z = FS.m,#...,
                                  col = paleta, #levels = niveles,
                                  nlevels = n,
