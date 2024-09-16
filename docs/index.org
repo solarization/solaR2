@@ -14,7 +14,7 @@ Although =solaR2= is primarily designed for time series associated with a locati
 
 * Software
 
-The stable version of =solaR2= is hosted at [[https://cran.r-project.org/package=solaR][CRAN]]. 
+The stable version of =solaR2= is hosted at [[https://cran.r-project.org/package=solaR2][CRAN]]. 
 The development version is available at [[https://github.com/solarization/solaR2][GitHub]].
 
 * Citation 
