@@ -25,17 +25,17 @@ Install the stable version with:
 
 If you use `solaR2`, please cite it in any publication reporting results obtained with this software:
 
-Delgado López, Francisco y Perpiñán Lamigueiro, Oscar (2024).
-solaR2: Radiation and Photovoltaic Systems with R version 2.
-R package version 0.10.
-Disponible en: https://solarization.github.io/solaR2/
+    Delgado López, Francisco y Perpiñán Lamigueiro, Oscar (2024).
+    solaR2: Radiation and Photovoltaic Systems with R version 2.
+    R package version 0.10.
+    Disponible en: https://solarization.github.io/solaR2/
 
 A BibTeX entry for LaTeX users is
 
-@Manual{,
-  title     = {solaR2: Radiation and Photovoltaic Systems with R version 2},
-  author    = {Francisco Delgado L{\'o}pez and Oscar Perpi{\~n}{\'a}n Lamigueiro},
-  year      = {2024},
-  url       = {https://solarization.github.io/solaR2/},
-  note      = {R package version 0.10},
-}
+    @Manual{,
+      title     = {solaR2: Radiation and Photovoltaic Systems with R version 2},
+      author    = {Francisco Delgado L{\'o}pez and Oscar Perpi{\~n}{\'a}n Lamigueiro},
+      year      = {2024},
+      url       = {https://solarization.github.io/solaR2/},
+      note      = {R package version 0.10},
+    }
