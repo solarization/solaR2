@@ -59,8 +59,15 @@ calcG0 <- function(lat,
                      res <- do.call('readG0dm', prom)
                  }, #End of prom
                  aguiar = {
-                     if (is.list(dataRad)) dataRad <- dataRad$G0dm
-                     BTd <- fBTd(mode = 'serie')
+                     if (is.list(dataRad)){
+                         if('year' %in% names(dataRad))
+                             BTd <- fBTd(mode = 'serie', year = dataRad$year)
+                         else
+                             BTd <- fBTd(mode = 'serie')
+                         dataRad <- dataRad$G0dm
+                     }
+                     else
+                         BTd <- fBTd(mode = 'serie')
                      solD <- fSolD(lat, BTd)
                      G0d <- markovG0(dataRad, solD)
                      res <- dt2Meteo(G0d, lat = lat, source = 'aguiar')
