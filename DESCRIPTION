@@ -1,7 +1,7 @@
 Package: solaR2
 Type: Package
 Title: Radiation and Photovoltaic Systems
-Version: 0.10
+Version: 0.11
 Encoding: UTF-8
 Authors@R: c(person("Oscar", "Perpiñán-Lamigueiro", email="oscar.perpinan@upm.es", role="aut", comment = c(ORCID = "0000-0002-4134-7196")), person("Francisco", "Delgado-López", email="f.delgadol@alumnos.upm.es", role=c("aut", "cre")))
 Description: Provides tools for calculating solar geometry, solar radiation on horizontal and inclined planes, and simulating the performance of various photovoltaic (PV) systems. Supports daily and intradaily irradiation data, enabling detailed analysis of grid-connected and water-pumping PV systems, including shading effects and solar angle calculations. 
