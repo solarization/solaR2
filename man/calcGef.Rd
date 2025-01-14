@@ -105,6 +105,8 @@ calcGef(lat,
   \code{\link{calcShd}}.
 }
 \examples{
+library("data.table")
+
 lat <- 37.2
 
 ###12 Average days.

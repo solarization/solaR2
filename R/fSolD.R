@@ -26,5 +26,5 @@ fSolD <- function(lat, BTd, method = 'michalsky'){
                        ws = ws
                        )]
     setkey(sun, Dates)
-    return(sun)
+    sun
 }

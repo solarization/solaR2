@@ -43,6 +43,8 @@ P2E(x, by)
 }
 
 \examples{
+library("data.table")
+
 char2diff('min')
 char2diff('2 s')
 

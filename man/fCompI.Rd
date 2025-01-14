@@ -82,6 +82,7 @@
   \code{\link{corrFdKt}}.
 }
 \examples{
+library("data.table")
 
 lat <- 37.2
 

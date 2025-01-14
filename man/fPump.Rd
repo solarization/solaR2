@@ -37,7 +37,8 @@ fPump(pump, H)
 \seealso{\code{\link{NmgPVPS}}, \code{\link{prodPVPS}}, \code{\link{pumpCoef}}, \code{splinefun}.}
 
 \examples{
-library(latticeExtra)
+library("data.table")
+
 
 data(pumpCoef)
 CoefSP8A44 <- subset(pumpCoef, Qn == 8 & stages == 44)
@@ -57,12 +58,16 @@ SP8A44 = with(fSP8A44,{
 SP8A44$etamb = with(SP8A44,etab*etam)
 lab = c(expression(eta[motor]), expression(eta[pump]), expression(eta[mp]))
 p <- xyplot(etam + etab + etamb ~ Pac,data = SP8A44,type = 'l', ylab = 'Efficiency')
-p+glayer(panel.text(x[1], y[1], lab[group.number], pos = 3))
+
+p + glayer(panel.text(x[1], y[1], lab[group.number], pos = 3))
 
 #Mechanical, hydraulic and electrical power
-lab = c(expression(P[pump]), expression(P[hyd]))
+library("latticeExtra")
+
+lab <- c(expression(P[pump]), expression(P[hyd]))
 p <- xyplot(Pb + Ph ~ Pac,data = SP8A44,type = 'l', ylab = 'Power (W)', xlab = 'AC Power (W)')
-p+glayer(panel.text(x[length(x)], y[length(x)], lab[group.number], pos = 3))
+
+p + glayer(panel.text(x[length(x)], y[length(x)], lab[group.number], pos = 3))
 
 #Flow and electrical power
 xyplot(Q ~ Pac,data = SP8A44,type = 'l')

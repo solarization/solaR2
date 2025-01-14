@@ -94,7 +94,9 @@
   \code{\link{fTemp}}.
 }
 \examples{
-inclin = data.table(Gef = c(200,400,600,800,1000),Ta = 25)
+library("data.table")
+
+inclin <- data.table(Gef = c(200,400,600,800,1000),Ta = 25)
 
 #using default values
 fProd(inclin)
@@ -107,10 +109,10 @@ c(0.02118, 3.4002e-05, -4.8967e-08)))
 fProd(inclin, inverter = inv1)
 
 #Voltage limits of the inverter
-inclin = data.table(Gef = 800,Ta = 30)
-gen1 = list(Nms = 10, Nmp = 11)
+inclin <- data.table(Gef = 800,Ta = 30)
+gen1 <- list(Nms = 10, Nmp = 11)
 
-prod = fProd(inclin,generator = gen1)
+prod <- fProd(inclin,generator = gen1)
 print(prod)
 
 with(prod, Vdc * Idc / (Vmpp * Impp))

@@ -81,22 +81,24 @@ FdKtBRL(sol, G0i)
   \code{\link{fCompI}}
 }
 \examples{
-lat = 37.2
-BTd = fBTd(mode = 'prom')
-G0dm = c(2.766, 3.491, 4.494, 5.912, 6.989, 7.742, 7.919, 7.027, 5.369,
+library("data.table")
+
+lat <- 37.2
+BTd <- fBTd(mode = 'prom')
+G0dm <- c(2.766, 3.491, 4.494, 5.912, 6.989, 7.742, 7.919, 7.027, 5.369,
     3.562, 2.814, 2.179)*1000;
-Ta = c(10, 14.1, 15.6, 17.2, 19.3, 21.2, 28.4, 29.9, 24.3, 18.2, 17.2,
+Ta <- c(10, 14.1, 15.6, 17.2, 19.3, 21.2, 28.4, 29.9, 24.3, 18.2, 17.2,
     15.2)
 
-prom = readG0dm(G0dm = G0dm, Ta = Ta, lat = lat)
-sol = calcSol(lat = lat, BTd = BTd)
+prom <- readG0dm(G0dm = G0dm, Ta = Ta, lat = lat)
+sol <- calcSol(lat = lat, BTd = BTd)
 
-Kt = Ktm(sol = sol, G0dm = prom)
+Kt <- Ktm(sol = sol, G0dm = prom)
 Kt
 
-Page = FdKtPage(sol = sol, G0dm = prom)
-LJ = FdKtLJ(sol = sol, G0dm = prom)
-Monthly = merge(Page, LJ, by = 'Kt',
+Page <- FdKtPage(sol = sol, G0dm = prom)
+LJ <- FdKtLJ(sol = sol, G0dm = prom)
+Monthly <- merge(Page, LJ, by = 'Kt',
                 suffixes = c('.Page', '.LJ'))
 Monthly
 
@@ -106,9 +108,9 @@ xyplot(Fd.Page+Fd.LJ~Kt, data = Monthly,
 Kt = Ktd(sol = sol, G0d = prom)
 Kt
 
-CPR = FdKtCPR(sol = sol, G0d = prom)
-CLIMEDd = FdKtCLIMEDd(sol = sol, G0d = prom)
-Daily = merge(CPR, CLIMEDd, by = 'Kt',
+CPR <- FdKtCPR(sol = sol, G0d = prom)
+CLIMEDd <- FdKtCLIMEDd(sol = sol, G0d = prom)
+Daily <- merge(CPR, CLIMEDd, by = 'Kt',
               suffixes = c('.CPR', '.CLIMEDd'))
 Daily
 

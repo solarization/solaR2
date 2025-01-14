@@ -47,8 +47,9 @@ readSIAR(Lon = 0, Lat = 0,
 }
 
 \examples{
-library(httr2)
-library(jsonlite)
+library("data.table")
+library("httr2")
+library("jsonlite")
 
 SIAR = readSIAR(Lon = -3.603, Lat = 40.033,
 ## Aranjuez, Comunity of Madrid, Spain

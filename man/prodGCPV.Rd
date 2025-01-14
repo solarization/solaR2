@@ -125,8 +125,7 @@ prodGCPV(lat,
   \code{\link{mergesolaR}}
 }
 \examples{
-library(lattice)
-library(latticeExtra)
+library("data.table")
 
 lat <- 37.2;
 
