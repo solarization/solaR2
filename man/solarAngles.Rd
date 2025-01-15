@@ -108,6 +108,7 @@ Oscar Perpiñán Lamigueiro.}
 
 \examples{
 library("data.table")
+\dontshow{setDTthreads(2)}
 
 d = fBTd(mode = 'serie')[100]
 

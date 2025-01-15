@@ -48,6 +48,7 @@ readSIAR(Lon = 0, Lat = 0,
 
 \examples{
 library("data.table")
+\dontshow{setDTthreads(2)}
 library("httr2")
 library("jsonlite")
 

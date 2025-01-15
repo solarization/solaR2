@@ -44,6 +44,7 @@ HQCurve(pump)
 
 \examples{
 library("data.table")
+\dontshow{setDTthreads(2)}
 
 data(pumpCoef)
 

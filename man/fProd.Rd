@@ -95,6 +95,7 @@
 }
 \examples{
 library("data.table")
+\dontshow{setDTthreads(2)}
 
 inclin <- data.table(Gef = c(200,400,600,800,1000),Ta = 25)
 

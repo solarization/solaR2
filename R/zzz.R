@@ -4,7 +4,6 @@ assign('oldTZ', Sys.getenv('TZ'), envir = .solEnv)
 .onLoad <- function(libpath, pkgname)
 {
     Sys.setenv(TZ='UTC')
-    data.table::setDTthreads(2)
 }
 
 .onAttach <- function(libpath, pkgname){

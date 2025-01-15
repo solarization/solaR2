@@ -75,6 +75,7 @@
 
 \examples{
 library("data.table")
+\dontshow{setDTthreads(2)}
 
 lat <- 37.2;
 G0dm <- c(2766, 3491, 4494, 5912, 6989, 7742, 7919, 7027, 5369, 3562, 2814, 2179)

@@ -67,6 +67,7 @@ calcSol(lat, BTd, sample = 'hour', BTi,
 
 \examples{
 library("data.table")
+\dontshow{setDTthreads(2)}
 
 BTd <- fBTd(mode <- 'serie')
 

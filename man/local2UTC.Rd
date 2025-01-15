@@ -60,6 +60,7 @@ lonHH(tz)
 
 \examples{
 library("data.table")
+\dontshow{setDTthreads(2)}
 
 t.local <- as.POSIXct("2006-01-08 10:07:52", tz = 'Europe/Madrid')
 

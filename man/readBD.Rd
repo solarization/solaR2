@@ -101,6 +101,7 @@ zoo2Meteo(file, lat, source = '')
 }
 \examples{
 library("data.table")
+\dontshow{setDTthreads(2)}
 
 data(helios)
 names(helios) = c('Dates', 'G0d', 'TempMax', 'TempMin')

@@ -57,6 +57,7 @@ NmgPVPS(pump, Pg, H, Gd, Ta = 30,
 
 \examples{
 library("data.table")
+\dontshow{setDTthreads(2)}
 
 Pg = seq(4000, 8000,by = 100);
 H = seq(120, 150,by = 5);

@@ -67,6 +67,7 @@
 
 \examples{
 library("data.table")
+\dontshow{setDTthreads(2)}
 
 lat = 37.2
 BTd = fBTd(mode = 'prom')[1]

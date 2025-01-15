@@ -126,6 +126,7 @@ prodGCPV(lat,
 }
 \examples{
 library("data.table")
+\dontshow{setDTthreads(2)}
 
 lat <- 37.2;
 

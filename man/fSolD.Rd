@@ -54,6 +54,7 @@ fSolD(lat, BTd, method = 'michalsky')
 }
 \examples{
 library("data.table")
+\dontshow{setDTthreads(2)}
 
 BTd <- fBTd(mode = 'serie')
 

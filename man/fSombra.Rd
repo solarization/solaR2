@@ -63,6 +63,7 @@ fSombraEst(angGen, distances,struct)
 }
 \examples{
 library("data.table")
+\dontshow{setDTthreads(2)}
 
 lat <- 37.2;
 sol <- calcSol(lat, fBTd(mode = 'prom'), sample = '10 min', keep.night = FALSE)

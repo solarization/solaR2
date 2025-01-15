@@ -38,6 +38,7 @@ fPump(pump, H)
 
 \examples{
 library("data.table")
+\dontshow{setDTthreads(2)}
 
 
 data(pumpCoef)
@@ -55,6 +56,8 @@ SP8A44 = with(fSP8A44,{
                 result = data.frame(Q,Pac,Pb,Ph,etam,etab,f)})
 
 #Efficiency of the motor, pump and the motor-pump
+library("latticeExtra")
+
 SP8A44$etamb = with(SP8A44,etab*etam)
 lab = c(expression(eta[motor]), expression(eta[pump]), expression(eta[mp]))
 p <- xyplot(etam + etab + etamb ~ Pac,data = SP8A44,type = 'l', ylab = 'Efficiency')
@@ -62,8 +65,6 @@ p <- xyplot(etam + etab + etamb ~ Pac,data = SP8A44,type = 'l', ylab = 'Efficien
 p + glayer(panel.text(x[1], y[1], lab[group.number], pos = 3))
 
 #Mechanical, hydraulic and electrical power
-library("latticeExtra")
-
 lab <- c(expression(P[pump]), expression(P[hyd]))
 p <- xyplot(Pb + Ph ~ Pac,data = SP8A44,type = 'l', ylab = 'Power (W)', xlab = 'AC Power (W)')
 

@@ -81,6 +81,7 @@ fSolI(solD, sample = 'hour', BTi, EoT = TRUE, keep.night = TRUE, method = 'micha
 }
 \examples{
 library("data.table")
+\dontshow{setDTthreads(2)}
 
 ###Angles for one day
 BTd <- fBTd(mode = 'serie')
