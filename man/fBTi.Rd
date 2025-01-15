@@ -23,6 +23,8 @@ fBTi(BTd, sample = 'hour')
   Francisco Delgado López.}
 
 \examples{
+library("data.table")
+
 #Average days
 BTd <- fBTd(mode = 'prom')
 

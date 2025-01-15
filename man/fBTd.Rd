@@ -47,6 +47,8 @@ fBTd(mode = "prom",
 }
 
 \examples{
+library("data.table")
+
 #Average days
 fBTd(mode = 'prom')
 

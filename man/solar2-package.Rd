@@ -123,6 +123,7 @@ shadeplot               Methods for Function shadeplot
 solaR.theme             solaR theme
 window                  Methods for extracting a time window
 writeSolar              Exporter of solaR results
+
 xyplot-methods          Methods for function xyplot in Package 'solaR'
 }
 }

@@ -43,8 +43,7 @@ HQCurve(pump)
 }
 
 \examples{
-library(lattice)
-library(latticeExtra)
+library("data.table")
 
 data(pumpCoef)
 

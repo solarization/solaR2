@@ -80,32 +80,33 @@ fSolI(solD, sample = 'hour', BTi, EoT = TRUE, keep.night = TRUE, method = 'micha
   \code{\link{fSolD}}
 }
 \examples{
+library("data.table")
+
 ###Angles for one day
-BTd = fBTd(mode = 'serie')
+BTd <- fBTd(mode = 'serie')
 
 #North hemisphere
-lat = 37.2
+lat <- 37.2
 solD <- fSolD(lat,BTd[100])
 solI <- fSolI(solD, sample = 'hour')
 print(solI)
 
 #South hemisphere
-lat = -37.2;
+lat <- -37.2;
 solDs <- fSolD(lat,BTd[283])
 solIs <- fSolI(solDs, sample = 'hour')
 print(solIs)
 
 ###Angles for the 12 average days
-lat = 37.2;
+lat <- 37.2;
 solD <- fSolD(lat,BTd = fBTd(mode = 'prom'))
 solI <- fSolI(solD, sample = '10 min', keep.night = FALSE)
 
-library(lattice)
-library(latticeExtra)
-
 ###Solar elevation angle vs. azimuth.
 #This kind of graphics is useful for shadows calculations
-mon = month.abb
+library("latticeExtra")
+
+mon <- month.abb
 p <- xyplot(r2d(AlS)~r2d(AzS),
     groups = month(Dates),
     data = solI, type = 'l', col = 'black',

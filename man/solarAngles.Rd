@@ -107,6 +107,7 @@ Oscar Perpiñán Lamigueiro.}
 }
 
 \examples{
+library("data.table")
 
 d = fBTd(mode = 'serie')[100]
 

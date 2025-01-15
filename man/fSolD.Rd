@@ -53,25 +53,26 @@ fSolD(lat, BTd, method = 'michalsky')
   Francisco Delgado López.
 }
 \examples{
+library("data.table")
+
 BTd <- fBTd(mode = 'serie')
 
 lat <- 37.2
-fSolD(lat, BTd[100])
-fSolD(lat, BTd[100], method = 'strous')
-fSolD(lat, BTd[100], method = 'spencer')
-fSolD(lat, BTd[100], method = 'cooper')
+(fSolD(lat, BTd[100]))
+(fSolD(lat, BTd[100], method = 'strous'))
+(fSolD(lat, BTd[100], method = 'spencer'))
+(fSolD(lat, BTd[100], method = 'cooper'))
 
 lat <- -37.2
-fSolD(lat, BTd[283])
+(fSolD(lat, BTd[283]))
 
 #Solar angles along the year
 SolD <- fSolD(lat, BTd = fBTd())
 
-library(lattice)
 xyplot(SolD)
 
 #Calculation of the daylength for several latitudes
-library(latticeExtra)
+library("latticeExtra")
 
 Lats <- c(-60, -40, -20, 0, 20, 40, 60)
 NomLats <- ifelse(Lats > 0, paste(Lats,'N', sep = ''),

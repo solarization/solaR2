@@ -66,22 +66,24 @@ calcSol(lat, BTd, sample = 'hour', BTi,
   Francisco Delgado López.}
 
 \examples{
-BTd = fBTd(mode = 'serie')
+library("data.table")
 
-lat = 37.2
-sol = calcSol(lat, BTd[100])
+BTd <- fBTd(mode <- 'serie')
+
+lat <- 37.2
+sol <- calcSol(lat, BTd[100])
 print(as.data.tableD(sol))
 
 library(lattice)
 xyplot(as.data.tableI(sol))
 
-solStrous = calcSol(lat, BTd[100], method = 'strous')
+solStrous <- calcSol(lat, BTd[100], method = 'strous')
 print(as.data.tableD(solStrous))
 
-solSpencer = calcSol(lat, BTd[100], method = 'spencer')
+solSpencer <- calcSol(lat, BTd[100], method = 'spencer')
 print(as.data.tableD(solSpencer))
 
-solCooper = calcSol(lat, BTd[100], method = 'cooper')
+solCooper <- calcSol(lat, BTd[100], method = 'cooper')
 print(as.data.tableD(solCooper))
 }
 

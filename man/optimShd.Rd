@@ -181,18 +181,17 @@ surfaces.  }
   \code{\link{calcShd}}
 }
 \examples{
-library(lattice)
-library(latticeExtra)
+library("data.table")
 
-lat = 37.2;
-G0dm = c(2766, 3491, 4494, 5912, 6989, 7742, 7919, 7027, 5369, 3562, 2814,
+lat <- 37.2;
+G0dm <- c(2766, 3491, 4494, 5912, 6989, 7742, 7919, 7027, 5369, 3562, 2814,
 2179)
-Ta = c(10, 14.1, 15.6, 17.2, 19.3, 21.2, 28.4, 29.9, 24.3, 18.2, 17.2, 15.2)
-prom = list(G0dm = G0dm, Ta = Ta)
+Ta <- c(10, 14.1, 15.6, 17.2, 19.3, 21.2, 28.4, 29.9, 24.3, 18.2, 17.2, 15.2)
+prom <- list(G0dm = G0dm, Ta = Ta)
 
 ###Two-axis trackers
-struct2x = list(W = 23.11, L = 9.8, Nrow = 2, Ncol = 3)
-dist2x = list(Lew = c(30, 45),Lns = c(20, 40))
+struct2x <- list(W = 23.11, L = 9.8, Nrow = 2, Ncol = 3)
+dist2x <- list(Lew = c(30, 45),Lns = c(20, 40))
 
 ShdM2x <- optimShd(lat = lat, dataRad = prom, modeTrk = 'two',
                    modeShd = c('area','prom'),
@@ -201,17 +200,17 @@ ShdM2x <- optimShd(lat = lat, dataRad = prom, modeTrk = 'two',
 
 shadeplot(ShdM2x)
 
-pLew = xyplot(Yf~GRR,data = ShdM2x,groups = factor(Lew),type = c('l','g'),
+pLew <- xyplot(Yf~GRR,data = ShdM2x,groups = factor(Lew),type = c('l','g'),
     main = 'Productivity for each Lew value')
 pLew+glayer(panel.text(x[1], y[1], group.value))
 
-pLns = xyplot(Yf~GRR,data = ShdM2x,groups = factor(Lns),type = c('l','g'),
+pLns <- xyplot(Yf~GRR,data = ShdM2x,groups = factor(Lns),type = c('l','g'),
     main = 'Productivity for each Lns value')
 pLns+glayer(panel.text(x[1], y[1], group.value))
 
 ## 1-axis tracker with Backtracking
-structHoriz = list(L = 4.83);
-distHoriz = list(Lew = structHoriz$L * c(2,5));
+structHoriz <- list(L = 4.83);
+distHoriz <- list(Lew = structHoriz$L * c(2,5));
 
 
 Shd12HorizBT <- optimShd(lat = lat, dataRad = prom,
@@ -227,7 +226,7 @@ xyplot(diff(Yf)~GRR[-1],data = Shd12HorizBT,type = c('l','g'))
 
 ###Fixed system
 structFixed = list(L = 5);
-distFixed = list(D = structFixed$L*c(1,3));
+distFixed <- list(D = structFixed$L*c(1,3));
 Shd12Fixed <- optimShd(lat = lat, dataRad = prom,
         modeTrk = 'fixed',
         distances = distFixed, res = 2,

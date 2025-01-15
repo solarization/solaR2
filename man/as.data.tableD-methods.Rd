@@ -61,6 +61,8 @@
 }}
 
 \examples{
+library("data.table")
+
 lat = 37.2
 BTd = fBTd(mode = 'prom')
 sol = calcSol(lat, BTd)
