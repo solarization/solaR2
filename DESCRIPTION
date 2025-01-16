@@ -10,7 +10,7 @@ BugReports: https://github.com/solarization/solaR2/issues
 License: GPL-3
 LazyData: yes
 Depends: R (>= 4.0.0), lattice
-Imports: data.table, latticeExtra, RColorBrewer, graphics, grDevices, stats, methods, utils
-Suggests: zoo, sp, raster, rasterVis, tdr, meteoForecast, httr2, jsonlite, testthat (>= 3.0.0)
+Imports: data.table, latticeExtra, RColorBrewer, httr2, graphics, grDevices, stats, methods, utils
+Suggests: zoo, sp, raster, rasterVis, tdr, meteoForecast, jsonlite, testthat (>= 3.0.0)
 Config/testthat/edition: 3
 

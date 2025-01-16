@@ -33,6 +33,13 @@ importFrom("utils",
 importFrom("RColorBrewer",
            "brewer.pal")
 
+importFrom("httr2",
+           "request",
+           "req_url_path",
+           "req_url_query",
+           "req_perform",
+           "resp_body_json")
+
 import("methods")
 
 import("lattice")

@@ -191,7 +191,7 @@ Ta <- c(10, 14.1, 15.6, 17.2, 19.3, 21.2, 28.4, 29.9, 24.3, 18.2, 17.2, 15.2)
 prom <- list(G0dm = G0dm, Ta = Ta)
 
 ###Two-axis trackers
-library(latticeExtra)
+library("latticeExtra")
 
 struct2x <- list(W = 23.11, L = 9.8, Nrow = 2, Ncol = 3)
 dist2x <- list(Lew = c(30, 45),Lns = c(20, 40))
@@ -203,13 +203,13 @@ ShdM2x <- optimShd(lat = lat, dataRad = prom, modeTrk = 'two',
 
 shadeplot(ShdM2x)
 
-pLew <- xyplot(Yf~GRR,data = ShdM2x,groups = factor(Lew),type = c('l','g'),
+pLew <- xyplot(Yf ~ GRR,data = ShdM2x, groups = factor(Lew), type = c('l','g'),
     main = 'Productivity for each Lew value')
-pLew+glayer(panel.text(x[1], y[1], group.value))
+pLew + glayer(panel.text(x[1], y[1], group.value))
 
 pLns <- xyplot(Yf~GRR,data = ShdM2x,groups = factor(Lns),type = c('l','g'),
     main = 'Productivity for each Lns value')
-pLns+glayer(panel.text(x[1], y[1], group.value))
+pLns + glayer(panel.text(x[1], y[1], group.value))
 
 ## 1-axis tracker with Backtracking
 structHoriz <- list(L = 4.83);
@@ -225,7 +225,7 @@ Shd12HorizBT <- optimShd(lat = lat, dataRad = prom,
 
 shadeplot(Shd12HorizBT)
 
-xyplot(diff(Yf)~GRR[-1],data = Shd12HorizBT,type = c('l','g'))
+xyplot(diff(Yf) ~ GRR[-1],data = Shd12HorizBT, type = c('l','g'))
 
 ###Fixed system
 structFixed = list(L = 5);
